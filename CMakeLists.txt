@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 set(PROJECT ccc)
 project(${PROJECT})
 
+
 # all source files
 file(GLOB SOURCES
 	source/*.h
@@ -18,6 +19,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 # Add directory containing FindSFML.cmake to module path
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/;${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}")
+
 
 # Find SFML
 find_package( SFML 2 COMPONENTS graphics window system )
