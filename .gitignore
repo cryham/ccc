@@ -1,4 +1,4 @@
-# Compiled Object files
+# Object files
 *.slo
 *.lo
 *.o
@@ -7,17 +7,15 @@
 # Precompiled Headers
 *.gch
 *.pch
+*.ncb
+*.sdf
 
-# Compiled Dynamic libraries
+# Dynamic libraries
 *.so
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
+# Static libraries
 *.lai
 *.la
 *.a
@@ -27,3 +25,12 @@
 *.exe
 *.out
 *.app
+
+# Project settings
+*.user
+
+# Build dirs
+bin
+build*
+Debug*
+Release*
