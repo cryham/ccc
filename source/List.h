@@ -25,7 +25,7 @@ struct Pat
 
 //  Color, for patterns
 //------------------------------------------------
-struct Clr
+/*struct Clr
 {
 	sf::Uint32 c;
 //	sf::Color clr;
@@ -36,7 +36,7 @@ struct Clr
 
 	bool operator<(const Clr& o) const
 	{	return c < o.c;  }
-};
+};/**/
 
 
 //  List of both
@@ -45,7 +45,7 @@ class List
 {
 public:
 	std::vector<Pat> pat;  // patterns
-//	std::set<sf::Uint32> clr;  // colors
+	std::set<sf::Uint32> clr;  // colors
 //	std::map<Pat, Clr> pt2clr;
 	List();
 	void Default();
@@ -59,5 +59,9 @@ public:
 	//  project file, own
 	bool Load(std::string file);
 	bool Save(std::string file);
-
 };
+
+
+//  util  split string
+std::vector<std::string> split(
+	const std::string& s, const std::string& reg);

@@ -1,9 +1,11 @@
+#include <regex>
 #include "list.h"
 #include "tinyxml2.h"
 using namespace std;
 using namespace tinyxml2;
 
 
+//  ctor
 List::List()
 {
 }
@@ -11,14 +13,25 @@ List::List()
 void List::Default()
 {
 	pat.clear();
-	//clr.clear();
+	clr.clear();
 }
 
+
+//  utils
 void Pat::SetClr(sf::Uint32 c)
 {
 	r = c       & 0xFF;
 	g = c >> 8  & 0xFF;
 	b = c >> 16 & 0xFF;
+}
+
+vector<string> split(const string& s, const string& reg)
+{
+	regex re(reg);
+	sregex_token_iterator
+		first{s.begin(), s.end(), re, -1},  // -1 split
+		last;
+	return {first, last};
 }
 
 
@@ -48,16 +61,29 @@ bool List::LoadFromDC(std::string file)
 
 	while (fi)
 	{
-		XMLElement* f,*c,*a;
-		Pat p;
-		f = fi->FirstChildElement("FileMasks");   p.s = f->GetText();
-		c = fi->FirstChildElement("Color");		  p.SetClr(atoi(c->GetText()));
-		a = fi->FirstChildElement("Attributes");  p.attr = a->GetText();
+		XMLElement* fm,*cl,*at;
+		#if 0  // single line
+			Pat p;
+			fm = fi->FirstChildElement("FileMasks");	p.s = fm->GetText();
+			cl = fi->FirstChildElement("Color");		p.SetClr(atoi(cl->GetText()));
+			at = fi->FirstChildElement("Attributes");	p.attr = at->GetText();
+			pat.push_back(p);
+		#else  // split each pattern
+			Pat q;  sf::Uint32 c;
+			fm = fi->FirstChildElement("FileMasks");	q.s = fm->GetText();
+			cl = fi->FirstChildElement("Color");	c = atoi(cl->GetText());  q.SetClr(c);
+			at = fi->FirstChildElement("Attributes");	q.attr = at->GetText();
+			clr.insert(c);
 
-		//Clr cl;  cl.c = p.c;
-		//clr.insert(p.c);
-
-		pat.push_back(p);
+			auto vs = split(q.s, ";");
+			for (auto s: vs)
+			{	Pat p;
+				p.s = s;
+				p.r = q.r;  p.g = q.g;  p.b = q.b;
+				p.attr = q.attr;
+				pat.push_back(p);
+			}
+		#endif
 		fi = fi->NextSiblingElement();
 	}
 /*

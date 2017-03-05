@@ -65,6 +65,12 @@ bool AppMain::Run()
 			case sf::Event::MouseMoved:
 				app->Mouse(e.mouseMove.x, e.mouseMove.y);
 				break;
+			case sf::Event::MouseButtonPressed:
+				app->mb = e.mouseButton.button + 1;
+				break;
+			case sf::Event::MouseButtonReleased:
+				app->mb = 0;
+				break;
 
 			case sf::Event::KeyPressed:
 				if (e.key.code == sf::Keyboard::Escape)  // Esc - Close
