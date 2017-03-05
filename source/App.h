@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "List.h"
 
 
 class App
@@ -11,16 +12,20 @@ public:
 	App();
 
 	bool Init();
-	bool KeyDown(const sf::Event::KeyEvent& key);
 	void Graph();
 	void Quit();
+
+	bool KeyDown(const sf::Event::KeyEvent& key);
+	void Mouse(int x, int y);
 
 
 	//  list dimensions
 	//--------------------------
-	int xe,ye;	  // screen size
-	int iFontH;	 // font height
-	int lCur, lOfs; // list cursor, page ofset
+	int xm,ym;   // mouse
+	int xe,ye;   // screen size
+	int iFontH;  // font height
+	int lCur, lOfs;  // list cursor, page ofset
+	List li;
 
 
 	//  sfml drawing
@@ -51,3 +56,8 @@ public:
 			  int sx, int sy,
 			  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
 };
+
+
+//  format int, float to string
+std::string i2s(const int v, const char width=0/*, const char fill=' '*/);
+std::string f2s(const float v, const char precision=2, const char width=4);

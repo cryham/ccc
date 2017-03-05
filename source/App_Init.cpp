@@ -1,11 +1,14 @@
 #include "App.h"
+#include <sstream>
+#include <iomanip>
 
 
 //  ctor
 App::App()
 	:pWindow(NULL), pFont(NULL), xe(100), ye(100), bold(false)
+	,xm(0), ym(0)
 {
-	iFontH = 16;
+	iFontH = 16;  // font h
 
 	lOfs = lCur = 0;
 }
@@ -14,6 +17,7 @@ App::App()
 //------------------------------------------------------------------
 bool App::Init()
 {
+	li.LoadFromDC("doublecmd.xml");
 
 	return true;
 }
@@ -44,4 +48,20 @@ void App::Rect(int x, int y,
 	pBackgr->setPosition(x, y);
 	pBackgr->setColor(sf::Color(b, g, r));
 	pWindow->draw(*pBackgr);
+}
+
+
+std::string i2s(const int v, const char width)
+{
+	std::ostringstream s;
+	if (width != 0)  s.width(width);  //s.fill(fill);
+	s << std::fixed << v;
+	return s.str();
+}
+std::string f2s(const float v, const char precision, const char width)
+{
+	std::ostringstream s;
+	if (width != 0)  s.width(width);
+	s << std::fixed << std::setprecision(precision) << v;
+	return s.str();
 }
