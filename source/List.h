@@ -10,11 +10,17 @@
 struct Pat
 {
 	std::string s;  // eg. *.cpp
-	sf::Uint32 c;
-	bool dir, link;
+	sf::Uint8 r,g,b;  // color
+
+	bool dir, link;   // attributes
+	std::string attr;
+
 	Pat()
-		:dir(false), link(false), c(0)
+		:dir(false), link(false)
+		,r(255),g(255),b(255)
 	{   }
+
+	void SetClr(sf::Uint32 c);
 };
 
 //  Color, for patterns
@@ -23,12 +29,15 @@ struct Clr
 {
 	sf::Uint32 c;
 //	sf::Color clr;
+
 	Clr()
 		:c(0)
 	{	}
+
 	bool operator<(const Clr& o) const
 	{	return c < o.c;  }
 };
+
 
 //  List of both
 //------------------------------------------------
@@ -36,7 +45,7 @@ class List
 {
 public:
 	std::vector<Pat> pat;  // patterns
-	std::set<sf::Uint32> clr;  // colors
+//	std::set<sf::Uint32> clr;  // colors
 //	std::map<Pat, Clr> pt2clr;
 	List();
 	void Default();

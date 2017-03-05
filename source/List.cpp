@@ -10,10 +10,17 @@ List::List()
 
 void List::Default()
 {
-    pat.clear();
-    clr.clear();
-
+	pat.clear();
+	//clr.clear();
 }
+
+void Pat::SetClr(sf::Uint32 c)
+{
+	r = c       & 0xFF;
+	g = c >> 8  & 0xFF;
+	b = c >> 16 & 0xFF;
+}
+
 
 //  load, import from  DC doublecmd.xml
 //------------------------------------------------
@@ -43,12 +50,12 @@ bool List::LoadFromDC(std::string file)
 	{
 		XMLElement* f,*c,*a;
 		Pat p;
-		f = fi->FirstChildElement("FileMasks");  p.s = f->GetText();
-		c = fi->FirstChildElement("Color");		 p.c = atol(c->GetText());
-		a = fi->FirstChildElement("Attributes"); //p.a =
+		f = fi->FirstChildElement("FileMasks");   p.s = f->GetText();
+		c = fi->FirstChildElement("Color");		  p.SetClr(atoi(c->GetText()));
+		a = fi->FirstChildElement("Attributes");  p.attr = a->GetText();
 
 		//Clr cl;  cl.c = p.c;
-		clr.insert(p.c);
+		//clr.insert(p.c);
 
 		pat.push_back(p);
 		fi = fi->NextSiblingElement();
@@ -86,8 +93,8 @@ bool List::SaveToDC(std::string file)
 //  load, import from  TC color.ini
 bool List::ImportFromTC(std::string file)
 {
-    Default();
-    return true;
+	Default();
+	return true;
 }
 
 
@@ -95,20 +102,20 @@ bool List::ImportFromTC(std::string file)
 //------------------------------------------------
 bool List::Load(std::string file)
 {
-    Default();
+	Default();
 
-    XMLDocument doc;
-    doc.LoadFile(file.c_str());
+	XMLDocument doc;
+	doc.LoadFile(file.c_str());
 
-    doc.RootElement();
+	doc.RootElement();
 
-    return true;
+	return true;
 }
 
 //  save project file, own
 bool List::Save(std::string file)
 {
-    XMLDocument doc;
-    doc.SaveFile(file.c_str());
-    return true;
+	XMLDocument doc;
+	doc.SaveFile(file.c_str());
+	return true;
 }
