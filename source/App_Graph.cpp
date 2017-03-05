@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Util.h"
 
 
 //  Graphics draw
@@ -13,9 +14,9 @@ void App::Graph()
 	const int  /// params
 		ya = iFontH + 2, xa = 10,  // margins
 		xMax = xe/2, yMax = ye - 2*iFontH;  // area
-	size_t i = lOfs, ii = li.pat.size();
+	int i = lOfs, ii = li.pat.size();
 
-	sf::Color c(0,0,0);
+	sf::Color c(0,0,0), cCur;
 	while (i < ii && y+ya < yMax)
 	{
 		const Pat& p = li.pat[i];
@@ -37,7 +38,9 @@ void App::Graph()
 
 		//  cursor
 		if (i == lCur)  // current
-			Frame(x, y, x+xw, y+ya, 1, p.b, p.g, p.r);
+		{	Frame(x, y, x+xw, y+ya, 1, p.b, p.g, p.r);
+			cCur = clr;
+		}
 		else  // mouse over
 		if (xm >= x && xm < x+xw && ym >= y && ym < y+ya)
 		{
@@ -49,6 +52,14 @@ void App::Graph()
 		Text(x, y);  // write
 		++i;
 	}
+
+	//  current info  -----
+	x = xMax+10;  y = 10;  xw = 32;  int yw = iFontH + 10;
+	Rect(x, y, x+xw, y+xw, cCur.b, cCur.g, cCur.r);
+	y += yw + 20;
+	Clr(180,120,120);  s = "R: " + i2s(cCur.r);  Text(x, y);  y += yw;
+	Clr(120,180,120);  s = "G: " + i2s(cCur.g);  Text(x, y);  y += yw;
+	Clr( 60,150,210);  s = "B: " + i2s(cCur.b);  Text(x, y);  y += yw;
 
 	//  status  -----
 	Clr(185,225,255);

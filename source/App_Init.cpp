@@ -1,12 +1,11 @@
 #include "App.h"
-#include <sstream>
-#include <iomanip>
 
 
 //  ctor
 App::App()
-	:pWindow(NULL), pFont(NULL), xe(100), ye(100), bold(false)
-	,xm(0), ym(0), mb(0)
+	:pWindow(nullptr), pBackgr(nullptr), pFont(nullptr)
+	,xe(100), ye(100), bold(false)
+	,xm(0),ym(0), mb(0), wh(0)
 {
 	iFontH = 16;  // font h
 
@@ -17,7 +16,7 @@ App::App()
 //------------------------------------------------------------------
 bool App::Init()
 {
-	li.LoadFromDC("doublecmd.xml");
+	li.LoadDC("doublecmd.xml");
 
 	return true;
 }
@@ -57,22 +56,4 @@ void App::Frame(int x, int y,  int sx, int sy,  int d,
 	Rect(x,   sy-d, sx-d, sy,   r, g, b);
 	Rect(x,   y,    x+d,  sy-d, r, g, b);
 	Rect(sx-d,y,    sx,   sy,   r, g, b);
-}
-
-
-//  string utils
-//------------------------------------------------------------------
-std::string i2s(const int v, const char width)
-{
-	std::ostringstream s;
-	if (width != 0)  s.width(width);  //s.fill(fill);
-	s << std::fixed << v;
-	return s.str();
-}
-std::string f2s(const float v, const char precision, const char width)
-{
-	std::ostringstream s;
-	if (width != 0)  s.width(width);
-	s << std::fixed << std::setprecision(precision) << v;
-	return s.str();
 }

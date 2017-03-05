@@ -1,6 +1,7 @@
 #include <regex>
 #include "list.h"
 #include "tinyxml2.h"
+#include "Util.h"
 using namespace std;
 using namespace tinyxml2;
 
@@ -25,19 +26,16 @@ void Pat::SetClr(sf::Uint32 c)
 	b = c >> 16 & 0xFF;
 }
 
-vector<string> split(const string& s, const string& reg)
+sf::Uint32 Pat::GetClr()
 {
-	regex re(reg);
-	sregex_token_iterator
-		first{s.begin(), s.end(), re, -1},  // -1 split
-		last;
-	return {first, last};
+	return (b << 16) + (g << 8) + r;
 }
 
 
+
 //  load, import from  DC doublecmd.xml
-//------------------------------------------------
-bool List::LoadFromDC(std::string file)
+//------------------------------------------------------------------------------------------------
+bool List::LoadDC(string file)
 {
 	XMLDocument doc;
 	XMLError er = doc.LoadFile(file.c_str());
@@ -86,6 +84,8 @@ bool List::LoadFromDC(std::string file)
 		#endif
 		fi = fi->NextSiblingElement();
 	}
+	return true;
+}
 /*
 	<doublecmd ..>
 	  <Configuration ..>
@@ -98,26 +98,63 @@ bool List::LoadFromDC(std::string file)
 			<Attributes>**</Attributes>
 		  </Filter>
 */
-	return true;
-}
 
 //  save, export to  DC doublecmd.xml
 //------------------------------------------------
-bool List::SaveToDC(std::string file)
+bool List::SaveDC(string file)
 {
+	if (pat.empty())  return false;
+
 	XMLDocument xml;
-	XMLElement* root = xml.NewElement("FileFilters");
+	XMLElement* filt = xml.NewElement("FileFilters");
 
-	XMLElement* ver = xml.NewElement("Filter");
-		ver->SetAttribute("num",	"12");
-	root->InsertEndChild(ver);
+	vector<int> id;
+	id.push_back(0);
+	int i = 0;
+	for (auto& p : pat)
+	{
+		if (i > 0)
+		{
+			const Pat& o = pat[i-1];
+			if (o.r != p.r || o.g != p.g || o.b != p.b)
+				id.push_back(i);
+		}
+		++i;
+	}
+	id.push_back(pat.size());
 
-	xml.InsertEndChild(root);
+	for (int ii=0; ii < id.size()-1; ++ii)
+	{
+		int i0 = id[ii], i1 = id[ii+1];
+		XMLElement* fi = xml.NewElement("Filter");
+		string s, n;
+		for (int i=i0; i < i1; ++i)
+			s += pat[i].s + ";";
+		Pat p = pat[i0];  n = s;
+
+		//  name special cases
+		#define fnd(s)  p.attr.find(s) != string::npos
+		if (fnd("l"))  n = "Link";  else
+		if (fnd("d"))  n = "Dir";  else
+		if (fnd("x"))  n = "Exe";
+
+		XMLElement* nm = xml.NewElement("Name");		nm->SetText(n.c_str());
+		XMLElement* fm = xml.NewElement("FileMasks");	fm->SetText(s.c_str());
+		XMLElement* cl = xml.NewElement("Color");		cl->SetText(p.GetClr());
+		XMLElement* at = xml.NewElement("Attributes");	at->SetText(p.attr.c_str());
+		fi->InsertEndChild(nm);
+		fi->InsertEndChild(fm);
+		fi->InsertEndChild(cl);
+		fi->InsertEndChild(at);
+		filt->InsertEndChild(fi);
+	}
+
+	xml.InsertEndChild(filt);
 	return xml.SaveFile(file.c_str());
 }
 
 //  load, import from  TC color.ini
-bool List::ImportFromTC(std::string file)
+bool List::ImportTC(string file)
 {
 	Default();
 	return true;
@@ -125,23 +162,61 @@ bool List::ImportFromTC(std::string file)
 
 
 //  load project file, own
-//------------------------------------------------
-bool List::Load(std::string file)
+//------------------------------------------------------------------------------------------------
+bool List::Load(string file)
 {
 	Default();
 
 	XMLDocument doc;
-	doc.LoadFile(file.c_str());
+	XMLError er = doc.LoadFile(file.c_str());
+	if (er != XML_SUCCESS)
+	{	/*Can't load: "+file);*/  return false;  }
 
-	doc.RootElement();
+	XMLElement* root = doc.RootElement();
+	if (!root)  return false;
+	string rn = root->Name();
+	if (rn != "ccc")  return false;
 
+	Default();
+
+	///  load Filters
+	XMLElement* pt = root->FirstChildElement("Pat");
+	if (!pt)  return false;
+
+	while (pt)
+	{
+		XMLElement* fm,*cl,*at;
+		Pat p;  sf::Uint32 c;
+		fm = pt->FirstChildElement("s");	p.s = fm->GetText();
+		cl = pt->FirstChildElement("c");	c = atoi(cl->GetText());  p.SetClr(c);
+		at = pt->FirstChildElement("a");	p.attr = at->GetText();
+		clr.insert(c);
+		pat.push_back(p);
+		pt = pt->NextSiblingElement();
+	}
 	return true;
 }
 
 //  save project file, own
-bool List::Save(std::string file)
+//------------------------------------------------
+bool List::Save(string file)
 {
-	XMLDocument doc;
-	doc.SaveFile(file.c_str());
-	return true;
+	XMLDocument xml;
+	XMLElement* root = xml.NewElement("ccc");
+	root->SetAttribute("ver", 10);
+
+	for (auto& p : pat)
+	{
+		XMLElement* fi = xml.NewElement("Pat");
+		XMLElement* fm = xml.NewElement("s");	fm->SetText(p.s.c_str());
+		XMLElement* cl = xml.NewElement("c");	cl->SetText(p.GetClr());
+		XMLElement* at = xml.NewElement("a");	at->SetText(p.attr.c_str());
+		fi->InsertEndChild(fm);
+		fi->InsertEndChild(cl);
+		fi->InsertEndChild(at);
+		root->InsertEndChild(fi);
+	}
+
+	xml.InsertEndChild(root);
+	return xml.SaveFile(file.c_str());
 }

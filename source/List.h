@@ -21,6 +21,7 @@ struct Pat
 	{   }
 
 	void SetClr(sf::Uint32 c);
+	sf::Uint32 GetClr();
 };
 
 //  Color, for patterns
@@ -51,17 +52,12 @@ public:
 	void Default();
 
 	//  load, import
-	bool LoadFromDC(std::string file);  // DC doublecmd.xml
-	bool SaveToDC(std::string file);
+	bool LoadDC(std::string file);  // from DC doublecmd.xml
+	bool SaveDC(std::string file);
 
-	bool ImportFromTC(std::string file);  // TC color.ini
+	bool ImportTC(std::string file);  // TC color.ini
 
 	//  project file, own
 	bool Load(std::string file);
 	bool Save(std::string file);
 };
-
-
-//  util  split string
-std::vector<std::string> split(
-	const std::string& s, const std::string& reg);

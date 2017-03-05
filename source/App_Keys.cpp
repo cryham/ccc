@@ -49,6 +49,15 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		//  font size  - =
 		case Keyboard::Dash:  IncFont(-1);  ret
 		case Keyboard::Equal: IncFont( 1);  ret
+
+
+		//  load, save
+		case Keyboard::F1:  li.LoadDC("doublecmd.xml");  ret
+		case Keyboard::F2:  li.SaveDC("dc.xml");  ret
+		case Keyboard::F8:  li.Default();  ret  // clear
+
+		case Keyboard::F4:  li.Save("ccc.xml");  ret
+		case Keyboard::F5:  li.Load("ccc.xml");  ret
 	}
 	ret
 }

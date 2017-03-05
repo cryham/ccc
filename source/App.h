@@ -24,7 +24,7 @@ public:
 	//  list dimensions
 	//--------------------------
 	int xm,ym;   // mouse
-	int mb;
+	int mb,wh;
 
 	int xe,ye;   // screen size
 	int iFontH;  // font height
@@ -65,8 +65,3 @@ public:
 	void Frame(int x, int y,  int sx, int sy,  int d,
 			  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
 };
-
-
-//  util  format int, float to string
-std::string i2s(const int v, const char width=0/*, const char fill=' '*/);
-std::string f2s(const float v, const char precision=2, const char width=4);
