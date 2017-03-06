@@ -34,3 +34,6 @@ before_script:
 
 script:
  - make -j2
+
+notifications:
+  email: false

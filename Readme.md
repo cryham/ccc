@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cryham/ccc.svg?branch=master)](https://travis-ci.org/cryham/ccc)
+
 # Crystal Color Center
 The program's purpose is to manage my file and directory patterns (e.g. extension or name matches)  
 for Double Commander (in Options - Colors - File types).
