@@ -1,0 +1,26 @@
+dist: trusty
+
+git:
+  depth: 1
+
+language: cpp
+
+compiler:
+ - gcc
+
+branches:
+  only:
+    - master
+
+before_install:
+ - pwd
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq libsfml-dev
+
+before_script:
+ - mkdir build
+ - cd build
+ - cmake ..
+
+script:
+ - make -j2
