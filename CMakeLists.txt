@@ -37,3 +37,4 @@ endif()
 
 add_executable(${PROJECT} ${SOURCES})
 target_link_libraries(${PROJECT} ${SFML_LIBRARIES})
+target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
