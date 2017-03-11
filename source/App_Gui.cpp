@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Util.h"
 using namespace ImGui;
+using namespace std;
 
 
 //  Gui draw and process
@@ -13,7 +14,7 @@ void App::Gui()
 	SetNextWindowSize(ImVec2(400/*xe-xs*/, ye-100), ImGuiSetCond_Always);
 	const ImVec2 sep(100, 20), sep2(100, 40);
 
-	bool open = true;
+	bool open = true, e;
 	Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
 	float i = 4.f;
@@ -22,7 +23,17 @@ void App::Gui()
 	PushStyleColor(ImGuiCol_ButtonHovered,	ImColor(60,100,140));
 	PushStyleColor(ImGuiCol_ButtonActive,	ImColor(80,120,160));
 
-	Button("Save");  SameLine();  Button("Cancel");
+	e = Button("Save");    if (e)  Save();  SameLine();
+	e = Button("Reload");  if (e)  Load();
+
+	//  status  -----
+	if (!txtStatus.empty() && iStatus)
+	{	SameLine();
+		PushStyleColor(ImGuiCol_Text,
+			ImColor::HSV(0.55f, 0.5f, 1.f-float(iStatus)/maxStatus));
+		Text(txtStatus.c_str());
+		PopStyleColor(1);
+	}
 	PopStyleColor(4);
 	Dummy(sep);
 
@@ -39,7 +50,7 @@ void App::Gui()
 		p = &li.pat[iCur];
 
 	//  pattern edit  __
-	bool e = InputText("Pattern", ed.pat, sizeof(ed.pat)-1);
+	e = InputText("Pattern", ed.pat, sizeof(ed.pat)-1);
 	if (e && p)  p->s = ed.pat;  // set
 	Dummy(sep);
 
@@ -66,24 +77,27 @@ void App::Gui()
 	Dummy(sep2);  /// below -----
 	//if (TreeNode("Status"))
 	//  status  -----
-	std::string s =
+	string s =
 		"Patterns: " + i2s(li.pat.size()) +
-		"  Colors: " + i2s(li.clr.size());
+		"  Colors: " + i2s(li.clr.size()) +
+		"  Cur: " + i2s(iCur) +
+		"  Line: " + i2s(line);
 	Text(s.c_str());
 
 	Dummy(sep);  // -----
 	if (TreeNode("Settings"))
 	{
 		e = SliderInt("FontH", &iFontH, 1, 32, "");  SameLine();  Text(i2s(iFontH).c_str());  if (e)  IncFont(0);
+		e = SliderInt("LineH", &iLineH, -2, 12, "");  SameLine();  Text(i2s(iLineH).c_str());
 		TreePop();
 	}
 
 	Dummy(sep);  // -----
 	if (TreeNode("Debug"))
 	{
-		s = "xs: " + i2s(xs) + " xe: " + i2s(xe) + " ye: " + i2s(ye);
+		s = "xs: " + i2s(xs) + " xe: " + i2s(xe) + " | ye: " + i2s(ye);
 		Text(s.c_str());
-		s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb) + " wh: " + i2s(wh);
+		s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb);
 		Text(s.c_str());
 		TreePop();
 	}

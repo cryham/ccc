@@ -33,7 +33,7 @@ sf::Uint32 SClr::Get()
 }
 
 
-//  Update  x,y,l
+//  Update  x,y,l,xw, lines
 //------------------------------------------------
 void List::Update(int xMax, int xa, int ya)
 {
@@ -42,12 +42,13 @@ void List::Update(int xMax, int xa, int ya)
 	int i, ii = pat.size(), l = 0;
 	int x = 0, xw = 0, y = 0;
 	lines.clear();
+	lines.push_back(0);
 
 	for (i=0; i < ii; ++i)
 	{
 		Pat& p = pat[i];
 
-		app->s = p.s;  // get text width
+		app->str = p.s;  // get text width
 		xw = app->Txt(x, y, false) + xa;
 		p.xw = xw;
 

@@ -2,17 +2,6 @@
 #include <cstring>
 
 
-//  ctor
-App::App()
-	:pWindow(nullptr), pBackgr(nullptr), pFont(nullptr)
-	,xe(100),ye(100), xs(xe/2)
-	,iFontH(16), bold(false)
-	,xm(0),ym(0), mb(0), wh(0)
-	,alt(false),ctrl(false),shift(false)
-{
-	iCur = 0;  line = 0;  iPick = -1;
-}
-
 //  edit ctor
 App::Ed::Ed()
 	:r(0), g(0), b(0)
@@ -33,9 +22,24 @@ void App::Resize(int x, int y)
 bool App::Init()
 {
 	li.SetApp(this);
+
 	li.LoadDC("doublecmd.xml");
+	proj = "ccc.xml";
 
 	return true;
+}
+
+bool App::Load()
+{
+	bool er = li.Load(proj);
+	txtStatus = er ? "Load error!" : "Loaded.";
+	iStatus = 0;
+}
+bool App::Save()
+{
+	bool er = li.Save(proj);
+	txtStatus = er ? "Save error!" : "Saved.";
+	iStatus = 0;
 }
 
 
@@ -46,7 +50,7 @@ bool App::Init()
 int App::Txt(int x, int y, bool draw)
 {
 	//if (!window)  return;
-	text.setString(s);
+	text.setString(str);
 	text.setStyle(bold ? sf::Text::Bold : sf::Text::Regular);
 	text.setColor(clr);
 	text.setPosition(x, y);

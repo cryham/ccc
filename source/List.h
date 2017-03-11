@@ -14,6 +14,9 @@ struct SClr
 	SClr()
 		:r(255),g(255),b(255)
 	{	}
+	SClr(sf::Uint8 rr, sf::Uint8 gg, sf::Uint8 bb)
+		:r(rr),g(gg),b(bb)
+	{	}
 
 	void Set(sf::Uint32 u);
 	sf::Uint32 Get();

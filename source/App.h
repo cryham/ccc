@@ -9,15 +9,21 @@ class App
 public:
 	//  main
 	//--------------------------
-	App();
-
 	bool Init();
 	void Graph(), Gui();
 
+	std::string proj="ccc.xml",  // project file
+		txtStatus = "F1 Help";
+	int iStatus = 0;  const int maxStatus = 2*60;  // 2 sec
+	bool Load();
+	bool Save();
+
+	//  input events
+	//--------------------------
 	bool KeyDown(const sf::Event::KeyEvent& key);
 	bool KeyUp(const sf::Event::KeyEvent& key);
 	void Mods(const sf::Event::KeyEvent& key);
-	bool alt, ctrl, shift;  // mods
+	bool alt=0, ctrl=0, shift=0;  // mods
 
 	void Mouse(int x, int y);
 	void Wheel(float d);
@@ -28,12 +34,11 @@ public:
 
 	//  dimensions
 	//--------------------------
-	int xm,ym;   // mouse
-	int mb,wh;
+	int xm=0, ym=0, mb=0;   // mouse pos, btn
 
-	int xe,ye, xs;   // screen size, splitter
-	int iFontH;  // font height
-	int iLineH;  // line spacing
+	int xe =600, ye =400, xs =400;   // screen size, splitter
+	int iFontH = 16;  // font height
+	int iLineH = 2;  // line spacing
 
 
 	//  list, edit params
@@ -46,23 +51,23 @@ public:
 		Ed();
 	}ed;
 
-	int iCur;  // list cursor id,
-	int line;  // page ofset lines
-	int iPick;  // mouse over cursor
+	int iCur =0;  // list cursor id,
+	int line =0;  // page ofset lines
+	int iPick =-1;  // mouse over cursor
 	List li;
 
 
 	//  sfml drawing
 	//--------------------------
-	sf::RenderWindow* pWindow;
-	sf::Sprite* pBackgr;
+	sf::RenderWindow* pWindow = nullptr;
+	sf::Sprite* pBackgr = nullptr;
 
-	sf::Font* pFont;
+	sf::Font* pFont = nullptr;
 	sf::Text text;
 
-	sf::String s;
+	sf::String str;
 	sf::Color clr;
-	bool bold;
+	bool bold = false;
 
 
 	//  set text color

@@ -39,8 +39,8 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F2:  li.SaveDC("dc.xml");  ret
 		case Keyboard::F8:  li.Default();  ret  // clear
 
-		case Keyboard::F4:  li.Save("ccc.xml");  ret
-		case Keyboard::F5:  li.Load("ccc.xml");  ret
+		case Keyboard::F4:  Save();  ret
+		case Keyboard::F5:  Load();  ret
 	}
 #if 0
 	if (alt)
@@ -53,6 +53,9 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 		//  toggle checks
 		case Keyboard::D:  InvDir();  ret
+
+		//  Add
+		case Keyboard::A:  InvDir();  ret
 
 		case Keyboard::Num1:  IncGrp(-1);  ret
 		case Keyboard::Num2:  IncGrp( 1);  ret
@@ -78,7 +81,7 @@ void App::Wheel(float d)
 	}
 	d *= ctrl ? 12 : shift ? 1 : 4;
 	int lMax = li.pat.size()-1;  // lines
-	line -= d;  wh = d;
+	line -= d;
 	if (line < 0)  line = 0;
 	if (line > lMax)  line = lMax;
 }
