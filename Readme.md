@@ -2,16 +2,17 @@
 
 # Crystal Color Center
 The program's allows managing file and directory patterns (e.g. extension or name matches)  
-for Double Commander (in Options - Colors - File types).
+for Double Commander (in Options - Colors - File types).  
+Since editing many patterns there is way too slow.
 
 Currently you can:
-- Importing from Double Commander's file: doublecmd.xml.
+- Import from Double Commander's file: doublecmd.xml.
 - Save and load the program's own project xml file
-- exporting result to doublecmd.xml
+- Export result to doublecmd.xml
 
-TODO (In future it will allow):
-- importing from Total Commander's file: color.ini.
-- exporting results to colors.ini.
+TODO (In future it will allow to):
+- import from Total Commander's file: color.ini.
+- export results to colors.ini.
 - import with merge into current set
 
 - managing the list of patterns and colors
