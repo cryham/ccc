@@ -1,7 +1,7 @@
 
 ## Crystal Color Center
-The program's allows managing file and directory patterns (e.g. extension or name matches)  
-for Double Commander (in Options - Colors - File types).  
+The program allows managing file and directory patterns (e.g. extension or name matches)  
+for [Double Commander](http://doublecmd.sourceforge.net/) (in Options - Colors - File types).  
 Since editing many patterns there is way too slow.  
 
 Currently you can:
@@ -38,4 +38,4 @@ E.g. for Ubuntu (and Debian-based):
 On Windows SFML needs the environment variable SFML_ROOT to be defined.  
 After this the program should build.  
 
-In sources there already are TinyXML2 files.  
+In sources there already are: TinyXML2, ImGui and ImGui-SFML.  
