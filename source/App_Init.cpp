@@ -24,21 +24,23 @@ bool App::Init()
 	li.SetApp(this);
 
 	li.LoadDC("doublecmd.xml");
-	proj = "ccc.xml";
+	strcpy(proj, "ccc.xml");
 
 	return true;
 }
 
 bool App::Load()
 {
-	bool er = li.Load(proj);
+	bool er = !li.Load(proj);
 	txtStatus = er ? "Load error!" : "Loaded.";
+	hueStatus = er ? 0.2f : 0.42f;
 	iStatus = 0;
 }
 bool App::Save()
 {
-	bool er = li.Save(proj);
+	bool er = !li.Save(proj);
 	txtStatus = er ? "Save error!" : "Saved.";
+	hueStatus = er ? 0.f : 0.55f;
 	iStatus = 0;
 }
 
@@ -61,11 +63,7 @@ int App::Txt(int x, int y, bool draw)
 //  clear rect
 void App::Rect(int x, int y,  int sx, int sy, const SClr& c)
 {
-	//if (!pBackgr)  return;
-	pBackgr->setScale(sx-x, sy-y);
-	pBackgr->setPosition(x, y);
-	pBackgr->setColor(sf::Color(c.r, c.g, c.b));
-	pWindow->draw(*pBackgr);
+	Rect(x, y,  sx, sy, c.b, c.g, c.r);
 }
 void App::Rect(int x, int y,  int sx, int sy,
 		  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
@@ -81,12 +79,8 @@ void App::Rect(int x, int y,  int sx, int sy,
 void App::Frame(int x, int y,  int sx, int sy,  int d,
 		  const SClr& c)
 {
-	Rect(x,   y,    sx-d, y+d,  c);
-	Rect(x,   sy-d, sx-d, sy,   c);
-	Rect(x,   y,    x+d,  sy-d, c);
-	Rect(sx-d,y,    sx,   sy,   c);
+	Frame(x, y,  sx, sy,  d,  c.b, c.g, c.r);
 }
-
 void App::Frame(int x, int y,  int sx, int sy,  int d,
 		  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
 {

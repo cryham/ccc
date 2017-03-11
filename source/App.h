@@ -12,12 +12,6 @@ public:
 	bool Init();
 	void Graph(), Gui();
 
-	std::string proj="ccc.xml",  // project file
-		txtStatus = "F1 Help";
-	int iStatus = 0;  const int maxStatus = 2*60;  // 2 sec
-	bool Load();
-	bool Save();
-
 	//  input events
 	//--------------------------
 	bool KeyDown(const sf::Event::KeyEvent& key);
@@ -30,6 +24,16 @@ public:
 
 	void Resize(int x, int y);
 	void IncFont(int d);  // change font size
+
+	//  project, status
+	std::string txtStatus = "F1 Help";  // status info
+	float hueStatus = 0.55f;
+	int iStatus = 0;
+	const int maxStatus = 60;  // 60=1sec
+
+	char proj[340]={0};  // project file
+	bool Load();
+	bool Save();
 
 
 	//  dimensions

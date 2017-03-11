@@ -23,16 +23,17 @@ void App::Gui()
 	PushStyleColor(ImGuiCol_ButtonHovered,	ImColor(60,100,140));
 	PushStyleColor(ImGuiCol_ButtonActive,	ImColor(80,120,160));
 
-	e = Button("Save");    if (e)  Save();  SameLine();
-	e = Button("Reload");  if (e)  Load();
+	e = Button("Save F4");    if (e)  Save();  SameLine();
+	e = Button("Reload F5");  if (e)  Load();
 
 	//  status  -----
-	if (!txtStatus.empty() && iStatus)
+	if (!txtStatus.empty() && iStatus < maxStatus)
 	{	SameLine();
 		PushStyleColor(ImGuiCol_Text,
-			ImColor::HSV(0.55f, 0.5f, 1.f-float(iStatus)/maxStatus));
+			ImColor::HSV(hueStatus, 0.5f, 1.f-float(iStatus)/maxStatus));
 		Text(txtStatus.c_str());
 		PopStyleColor(1);
+		++iStatus;
 	}
 	PopStyleColor(4);
 	Dummy(sep);
@@ -89,6 +90,7 @@ void App::Gui()
 	{
 		e = SliderInt("FontH", &iFontH, 1, 32, "");  SameLine();  Text(i2s(iFontH).c_str());  if (e)  IncFont(0);
 		e = SliderInt("LineH", &iLineH, -2, 12, "");  SameLine();  Text(i2s(iLineH).c_str());
+		e = InputText("Project file", proj, sizeof(proj)-1);
 		TreePop();
 	}
 

@@ -185,7 +185,7 @@ bool List::SaveDC(string file)
 	if (0)
 	{
 		xml.InsertEndChild(filt);
-		return xml.SaveFile(file.c_str());
+		return xml.SaveFile(file.c_str()) == XML_SUCCESS;
 	}
 	else
 	{	char l[1024];
@@ -269,5 +269,5 @@ bool List::Save(string file)
 	}
 
 	xml.InsertEndChild(root);
-	return xml.SaveFile(file.c_str());
+	return xml.SaveFile(file.c_str()) == XML_SUCCESS;
 }
