@@ -1,6 +1,7 @@
 #include <regex>
+#include <fstream>
 #include "List.h"
-#include "tinyxml2.h"
+#include "../libs/tinyxml2.h"
 #include "Util.h"
 using namespace std;
 using namespace tinyxml2;
@@ -100,6 +101,7 @@ bool List::LoadDC(string file)
 */
 
 //  save, export to  DC doublecmd.xml
+//  will replace the section in existing xml
 //------------------------------------------------
 bool List::SaveDC(string file)
 {
@@ -149,8 +151,26 @@ bool List::SaveDC(string file)
 		filt->InsertEndChild(fi);
 	}
 
-	xml.InsertEndChild(filt);
-	return xml.SaveFile(file.c_str());
+	if (0)
+	{
+		xml.InsertEndChild(filt);
+		return xml.SaveFile(file.c_str());
+	}
+	else
+	{	char l[1024];
+//		ofstream fi;
+		ifstream fi;
+//		fi.open(file.c_str());
+		fi.open("dc.xml");
+		if (fi.good())
+		{
+			fi.getline(l, sizeof(l)-1);
+		}
+
+		XMLPrinter printer;
+		filt->Accept(&printer);
+		const char* fo = printer.CStr();
+	}
 }
 
 //  load, import from  TC color.ini
