@@ -18,31 +18,20 @@ void App::Gui()
 	Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
 	float i = 4.f;
-	PushStyleColor(ImGuiCol_Button,			ImColor(40,50,80));
-	PushStyleColor(ImGuiCol_Text,			ImColor(160,200,240));
-	PushStyleColor(ImGuiCol_ButtonHovered,	ImColor(60,100,140));
-	PushStyleColor(ImGuiCol_ButtonActive,	ImColor(80,120,160));
-
 	e = Button("Save F4");    if (e)  Save();  SameLine();
 	e = Button("Reload F5");  if (e)  Load();
 
 	//  status  -----
 	if (!txtStatus.empty() && iStatus < maxStatus)
-	{	SameLine();
-		PushStyleColor(ImGuiCol_Text,
-			ImColor::HSV(hueStatus, 0.5f, 1.f-float(iStatus)/maxStatus));
-		Text(txtStatus.c_str());
-		PopStyleColor(1);
+	{	SameLine(0, 20);
+		TextColored(ImColor::HSV(hueStatus, 0.5f, 1.f-float(iStatus)/maxStatus),
+					txtStatus.c_str());
 		++iStatus;
 	}
-	PopStyleColor(4);
 	Dummy(sep);
 
-	//static bool selected = false;
 	//Selectable("main.c", &selected);
-	//static float sf = 36.0f;
 	//DragFloat("Size", &sf, 0.2f, 2.0f, 72.0f, "%.0f");
-	//ImGui::TextColored(ImVec4(1.f,0.f,0.f,1.f), "R");
 
 
 	//  Properties  -----

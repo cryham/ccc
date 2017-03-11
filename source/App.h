@@ -11,6 +11,7 @@ public:
 	//--------------------------
 	bool Init();
 	void Graph(), Gui();
+	void SetupGuiClr();
 
 	//  input events
 	//--------------------------
