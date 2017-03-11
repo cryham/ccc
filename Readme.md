@@ -1,9 +1,8 @@
-[![Build Status](https://travis-ci.org/cryham/ccc.svg?branch=master)](https://travis-ci.org/cryham/ccc)
 
-# Crystal Color Center
+## Crystal Color Center
 The program's allows managing file and directory patterns (e.g. extension or name matches)  
 for Double Commander (in Options - Colors - File types).  
-Since editing many patterns there is way too slow.
+Since editing many patterns there is way too slow.  
 
 Currently you can:
 - Import from Double Commander's file: doublecmd.xml.
@@ -25,12 +24,16 @@ TODO (In future it will allow to):
   * rating groups
 
 ## General
-This small utility program is written in C++ and using SFML for graphics.
+This utility program is written in C++, using [SFML](https://github.com/SFML/SFML) for graphics,
+GUI with [ImGui](https://github.com/ocornut/imgui) and [ImGui-SFML](https://github.com/eliasdaler/imgui-sfml).
 
 ## Compiling
-Using CMake, it should be possible to build easily. I'm using Qt Creator.  
+Using [CMake](https://cmake.org/), it should be possible to build easily.  
+I'm using Qt Creator IDE, which supports it.  
 
-On Linux you'll need to get SFML installed (e.g. libsfml-dev on Debian like).
+On GNU/Linux you'll need to get SFML installed. At least version 2.2.  
+E.g. for Ubuntu (and Debian-based):  
+`sudo apt-get install libsfml-dev`  
 
 On Windows SFML needs the environment variable SFML_ROOT to be defined.  
 After this the program should build.  
