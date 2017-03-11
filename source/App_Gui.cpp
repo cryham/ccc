@@ -65,20 +65,18 @@ void App::Gui()
 
 
 	Dummy(sep2);  /// below -----
-	//if (TreeNode("Status"))
-	//  status  -----
-	string s =
+	string s =  // -----
 		"Patterns: " + i2s(li.pat.size()) +
-		"  Colors: " + i2s(li.clr.size()) +
+		"  Colors: " + i2s(li.clr.size()) /*+
 		"  Cur: " + i2s(iCur) +
-		"  Line: " + i2s(line);
+		"  Line: " + i2s(line)/**/;
 	Text(s.c_str());
 
 	Dummy(sep);  // -----
 	if (TreeNode("Settings"))
 	{
 		e = SliderInt("FontH", &iFontH, 1, 32, "");  SameLine();  Text(i2s(iFontH).c_str());  if (e)  IncFont(0);
-		e = SliderInt("LineH", &iLineH, -2, 12, "");  SameLine();  Text(i2s(iLineH).c_str());
+		e = SliderInt("LineH", &iLineH,-2, 12, "");  SameLine();  Text(i2s(iLineH).c_str());
 		e = InputText("Project file", proj, sizeof(proj)-1);
 		TreePop();
 	}

@@ -231,17 +231,19 @@ bool List::Load(string file)
 	Default();
 
 	///  load Filters
-	XMLElement* pt = root->FirstChildElement("Pat");
+	XMLElement* pt = root->FirstChildElement("p");
 	if (!pt)  return false;
+	const char* a;
 
 	while (pt)
 	{
-		XMLElement* fm,*cl,*at;
-		Pat p;  sf::Uint32 c;
-		fm = pt->FirstChildElement("s");	p.s = fm->GetText();
-		cl = pt->FirstChildElement("c");	c = atoi(cl->GetText());  p.c.Set(c);
-		at = pt->FirstChildElement("a");	p.attr = at->GetText();
-		clr.insert(c);
+		Pat p;
+		a = pt->Attribute("r");  p.c.r = atoi(a);
+		a = pt->Attribute("g");  p.c.g = atoi(a);
+		a = pt->Attribute("b");  p.c.b = atoi(a);
+		a = pt->Attribute("s");  p.s = a;
+		a = pt->Attribute("a");  p.attr = a;
+		clr.insert(p.c.Get());
 		pat.push_back(p);
 		pt = pt->NextSiblingElement();
 	}
@@ -254,18 +256,17 @@ bool List::Save(string file)
 {
 	XMLDocument xml;
 	XMLElement* root = xml.NewElement("ccc");
-	root->SetAttribute("ver", 10);
+	root->SetAttribute("ver", 20);
 
 	for (auto& p : pat)
 	{
-		XMLElement* fi = xml.NewElement("Pat");
-		XMLElement* fm = xml.NewElement("s");	fm->SetText(p.s.c_str());
-		XMLElement* cl = xml.NewElement("c");	cl->SetText(p.c.Get());
-		XMLElement* at = xml.NewElement("a");	at->SetText(p.attr.c_str());
-		fi->InsertEndChild(fm);
-		fi->InsertEndChild(cl);
-		fi->InsertEndChild(at);
-		root->InsertEndChild(fi);
+		XMLElement* pt = xml.NewElement("p");
+		pt->SetAttribute("r", i2s(p.c.r,3).c_str());
+		pt->SetAttribute("g", i2s(p.c.g,3).c_str());
+		pt->SetAttribute("b", i2s(p.c.b,3).c_str());
+		pt->SetAttribute("s", p.s.c_str());
+		pt->SetAttribute("a", p.attr.c_str());
+		root->InsertEndChild(pt);
 	}
 
 	xml.InsertEndChild(root);

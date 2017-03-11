@@ -46,8 +46,8 @@ void App::SetupGuiClr()
 	style.Colors[ImGuiCol_SliderGrab]            = ImVec4(0.36f, 0.40f, 0.54f, 0.69f);
 	style.Colors[ImGuiCol_SliderGrabActive]      = ImVec4(0.79f, 0.82f, 1.00f, 0.67f);
 	style.Colors[ImGuiCol_Button]                = ImVec4(0.47f, 0.43f, 0.85f, 0.30f);
-	style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(0.22f, 0.27f, 0.47f, 1.00f);
-	style.Colors[ImGuiCol_ButtonActive]          = ImVec4(0.29f, 0.37f, 0.52f, 1.00f);
+	style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(0.24f, 0.22f, 0.47f, 1.00f);
+	style.Colors[ImGuiCol_ButtonActive]          = ImVec4(0.27f, 0.27f, 0.50f, 1.00f);
 	style.Colors[ImGuiCol_Header]                = ImVec4(0.58f, 0.58f, 0.90f, 0.07f);
 	style.Colors[ImGuiCol_HeaderHovered]         = ImVec4(0.45f, 0.45f, 0.90f, 0.17f);
 	style.Colors[ImGuiCol_HeaderActive]          = ImVec4(0.53f, 0.53f, 0.87f, 0.24f);
