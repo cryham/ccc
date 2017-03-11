@@ -5,6 +5,8 @@ project(${PROJECT})
 
 # all source files
 file(GLOB SOURCES
+	libs/*.h
+	libs/*.cpp
 	source/*.h
 	source/*.cpp)
 
