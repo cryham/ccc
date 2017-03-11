@@ -11,7 +11,8 @@ struct SClr
 {
 	sf::Uint8 r,g,b;  // color
 
-	SClr() : r(255),g(255),b(255)
+	SClr()
+		:r(255),g(255),b(255)
 	{	}
 
 	void Set(sf::Uint32 u);
@@ -31,13 +32,16 @@ struct Pat
 	std::string s;  // eg. *.cpp
 	SClr c;
 
-	bool dir, link;   // attributes
+	bool dir, lnk, exe;   // attributes
 	std::string attr;
+	int grp;  // group for sorting..
 
+	//  visual only,  not saved, computed by Update()
 	int x,y, xw, l;  // pos on screen, width, line
 
 	Pat()
-		:dir(false), link(false)
+		:dir(false), lnk(false), exe(false)
+		,grp(0)
 		,x(0),y(0), xw(0), l(0)
 	{   }
 };
@@ -50,14 +54,15 @@ class List
 {
 public:
 	std::vector<Pat> pat;  // patterns
-	std::set<sf::Uint32> clr;  // colors
-//	std::map<Pat, Clr> pt2clr;
+	std::vector<int> lines;  // line offsets for patterns
+
+	std::set<sf::Uint32> clr;  // colors, for count
 
 	List();
 	void Default();
 
 	//  run after any changes in pat
-	void Update(int xMax, int xa, int ya);  // x,y, xw, l
+	void Update(int xMax, int xa, int ya);  // x,y, xw, l, ofs
 	App* app;  // for text get width
 	void SetApp(App* p) {  app = p;  }
 

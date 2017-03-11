@@ -10,83 +10,82 @@ using namespace ImGui;
 void App::Gui()
 {
 	SetNextWindowPos( ImVec2(xs, 10),  ImGuiSetCond_Always);
-	SetNextWindowSize(ImVec2(300/*xe-xs*/, 400), ImGuiSetCond_Always);
-	const ImVec2 sep(100, 20);
+	SetNextWindowSize(ImVec2(400/*xe-xs*/, ye-100), ImGuiSetCond_Always);
+	const ImVec2 sep(100, 20), sep2(100, 40);
 
 	bool open = true;
 	Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
 	float i = 4.f;
-	PushStyleColor(ImGuiCol_Button, ImColor::HSV(i/7.0f, 0.6f, 0.3f));
-	PushStyleColor(ImGuiCol_ButtonHovered, ImColor::HSV(i/7.0f, 0.7f, 0.7f));
-	PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(i/7.0f, 0.8f, 0.8f));
+	PushStyleColor(ImGuiCol_Button,			ImColor(40,50,80));
+	PushStyleColor(ImGuiCol_Text,			ImColor(160,200,240));
+	PushStyleColor(ImGuiCol_ButtonHovered,	ImColor(60,100,140));
+	PushStyleColor(ImGuiCol_ButtonActive,	ImColor(80,120,160));
 
 	Button("Save");  SameLine();  Button("Cancel");
-	PopStyleColor(3);
+	PopStyleColor(4);
 	Dummy(sep);
 
-	Pat* p = nullptr;
-	if (lCur >= 0 && lCur < li.pat.size())
-		p = &li.pat[lCur];
+	//static bool selected = false;
+	//Selectable("main.c", &selected);
+	//static float sf = 36.0f;
+	//DragFloat("Size", &sf, 0.2f, 2.0f, 72.0f, "%.0f");
+	//ImGui::TextColored(ImVec4(1.f,0.f,0.f,1.f), "R");
 
-	/*static bool no_menu = false;
-	if (TreeNode("Checkbox"))
-	{
-		static bool selected[3] = { false, false, false };
-		Selectable("main.c", &selected[0]);  SameLine();  Text(" 2,345 bytes");
-		Checkbox("No menu", &no_menu);
-		Text("Hello!");
-		TreePop();
-	}/**/
 
-	//static char buf[256]="";
-	bool e = InputText("Pattern", pat, sizeof(pat)-1);
-	if (e && p)
-		p->s = pat;
+	//  Properties  -----
+	Pat* p = nullptr;  // current, for edit, set
+	if (iCur >= 0 && iCur < li.pat.size())
+		p = &li.pat[iCur];
+
+	//  pattern edit  __
+	bool e = InputText("Pattern", ed.pat, sizeof(ed.pat)-1);
+	if (e && p)  p->s = ed.pat;  // set
 	Dummy(sep);
-//	Separator();
-//	static ImVec4 col = ImVec4(0.5f,0.75f,1.f,1.0f);
-//	static float sf = 36.0f;
-//	DragFloat("Size", &sf, 0.2f, 2.0f, 72.0f, "%.0f");
 
-//	const ImVec4 cl(r/255.f, g/255.f, b/255.f, 1.f);
-//	ColorButton(cl, 70, false);
-	ImDrawList* draw_list = GetWindowDrawList();
-	float x,y, s=40, sz=s+10;
-	const ImVec2 q = GetCursorScreenPos();  x = q.x;  y = q.y;
-	ImColor c(r,g,b);
-	draw_list->AddRectFilledMultiColor(ImVec2(x, y), ImVec2(x+s, y+s), c,c,c,c);
+	//  color rect  []
+	ImDrawList* dl = GetWindowDrawList();
+	const ImVec2 q = GetCursorScreenPos();
+	float x = q.x, y = q.y, z=40, sz=z+10;
+	ImColor c(ed.r, ed.g, ed.b);
+	dl->AddRectFilledMultiColor(ImVec2(x, y), ImVec2(x+z, y+z), c,c,c,c);
 	Dummy(ImVec2(sz, sz));
 
-	//Separator();
-//	ColorEdit3("Color", &col.x);
-//	static int r = 120;
-	e = SliderInt("R", &r, 0, 255, "");  SameLine();  Text(i2s(r).c_str());  if (e && p)  p->c.r = r;
-	e = SliderInt("G", &g, 0, 255, "");  SameLine();  Text(i2s(g).c_str());  if (e && p)  p->c.g = g;
-	e = SliderInt("B", &b, 0, 255, "");  SameLine();  Text(i2s(b).c_str());  if (e && p)  p->c.b = b;
-
-#if 0
+	//  r,g,b sliders  ==
+	e = SliderInt("R", &ed.r, 0, 255, "");  SameLine();  Text(i2s(ed.r).c_str());  if (e && p)  p->c.r = ed.r;  // set
+	e = SliderInt("G", &ed.g, 0, 255, "");  SameLine();  Text(i2s(ed.g).c_str());  if (e && p)  p->c.g = ed.g;
+	e = SliderInt("B", &ed.b, 0, 255, "");  SameLine();  Text(i2s(ed.b).c_str());  if (e && p)  p->c.b = ed.b;
 	Dummy(sep);
 
-	//  current info  -----
-	y += yw + 20;
-	Clr(180,120,120);  s = "R: " + i2s(cCur.r);  Txt(x, y);  y += yw;
-	Clr(120,180,120);  s = "G: " + i2s(cCur.g);  Txt(x, y);  y += yw;
-	Clr( 60,150,210);  s = "B: " + i2s(cCur.b);  Txt(x, y);  y += yw;
+	//  checks  ...
+	e = Checkbox("Dir",  &ed.dir);  if (e && p)  p->dir = ed.dir;  SameLine();  // set
+	e = Checkbox("Link", &ed.lnk);  if (e && p)  p->lnk = ed.lnk;  SameLine();
+	e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;
 
+
+	Dummy(sep2);  /// below -----
+	//if (TreeNode("Status"))
 	//  status  -----
-	Clr(185,225,255);
-	s = "Patterns: " + i2s(li.pat.size()) +
+	std::string s =
+		"Patterns: " + i2s(li.pat.size()) +
 		"  Colors: " + i2s(li.clr.size());
-	Text(0, ye - iFontH);
+	Text(s.c_str());
 
-	//  debug  -----
-	//return;
-	Clr(100,150,200);
-	s = "xs: " + i2s(xs) + " xe: " + i2s(xe) + " ye: " + i2s(ye);
-	Text(xe - 300, ye - 2*iFontH);
-	s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb);
-	Text(xe - 300, ye - iFontH);
-#endif
+	Dummy(sep);  // -----
+	if (TreeNode("Settings"))
+	{
+		e = SliderInt("FontH", &iFontH, 1, 32, "");  SameLine();  Text(i2s(iFontH).c_str());  if (e)  IncFont(0);
+		TreePop();
+	}
+
+	Dummy(sep);  // -----
+	if (TreeNode("Debug"))
+	{
+		s = "xs: " + i2s(xs) + " xe: " + i2s(xe) + " ye: " + i2s(ye);
+		Text(s.c_str());
+		s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb) + " wh: " + i2s(wh);
+		Text(s.c_str());
+		TreePop();
+	}
 	End();
 }

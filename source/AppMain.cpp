@@ -85,16 +85,12 @@ bool AppMain::Run()
 			switch (e.type)
 			{
 			case sf::Event::MouseMoved:				app->Mouse(e.mouseMove.x, e.mouseMove.y);  break;
+			case sf::Event::MouseWheelScrolled:		app->Wheel(e.mouseWheelScroll.delta);  break;
 			case sf::Event::MouseButtonPressed:		app->mb = e.mouseButton.button + 1;  break;
 			case sf::Event::MouseButtonReleased:	app->mb = 0;  break;
 
-			case sf::Event::KeyPressed:
-				if (e.key.code == sf::Keyboard::Escape)  // Esc - Close
-					window->close();
-				else
-				if (!app->KeyDown(e.key))
-					window->close();
-				break;
+			case sf::Event::KeyPressed:		app->KeyDown(e.key);  break;
+			case sf::Event::KeyReleased:	app->KeyUp(e.key);  break;
 
 			case sf::Event::Resized:	app->Resize(e.size.width, e.size.height);  break;
 			case sf::Event::Closed:		window->close();  break;

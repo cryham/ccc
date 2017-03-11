@@ -8,12 +8,17 @@ App::App()
 	,xe(100),ye(100), xs(xe/2)
 	,iFontH(16), bold(false)
 	,xm(0),ym(0), mb(0), wh(0)
-	,r(0),g(0),b(0)
+	,alt(false),ctrl(false),shift(false)
+{
+	iCur = 0;  line = 0;  iPick = -1;
+}
+
+//  edit ctor
+App::Ed::Ed()
+	:r(0), g(0), b(0)
+	,dir(false), lnk(false), exe(false)
 {
 	memset(pat,0,sizeof(pat));
-
-	lOfs = lCur = 0;
-	lPick = -1;
 }
 
 //  set size

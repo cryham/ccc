@@ -41,6 +41,7 @@ void List::Update(int xMax, int xa, int ya)
 	SClr cOld;
 	int i, ii = pat.size(), l = 0;
 	int x = 0, xw = 0, y = 0;
+	lines.clear();
 
 	for (i=0; i < ii; ++i)
 	{
@@ -53,7 +54,8 @@ void List::Update(int xMax, int xa, int ya)
 		if (x+xw >= xMax ||
 			i > 0 && p.c != cOld)  // new color
 		{
-			x = 0;  y += ya;  ++l;  // next line
+			x = 0;  y += ya;
+			lines.push_back(i);  ++l;  // next line
 		}
 		p.x = x;  p.y = y;  p.l = l;
 		x += xw;
