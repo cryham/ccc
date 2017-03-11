@@ -40,7 +40,7 @@ void App::Gui()
 		p = &li.pat[iCur];
 
 	//  pattern edit  __
-	e = InputText("Pattern", ed.pat, sizeof(ed.pat)-1);
+	e = InputText("Pattern", ed.pat, sizeof(ed.pat));
 	if (e && p)  p->s = ed.pat;  // set
 	Dummy(sep);
 
@@ -61,7 +61,18 @@ void App::Gui()
 	//  checks  ...
 	e = Checkbox("Dir",  &ed.dir);  if (e && p)  p->dir = ed.dir;  SameLine();  // set
 	e = Checkbox("Link", &ed.lnk);  if (e && p)  p->lnk = ed.lnk;  SameLine();
-	e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;
+	e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;  //SameLine();
+	e = InputText("Attr", ed.attr, sizeof(ed.attr));
+	if (e && p)  p->attr = ed.attr;  // set
+
+	//  font tex
+	/*ImFontAtlas* atlas = ImGui::GetIO().Fonts;
+	if (ImGui::TreeNode("Font texture", "%dx%d pixels", atlas->TexWidth, atlas->TexHeight))
+	{
+		ImGui::Image(atlas->TexID, ImVec2((float)atlas->TexWidth, (float)atlas->TexHeight),
+					 ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,255));
+		ImGui::TreePop();
+	}/**/
 
 
 	Dummy(sep2);  /// below -----
@@ -77,7 +88,7 @@ void App::Gui()
 	{
 		e = SliderInt("FontH", &iFontH, 1, 32, "");  SameLine();  Text(i2s(iFontH).c_str());  if (e)  IncFont(0);
 		e = SliderInt("LineH", &iLineH,-2, 12, "");  SameLine();  Text(i2s(iLineH).c_str());
-		e = InputText("Project file", proj, sizeof(proj)-1);
+		e = InputText("Project file", proj, sizeof(proj));
 		TreePop();
 	}
 

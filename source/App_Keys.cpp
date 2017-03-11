@@ -9,6 +9,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 	int lMax = li.pat.size()-1;  // lines
 	int d = alt ? 20 : ctrl ? 12 : shift ? 1 : 4;  // diff
+	int r = alt ? 10 : ctrl ? 4 : 1;
 
 	using namespace sf;
 	switch (key.code)
@@ -17,11 +18,11 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::Escape:  pWindow->close();  ret
 
 		//  arrows, cursor move
-		case Keyboard::Left:  ret
-		case Keyboard::Right: ret
+		case Keyboard::Left:  SetCur(iCur-r);  ret
+		case Keyboard::Right: SetCur(iCur+r);  ret
 
-		case Keyboard::Up:	  iCur-=d;  if (iCur < 0)  iCur = 0;  ret
-		case Keyboard::Down:  iCur+=d;  if (iCur > lMax)  iCur = lMax-1;  ret
+		case Keyboard::Up:	  IncLine(-r);  ret
+		case Keyboard::Down:  IncLine( r);  ret
 
 
 		//  page, line offset
@@ -42,7 +43,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F4:  Save();  ret
 		case Keyboard::F5:  Load();  ret
 	}
-#if 0
+
 	if (alt)
 	switch (key.code)
 	{
@@ -54,13 +55,15 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		//  toggle checks
 		case Keyboard::D:  InvDir();  ret
 
-		//  Add
-		case Keyboard::A:  InvDir();  ret
+		//  add, del
+		case Keyboard::A:  AddPat(shift, ctrl);  ret
+		case Keyboard::Delete:  DelPat();  ret
 
+		#if 0
 		case Keyboard::Num1:  IncGrp(-1);  ret
 		case Keyboard::Num2:  IncGrp( 1);  ret
+		#endif
 	}
-#endif
 	ret
 }
 

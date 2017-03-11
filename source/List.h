@@ -4,17 +4,18 @@
 #include <set>
 #include <SFML/Config.hpp>
 
+typedef sf::Uint8 byte;
 
 //  Color, for patterns
 //------------------------------------------------
 struct SClr
 {
-	sf::Uint8 r,g,b;  // color
+	byte r,g,b;  // color
 
 	SClr()
 		:r(255),g(255),b(255)
 	{	}
-	SClr(sf::Uint8 rr, sf::Uint8 gg, sf::Uint8 bb)
+	SClr(byte rr, byte gg, byte bb)
 		:r(rr),g(gg),b(bb)
 	{	}
 

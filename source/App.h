@@ -36,6 +36,17 @@ public:
 	bool Load();
 	bool Save();
 
+	//  operations
+	//--------------------------
+	SClr cpy;
+	void CopyClr(), SetClr();
+
+	//  toggle
+	void InvDir();
+	//  add, del
+	void AddPat(bool start=false, bool end=false);
+	void DelPat();
+
 
 	//  dimensions
 	//--------------------------
@@ -51,14 +62,16 @@ public:
 	struct Ed
 	{
 		int r,g,b;  // clr
-		char pat[64];
+		char pat[64], attr[12];
 		bool dir, lnk, exe;
 		Ed();
 	}ed;
 
 	int iCur =0;  // list cursor id,
+	void SetCur(int d), IncLine(int d);
+
 	int line =0;  // page ofset lines
-	int iPick =-1;  // mouse over cursor
+	//int iPick =-1;  // mouse over cursor
 	List li;
 
 

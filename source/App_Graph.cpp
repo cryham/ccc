@@ -1,6 +1,5 @@
 #include "App.h"
 #include "Util.h"
-#include <cstring>
 
 
 //  Graphics draw  list
@@ -53,14 +52,9 @@ void App::Graph()
 		if (xm >= x && xm < xw && ym >= y && ym < y+ya)
 		{
 			Frame(x, yc, xw, yc+ya, 2, p.c);
-			iPick = i;
+			//iPick = i;
 			if (mb)
-			{	iCur = i;  // button pick, set gui
-				strcpy(ed.pat, p.s.c_str());
-				ed.r = p.c.r;
-				ed.g = p.c.g;
-				ed.b = p.c.b;
-			}
+				SetCur(i);  // button pick
 		}
 		Txt(x, y);  // write
 		++i;

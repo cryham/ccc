@@ -8,6 +8,7 @@ App::Ed::Ed()
 	,dir(false), lnk(false), exe(false)
 {
 	memset(pat,0,sizeof(pat));
+	memset(attr,0,sizeof(attr));
 }
 
 //  set size
