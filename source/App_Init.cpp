@@ -1,15 +1,19 @@
 #include "App.h"
+#include <cstring>
 
 
 //  ctor
 App::App()
 	:pWindow(nullptr), pBackgr(nullptr), pFont(nullptr)
-	,xe(100),ye(100), xs(xe/2), bold(false)
+	,xe(100),ye(100), xs(xe/2)
+	,iFontH(16), bold(false)
 	,xm(0),ym(0), mb(0), wh(0)
+	,r(0),g(0),b(0)
 {
-	iFontH = 16;  // font h
+	memset(pat,0,sizeof(pat));
 
 	lOfs = lCur = 0;
+	lPick = -1;
 }
 
 //  set size
@@ -34,7 +38,7 @@ bool App::Init()
 //------------------------------------------------------------------
 
 //  write out text
-int App::Text(int x, int y, bool draw)
+int App::Txt(int x, int y, bool draw)
 {
 	//if (!window)  return;
 	text.setString(s);

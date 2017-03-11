@@ -47,7 +47,7 @@ void List::Update(int xMax, int xa, int ya)
 		Pat& p = pat[i];
 
 		app->s = p.s;  // get text width
-		xw = app->Text(x, y, false) + xa;
+		xw = app->Txt(x, y, false) + xa;
 		p.xw = xw;
 
 		if (x+xw >= xMax ||

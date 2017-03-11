@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Util.h"
+#include <cstring>
 
 
 //  Graphics draw
@@ -27,6 +28,8 @@ void App::Graph()
 
 	li.Update(xMax, xa, ya);  // update
 
+	//for (int j=i; j>=0; --j)
+
 	while (i < ii)
 	{
 		const Pat& p = li.pat[i];
@@ -48,32 +51,39 @@ void App::Graph()
 		{
 			Frame(x, y, x+xw, y+ya, 2, p.c);
 			lPick = i;
-			if (mb)  lCur = i;  // button pick
+			if (mb)
+			{	lCur = i;  // button pick, set gui
+				strcpy(pat, p.s.c_str());
+				r = p.c.r;
+				g = p.c.g;
+				b = p.c.b;
+			}
 		}
 
-		Text(x, y);  // write
+		Txt(x, y);  // write
 		++i;
 	}
+	return;
 
 	//  current info  -----
 	x = xMax+100;  y = 500;  xw = 32;  int yw = iFontH + 10;
 	Rect(x, y, x+xw, y+xw, cCur.b, cCur.g, cCur.r);
 	y += yw + 20;
-	Clr(180,120,120);  s = "R: " + i2s(cCur.r);  Text(x, y);  y += yw;
-	Clr(120,180,120);  s = "G: " + i2s(cCur.g);  Text(x, y);  y += yw;
-	Clr( 60,150,210);  s = "B: " + i2s(cCur.b);  Text(x, y);  y += yw;
+	Clr(180,120,120);  s = "R: " + i2s(cCur.r);  Txt(x, y);  y += yw;
+	Clr(120,180,120);  s = "G: " + i2s(cCur.g);  Txt(x, y);  y += yw;
+	Clr( 60,150,210);  s = "B: " + i2s(cCur.b);  Txt(x, y);  y += yw;
 
 	//  status  -----
 	Clr(185,225,255);
 	s = "Patterns: " + i2s(li.pat.size()) +
 		"  Colors: " + i2s(li.clr.size());
-	Text(0, ye - iFontH);
+	Txt(0, ye - iFontH);
 
 	//  debug  -----
 	//return;
 	Clr(100,150,200);
 	s = "xs: " + i2s(xs) + " xe: " + i2s(xe) + " ye: " + i2s(ye);
-	Text(xe - 300, ye - 2*iFontH);
+	Txt(xe - 300, ye - 2*iFontH);
 	s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb);
-	Text(xe - 300, ye - iFontH);
+	Txt(xe - 300, ye - iFontH);
 }

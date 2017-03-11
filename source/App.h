@@ -13,7 +13,6 @@ public:
 
 	bool Init();
 	void Graph(), Gui();
-	void Quit();
 
 	bool KeyDown(const sf::Event::KeyEvent& key);
 	void Mouse(int x, int y);
@@ -22,13 +21,19 @@ public:
 	void IncFont(int d);  // change font size
 
 
-	//  list dimensions
+	//  dimensions
 	//--------------------------
 	int xm,ym;   // mouse
 	int mb,wh;
 
 	int xe,ye, xs;   // screen size, splitter
 	int iFontH;  // font height
+
+
+	//  list, edit params
+	//--------------------------
+	int r,g,b;
+	char pat[64];
 
 	int lCur, lOfs;  // list cursor, page ofset
 	int lPick;  // mouse over cursor
@@ -61,7 +66,7 @@ public:
 
 	//  write out text, from s
 	//  returns width, x advance
-	int Text(int x, int y, bool draw=true);
+	int Txt(int x, int y, bool draw=true);
 
 	//  clear rect
 	void Rect(int x, int y,  int sx, int sy,  const SClr& c);
