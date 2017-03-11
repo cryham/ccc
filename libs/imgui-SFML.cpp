@@ -1,6 +1,6 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
-#include "gl/gl.h"
+#include "GL/gl.h"
 
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics/Color.hpp>
