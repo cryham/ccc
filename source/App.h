@@ -12,12 +12,13 @@ public:
 	App();
 
 	bool Init();
-	void Graph();
+	void Graph(), Gui();
 	void Quit();
 
 	bool KeyDown(const sf::Event::KeyEvent& key);
 	void Mouse(int x, int y);
 
+	void Resize(int x, int y);
 	void IncFont(int d);  // change font size
 
 

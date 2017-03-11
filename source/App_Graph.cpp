@@ -7,7 +7,7 @@
 void App::Graph()
 {
 	//  clear screen
-	Rect(0,0, xe,ye, 0,0,0);
+	//Rect(0,0, xe,ye, 0,0,0);
 
 	//  patterns  -----
 	int x = 0, xw = 0, y = 0;

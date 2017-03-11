@@ -12,6 +12,12 @@ App::App()
 	lOfs = lCur = 0;
 }
 
+//  set size
+void App::Resize(int x, int y)
+{
+	xe = x;  ye = y;
+}
+
 //  Init
 //------------------------------------------------------------------
 bool App::Init()
