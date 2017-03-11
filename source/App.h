@@ -27,7 +27,7 @@ public:
 	int xm,ym;   // mouse
 	int mb,wh;
 
-	int xe,ye;   // screen size
+	int xe,ye, xs;   // screen size, splitter
 	int iFontH;  // font height
 
 	int lCur, lOfs;  // list cursor, page ofset
@@ -54,15 +54,19 @@ public:
 	{
 		clr = sf::Color(r,g,b);
 	}
+	void Clr(const SClr& c)
+	{
+		clr = sf::Color(c.r, c.g, c.b);
+	}
 
 	//  write out text, from s
 	//  returns width, x advance
 	int Text(int x, int y, bool draw=true);
 
 	//  clear rect
-	void Rect(int x, int y,  int sx, int sy,
-			  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
+	void Rect(int x, int y,  int sx, int sy,  const SClr& c);
+	void Rect(int x, int y,  int sx, int sy,  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
 	//  frame rect
-	void Frame(int x, int y,  int sx, int sy,  int d,
-			  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
+	void Frame(int x, int y,  int sx, int sy,  int d,  const SClr& c);
+	void Frame(int x, int y,  int sx, int sy,  int d,  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
 };

@@ -4,7 +4,7 @@
 //  ctor
 App::App()
 	:pWindow(nullptr), pBackgr(nullptr), pFont(nullptr)
-	,xe(100), ye(100), bold(false)
+	,xe(100),ye(100), xs(xe/2), bold(false)
 	,xm(0),ym(0), mb(0), wh(0)
 {
 	iFontH = 16;  // font h
@@ -16,12 +16,14 @@ App::App()
 void App::Resize(int x, int y)
 {
 	xe = x;  ye = y;
+	xs = xe * 5/8;  // splitter
 }
 
 //  Init
 //------------------------------------------------------------------
 bool App::Init()
 {
+	li.SetApp(this);
 	li.LoadDC("doublecmd.xml");
 
 	return true;
@@ -44,6 +46,14 @@ int App::Text(int x, int y, bool draw)
 }
 
 //  clear rect
+void App::Rect(int x, int y,  int sx, int sy, const SClr& c)
+{
+	//if (!pBackgr)  return;
+	pBackgr->setScale(sx-x, sy-y);
+	pBackgr->setPosition(x, y);
+	pBackgr->setColor(sf::Color(c.r, c.g, c.b));
+	pWindow->draw(*pBackgr);
+}
 void App::Rect(int x, int y,  int sx, int sy,
 		  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
 {
@@ -55,6 +65,15 @@ void App::Rect(int x, int y,  int sx, int sy,
 }
 
 //  frame rect, inefficient
+void App::Frame(int x, int y,  int sx, int sy,  int d,
+		  const SClr& c)
+{
+	Rect(x,   y,    sx-d, y+d,  c);
+	Rect(x,   sy-d, sx-d, sy,   c);
+	Rect(x,   y,    x+d,  sy-d, c);
+	Rect(sx-d,y,    sx,   sy,   c);
+}
+
 void App::Frame(int x, int y,  int sx, int sy,  int d,
 		  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
 {

@@ -3,14 +3,14 @@
 #include "List.h"
 #include "../libs/tinyxml2.h"
 #include "Util.h"
+#include "App.h"
 using namespace std;
 using namespace tinyxml2;
 
 
 //  ctor
 List::List()
-{
-}
+{	}
 
 void List::Default()
 {
@@ -20,18 +20,46 @@ void List::Default()
 
 
 //  utils
-void Pat::SetClr(sf::Uint32 c)
+void SClr::Set(sf::Uint32 u)
 {
-	r = c       & 0xFF;
-	g = c >> 8  & 0xFF;
-	b = c >> 16 & 0xFF;
+	r = u       & 0xFF;
+	g = u >> 8  & 0xFF;
+	b = u >> 16 & 0xFF;
 }
 
-sf::Uint32 Pat::GetClr()
+sf::Uint32 SClr::Get()
 {
 	return (b << 16) + (g << 8) + r;
 }
 
+
+//  Update  x,y,l
+//------------------------------------------------
+void List::Update(int xMax, int xa, int ya)
+{
+	//if (!app)  return;
+	SClr cOld;
+	int i, ii = pat.size(), l = 0;
+	int x = 0, xw = 0, y = 0;
+
+	for (i=0; i < ii; ++i)
+	{
+		Pat& p = pat[i];
+
+		app->s = p.s;  // get text width
+		xw = app->Text(x, y, false) + xa;
+		p.xw = xw;
+
+		if (x+xw >= xMax ||
+			i > 0 && p.c != cOld)  // new color
+		{
+			x = 0;  y += ya;  ++l;  // next line
+		}
+		p.x = x;  p.y = y;  p.l = l;
+		x += xw;
+		cOld = p.c;
+	}
+}
 
 
 //  load, import from  DC doublecmd.xml
@@ -70,7 +98,7 @@ bool List::LoadDC(string file)
 		#else  // split each pattern
 			Pat q;  sf::Uint32 c;
 			fm = fi->FirstChildElement("FileMasks");	q.s = fm->GetText();
-			cl = fi->FirstChildElement("Color");	c = atoi(cl->GetText());  q.SetClr(c);
+			cl = fi->FirstChildElement("Color");	c = atoi(cl->GetText());  q.c.Set(c);
 			at = fi->FirstChildElement("Attributes");	q.attr = at->GetText();
 			clr.insert(c);
 
@@ -78,7 +106,7 @@ bool List::LoadDC(string file)
 			for (auto s: vs)
 			{	Pat p;
 				p.s = s;
-				p.r = q.r;  p.g = q.g;  p.b = q.b;
+				p.c = q.c;
 				p.attr = q.attr;
 				pat.push_back(p);
 			}
@@ -118,7 +146,7 @@ bool List::SaveDC(string file)
 		if (i > 0)
 		{
 			const Pat& o = pat[i-1];
-			if (o.r != p.r || o.g != p.g || o.b != p.b)
+			if (o.c != p.c)
 				id.push_back(i);
 		}
 		++i;
@@ -142,7 +170,7 @@ bool List::SaveDC(string file)
 
 		XMLElement* nm = xml.NewElement("Name");		nm->SetText(n.c_str());
 		XMLElement* fm = xml.NewElement("FileMasks");	fm->SetText(s.c_str());
-		XMLElement* cl = xml.NewElement("Color");		cl->SetText(p.GetClr());
+		XMLElement* cl = xml.NewElement("Color");		cl->SetText(p.c.Get());
 		XMLElement* at = xml.NewElement("Attributes");	at->SetText(p.attr.c_str());
 		fi->InsertEndChild(nm);
 		fi->InsertEndChild(fm);
@@ -208,7 +236,7 @@ bool List::Load(string file)
 		XMLElement* fm,*cl,*at;
 		Pat p;  sf::Uint32 c;
 		fm = pt->FirstChildElement("s");	p.s = fm->GetText();
-		cl = pt->FirstChildElement("c");	c = atoi(cl->GetText());  p.SetClr(c);
+		cl = pt->FirstChildElement("c");	c = atoi(cl->GetText());  p.c.Set(c);
 		at = pt->FirstChildElement("a");	p.attr = at->GetText();
 		clr.insert(c);
 		pat.push_back(p);
@@ -229,7 +257,7 @@ bool List::Save(string file)
 	{
 		XMLElement* fi = xml.NewElement("Pat");
 		XMLElement* fm = xml.NewElement("s");	fm->SetText(p.s.c_str());
-		XMLElement* cl = xml.NewElement("c");	cl->SetText(p.GetClr());
+		XMLElement* cl = xml.NewElement("c");	cl->SetText(p.c.Get());
 		XMLElement* at = xml.NewElement("a");	at->SetText(p.attr.c_str());
 		fi->InsertEndChild(fm);
 		fi->InsertEndChild(cl);

@@ -10,41 +10,43 @@ void App::Graph()
 	//Rect(0,0, xe,ye, 0,0,0);
 
 	//  patterns  -----
-	int x = 0, xw = 0, y = 0;
 	const int  /// params
-		ya = iFontH + 2, xa = 10,  // margins
-		xMax = xe/2, yMax = ye - 2*iFontH;  // area
-	int i = lOfs, ii = li.pat.size();
+		xa = iFontH*2/3,  // add x, margin
+		ya = iFontH + 2,  // bottom margin
+		xMax = xs,  // area
+		yMax = ye - ya;
 
-	sf::Color c(0,0,0), cCur;
-	while (i < ii && y+ya < yMax)
+	//  frame  _|
+	Rect(xMax-1,0, xMax+1,yMax, 60,40,20);
+	Rect(0,yMax-1, xMax,yMax+1, 60,40,20);
+
+	//  vars
+	int x = 0, y = 0, xw = 0;
+	int i = lOfs, ii = li.pat.size();
+	sf::Color cCur;
+
+	li.Update(xMax, xa, ya);  // update
+
+	while (i < ii)
 	{
 		const Pat& p = li.pat[i];
-		Clr(p.r, p.g, p.b);
-
-		//  advance
-		if (c == clr && x < xMax)
-			x += xw;  // same line
-		else  // next line
-		{	x = 0;  y += ya;  }
-		c = clr;
+		Clr(p.c);
 
 		//  name
-		s = "";
-		//s += i2s(p.r)+" "+i2s(p.g)+" "+i2s(p.b)+"  ";
-		s += p.s;  // patterns
+		s = p.s;  // patterns
 
-		xw = Text(x, y, false) + xa;  // get width
+		x = p.x;  y = p.y;  xw = p.xw;
+		if (p.y + ya > yMax)  break;
 
 		//  cursor
 		if (i == lCur)  // current
-		{	Frame(x, y, x+xw, y+ya, 1, p.b, p.g, p.r);
+		{	Frame(x, y, x+xw, y+ya, 1, p.c);
 			cCur = clr;
 		}
 		else  // mouse over
 		if (xm >= x && xm < x+xw && ym >= y && ym < y+ya)
 		{
-			Frame(x, y, x+xw, y+ya, 2, p.b, p.g, p.r);
+			Frame(x, y, x+xw, y+ya, 2, p.c);
 			lPick = i;
 			if (mb)  lCur = i;  // button pick
 		}
@@ -54,7 +56,7 @@ void App::Graph()
 	}
 
 	//  current info  -----
-	x = xMax+10;  y = 10;  xw = 32;  int yw = iFontH + 10;
+	x = xMax+100;  y = 500;  xw = 32;  int yw = iFontH + 10;
 	Rect(x, y, x+xw, y+xw, cCur.b, cCur.g, cCur.r);
 	y += yw + 20;
 	Clr(180,120,120);  s = "R: " + i2s(cCur.r);  Text(x, y);  y += yw;
@@ -70,6 +72,8 @@ void App::Graph()
 	//  debug  -----
 	//return;
 	Clr(100,150,200);
+	s = "xs: " + i2s(xs) + " xe: " + i2s(xe) + " ye: " + i2s(ye);
+	Text(xe - 300, ye - 2*iFontH);
 	s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb);
 	Text(xe - 300, ye - iFontH);
 }

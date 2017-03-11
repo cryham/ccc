@@ -10,7 +10,7 @@ void App::Gui()
 {
 //	ImGui::ShowTestWindow();
 
-	ImGui::SetNextWindowPos(ImVec2(xe/2,100), ImGuiSetCond_Always);
+	ImGui::SetNextWindowPos(ImVec2(xs,100), ImGuiSetCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(350,360), ImGuiSetCond_FirstUseEver);
 
 	static bool open = true;

@@ -8,8 +8,7 @@ using namespace std;
 
 AppMain::AppMain()
 	:window(0)
-{
-}
+{	}
 
 bool AppMain::Run()
 {
@@ -20,7 +19,7 @@ bool AppMain::Run()
 	--vm.height;  // fix
 
 	window = new sf::RenderWindow(
-		1 ? sf::VideoMode(1280,800) : vm,
+		1 ? sf::VideoMode(1650,1050) : vm,
 		"ccc", // Title
 		1 ? sf::Style::Default : sf::Style::None,
 		sf::ContextSettings());
@@ -45,7 +44,8 @@ bool AppMain::Run()
 	//  Init app
 	//------------------
 	App* app = new App();
-	app->Resize(vm.width, vm.height);
+	sf::Vector2u ws = window->getSize();
+	app->Resize(ws.x, ws.y);
 	app->Init();
 
 
@@ -61,6 +61,7 @@ bool AppMain::Run()
 
 	sf::Sprite back(tex);
 
+	//  pass to app
 	app->pWindow = window;
 	app->pBackgr = &back;
 	app->pFont = &font;
@@ -120,6 +121,7 @@ bool AppMain::Run()
 
 	//  dtor
 	//------------------
+	ImGui::Shutdown();
 	delete window;
 	delete app;
 	return true;
