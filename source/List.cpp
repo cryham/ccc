@@ -67,10 +67,10 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 
 //  load, import from  DC doublecmd.xml
 //------------------------------------------------------------------------------------------------
-bool List::LoadDC(string file)
+bool List::LoadDC(const char* file)
 {
 	XMLDocument doc;
-	XMLError er = doc.LoadFile(file.c_str());
+	XMLError er = doc.LoadFile(file);
 	if (er != XML_SUCCESS)
 	{	/*Can't load: "+file);*/  return false;  }
 
@@ -86,34 +86,25 @@ bool List::LoadDC(string file)
 	Default();
 
 	///  load Filters
-	XMLElement* fi = filt->FirstChildElement("Filter");
+	XMLElement* fi = filt->FirstChildElement("Filter"), *e;
 	if (!fi)  return false;
 
 	while (fi)
 	{
-		XMLElement* fm,*cl,*at;
-		#if 0  // single line
-			Pat p;
-			fm = fi->FirstChildElement("FileMasks");	p.s = fm->GetText();
-			cl = fi->FirstChildElement("Color");		p.SetClr(atoi(cl->GetText()));
-			at = fi->FirstChildElement("Attributes");	p.attr = at->GetText();
-			pat.push_back(p);
-		#else  // split each pattern
-			Pat q;  sf::Uint32 c;
-			fm = fi->FirstChildElement("FileMasks");	q.s = fm->GetText();
-			cl = fi->FirstChildElement("Color");	c = atoi(cl->GetText());  q.c.Set(c);
-			at = fi->FirstChildElement("Attributes");	q.attr = at->GetText();
-			clr.insert(c);
+		Pat q;  sf::Uint32 c;
+		e = fi->FirstChildElement("FileMasks");		if (e) q.s = e->GetText();
+		e = fi->FirstChildElement("Color");			if (e){  c = atoi(e->GetText());  q.c.Set(c);  }
+		e = fi->FirstChildElement("Attributes");	if (e) q.attr = e->GetText();
+		clr.insert(c);
 
-			auto vs = split(q.s, ";");
-			for (auto s: vs)
-			{	Pat p;
-				p.s = s;
-				p.c = q.c;
-				p.attr = q.attr;
-				pat.push_back(p);
-			}
-		#endif
+		//  split each pattern
+		auto vs = split(q.s, ";");
+		for (auto& s : vs)
+		{	Pat p;
+			p.s = s;  p.c = q.c;
+			p.attr = q.attr;
+			pat.push_back(p);
+		}
 		fi = fi->NextSiblingElement();
 	}
 	return true;
@@ -134,7 +125,7 @@ bool List::LoadDC(string file)
 //  save, export to  DC doublecmd.xml
 //  will replace the section in existing xml
 //------------------------------------------------
-bool List::SaveDC(string file)
+bool List::SaveDC(const char* file)
 {
 	if (pat.empty())  return false;
 
@@ -159,7 +150,7 @@ bool List::SaveDC(string file)
 	for (int ii=0; ii < id.size()-1; ++ii)
 	{
 		int i0 = id[ii], i1 = id[ii+1];
-		XMLElement* fi = xml.NewElement("Filter");
+		XMLElement* fi = xml.NewElement("Filter"), *e;
 		string s, n;
 		for (int i=i0; i < i1; ++i)
 			s += pat[i].s + ";";
@@ -171,21 +162,17 @@ bool List::SaveDC(string file)
 		if (fnd("d"))  n = "Dir";  else
 		if (fnd("x"))  n = "Exe";
 
-		XMLElement* nm = xml.NewElement("Name");		nm->SetText(n.c_str());
-		XMLElement* fm = xml.NewElement("FileMasks");	fm->SetText(s.c_str());
-		XMLElement* cl = xml.NewElement("Color");		cl->SetText(p.c.Get());
-		XMLElement* at = xml.NewElement("Attributes");	at->SetText(p.attr.c_str());
-		fi->InsertEndChild(nm);
-		fi->InsertEndChild(fm);
-		fi->InsertEndChild(cl);
-		fi->InsertEndChild(at);
+		e = xml.NewElement("Name");			e->SetText(n.c_str());  fi->InsertEndChild(e);
+		e = xml.NewElement("FileMasks");	e->SetText(s.c_str());  fi->InsertEndChild(e);
+		e = xml.NewElement("Color");		e->SetText(p.c.Get());  fi->InsertEndChild(e);
+		e = xml.NewElement("Attributes");	e->SetText(p.attr.c_str());  fi->InsertEndChild(e);
 		filt->InsertEndChild(fi);
 	}
 
 	if (0)
 	{
 		xml.InsertEndChild(filt);
-		return xml.SaveFile(file.c_str()) == XML_SUCCESS;
+		return xml.SaveFile(file) == XML_SUCCESS;
 	}
 	else
 	{	char l[1024];

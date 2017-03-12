@@ -3,6 +3,7 @@
 	#include <windows.h>
 	#include <Lmcons.h>
 #endif
+#include <SFML/Window.hpp>
 #include "Settings.h"
 #include "../libs/tinyxml2.h"
 //#include "Util.h"
@@ -13,18 +14,31 @@ using namespace tinyxml2;
 //  ctor
 Settings::Settings()
 {
+	memset(pathSet,0,sizeof(pathSet));
 	memset(pathProj,0,sizeof(pathProj));
 	memset(pathDCxml,0,sizeof(pathDCxml));
 	memset(pathDCexe,0,sizeof(pathDCexe));
 	Default();
 }
 
+void Settings::GetWndDim(sf::Window* wnd)
+{
+	xwPos = wnd->getPosition().x;
+	ywPos = wnd->getPosition().y;
+	xwSize = wnd->getSize().x;
+	ywSize = wnd->getSize().y;
+}
+
+//  Defaults, init paths
+//------------------------------------------------------------------------------------------------
 void Settings::Default()
 {
 	fSplit = 0.27f;
 	iFontH = 16;
 	iLineH = 2;
+	fXMargin = 0.7f;
 
+	strcpy(pathSet, "ccc.set.xml");
 	strcpy(pathProj, "ccc.xml");
 
 #ifdef _WIN32
@@ -43,14 +57,14 @@ void Settings::Default()
 }
 
 
-//  load project file, own
+///  Load
 //------------------------------------------------------------------------------------------------
-bool Settings::Load(string file)
+bool Settings::Load()
 {
 	Default();
 
 	XMLDocument doc;
-	XMLError er = doc.LoadFile(file.c_str());
+	XMLError er = doc.LoadFile(pathSet);
 	if (er != XML_SUCCESS)
 	{	/*Can't load: "+file);*/  return false;  }
 
@@ -68,12 +82,27 @@ bool Settings::Load(string file)
 	e = root->FirstChildElement("pathDCexe");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCexe,a);  }
 	e = root->FirstChildElement("pathDCxml");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCxml,a);  }
 
+	e = root->FirstChildElement("dim");
+	if (e)
+	{	a = e->Attribute("fSplit");  if (a)  fSplit = atof(a);
+		a = e->Attribute("iFontH");  if (a)  iFontH = atoi(a);
+		a = e->Attribute("iLineH");  if (a)  iLineH = atoi(a);
+		a = e->Attribute("fXMargin");  if (a)  fXMargin = atof(a);
+	}
+	e = root->FirstChildElement("window");
+	if (e)
+	{	a = e->Attribute("x");  if (a)  xwPos = atoi(a);
+		a = e->Attribute("y");  if (a)  ywPos = atoi(a);
+		a = e->Attribute("sx");  if (a)  xwSize = atoi(a);
+		a = e->Attribute("sy");  if (a)  ywSize = atoi(a);
+	}
+
 	return true;
 }
 
-//  save project file, own
-//------------------------------------------------
-bool Settings::Save(string file)
+///  Save
+//------------------------------------------------------------------------------------------------
+bool Settings::Save()
 {
 	XMLDocument xml;
 	XMLElement* root = xml.NewElement("ccc_set");
@@ -85,6 +114,20 @@ bool Settings::Save(string file)
 	e = xml.NewElement("pathDCexe");  e->SetAttribute("p", pathDCexe);  root->InsertEndChild(e);
 	e = xml.NewElement("pathDCxml");  e->SetAttribute("p", pathDCxml);  root->InsertEndChild(e);
 
+	e = xml.NewElement("dim");
+	e->SetAttribute("fSplit", fSplit);
+	e->SetAttribute("iFontH", iFontH);
+	e->SetAttribute("iLineH", iLineH);
+	e->SetAttribute("fXMargin", fXMargin);
+	root->InsertEndChild(e);
+
+	e = xml.NewElement("window");
+	e->SetAttribute("x", xwPos);
+	e->SetAttribute("y", ywPos);
+	e->SetAttribute("sx", xwSize);
+	e->SetAttribute("sy", ywSize);
+	root->InsertEndChild(e);
+
 	xml.InsertEndChild(root);
-	return xml.SaveFile(file.c_str()) == XML_SUCCESS;
+	return xml.SaveFile(pathSet) == XML_SUCCESS;
 }

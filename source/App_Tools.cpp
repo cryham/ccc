@@ -15,15 +15,18 @@ bool App::Check()
 	return false;
 }
 
+void App::Status::Set(std::string sText, float fHue)
+{
+	txt = sText;  hue = fHue;  cnt = 0;
+}
+
 //  copy, set color
 void App::CopyClr()
 {
 	if (Check())  return;
 	copyClr = li.pat[iCur].c;
 
-	txtStatus = "Copy color";
-	hueStatus = 0.6f;
-	iStatus = 0;
+	status.Set("Copy color", 0.6f);
 }
 
 void App::SetClr()
@@ -31,9 +34,7 @@ void App::SetClr()
 	if (Check())  return;
 	li.pat[iCur].c = copyClr;
 
-	txtStatus = "Set color";
-	hueStatus = 0.6f;
-	iStatus = 0;
+	status.Set("Set color", 0.6f);
 }
 
 //  toggle

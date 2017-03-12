@@ -36,7 +36,7 @@ App::App()
 {	}
 
 //  Init
-//------------------------------------------------------------------
+//----------------------------------
 bool App::Init()
 {
 	SetupGuiClr();
@@ -62,14 +62,12 @@ void App::StartDC()
 bool App::Load()
 {
 	bool er = !li.Load(set.pathProj);
-	txtStatus = er ? "Load error!" : "Loaded.";
-	hueStatus = er ? 0.2f : 0.42f;
-	iStatus = 0;
+	status.Set(er ? "Load error!" : "Loaded.",
+		er ? 0.2f : 0.42f);
 }
 bool App::Save()
 {
 	bool er = !li.Save(set.pathProj);
-	txtStatus = er ? "Save error!" : "Saved.";
-	hueStatus = er ? 0.f : 0.55f;
-	iStatus = 0;
+	status.Set(er ? "Save error!" : "Saved.",
+		er ? 0.f : 0.55f);
 }

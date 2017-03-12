@@ -17,7 +17,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	switch (key.code)
 	{
 		//  esc close-
-		case Keyboard::Escape:  pWindow->close();  ret
+		case Keyboard::Escape:  set.GetWndDim(pWindow);  pWindow->close();  ret
 
 		//  font size
 		case Keyboard::F11:  IncFont(key.control ?-4:-1);  ret
@@ -44,9 +44,6 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 	switch (key.code)
 	{
-		//  esc close-
-		case Keyboard::Escape:  pWindow->close();  ret
-
 		//  arrows, cursor move
 		case Keyboard::Left:  SetCur(iCur-r);  ret
 		case Keyboard::Right: SetCur(iCur+r);  ret

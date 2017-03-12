@@ -3,6 +3,8 @@
 #include "../libs/imgui-SFML.h"
 #include "AppMain.h"
 #include "App.h"
+using namespace ImGui::SFML;
+using namespace sf;
 using namespace std;
 
 
@@ -12,54 +14,58 @@ AppMain::AppMain()
 
 bool AppMain::Run()
 {
+	//  laod Settings first
+	//------------------
+	App* app = new App();
+	app->set.Load();
+	Settings& s = app->set;
+
 
 	//  Create window
 	//------------------------------------------------
-	sf::VideoMode vm = sf::VideoMode::getDesktopMode();
-	--vm.height;  // fix
+	//VideoMode vm = VideoMode::getDesktopMode();
+	//--vm.height;  // fix
 
-	window = new sf::RenderWindow(
-		1 ? sf::VideoMode(1650,1050) : vm,
-		"ccc", // Title
-		1 ? sf::Style::Default : sf::Style::None,
-		sf::ContextSettings());
+	window = new RenderWindow(
+		VideoMode(s.xwSize, s.ywSize),
+		"Crystal Color Center", // Title
+		Style::Default, ContextSettings());
 
 	window->setVerticalSyncEnabled(true);
 	//window->setFramerateLimit(60);
-	window->setPosition(sf::Vector2i(0,0));
+	window->setPosition(Vector2i(s.xwPos, s.ywPos));
 
 
 	//  ImGui
 	//------------------
-	ImGui::SFML::Init(*window);
+	Init(*window);
 	//  font
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->ClearFonts();
 	ImFont* fnt = io.Fonts->AddFontFromFileTTF("data/DejaVuLGCSans.ttf", 18);
-	sf::Texture* fntTex = new sf::Texture;
-	ImGui::SFML::createFontTexture(*fntTex);
-	ImGui::SFML::setFontTexture(*fntTex);
+	Texture* fntTex = new Texture;
+	createFontTexture(*fntTex);
+	setFontTexture(*fntTex);
 
 
 	//  Init app
 	//------------------
-	App* app = new App();
-	sf::Vector2u ws = window->getSize();
+	Vector2u ws = window->getSize();
 	app->Resize(ws.x, ws.y);
 	app->Init();
 
 
 	//  Load data
 	//------------------------------------------------
-	sf::Font font;
+	Font font;
 	if (!font.loadFromFile("data/DejaVuLGCSans.ttf"))
 		{}  //Warning("Can't load .ttf","App Run");
 
-	sf::Texture tex;
+	Texture tex;
 	if (!tex.loadFromFile("data/white.png"))
 		{}  //Warning("Can't load white.png","App Run");
 
-	sf::Sprite back(tex);
+	Sprite back(tex);
 
 	//  pass to app
 	app->pWindow = window;
@@ -72,31 +78,31 @@ bool AppMain::Run()
 
 	//  Loop
 	//------------------------------------------------
-	sf::Clock dt;
+	Clock dt;
 	while (window->isOpen())
 	{
 		//  Process events
 		//------------------
-		sf::Event e;
+		Event e;
 		while (window->pollEvent(e))
 		{
-			ImGui::SFML::ProcessEvent(e);
+			ProcessEvent(e);
 
 			switch (e.type)
 			{
-			case sf::Event::MouseMoved:				app->Mouse(e.mouseMove.x, e.mouseMove.y);  break;
-			case sf::Event::MouseWheelScrolled:		app->Wheel(e.mouseWheelScroll.delta);  break;
-			case sf::Event::MouseButtonPressed:		app->mb = e.mouseButton.button + 1;  break;
-			case sf::Event::MouseButtonReleased:	app->mb = 0;  break;
+			case Event::MouseMoved:				app->Mouse(e.mouseMove.x, e.mouseMove.y);  break;
+			case Event::MouseWheelScrolled:		app->Wheel(e.mouseWheelScroll.delta);  break;
+			case Event::MouseButtonPressed:		app->mb = e.mouseButton.button + 1;  break;
+			case Event::MouseButtonReleased:	app->mb = 0;  break;
 
-			case sf::Event::KeyPressed:		app->KeyDown(e.key);  break;
-			case sf::Event::KeyReleased:	app->KeyUp(e.key);  break;
+			case Event::KeyPressed:		app->KeyDown(e.key);  break;
+			case Event::KeyReleased:	app->KeyUp(e.key);  break;
 
-			case sf::Event::Resized:	app->Resize(e.size.width, e.size.height);  break;
-			case sf::Event::Closed:		window->close();  break;
+			case Event::Resized:	app->Resize(e.size.width, e.size.height);  break;
+			case Event::Closed:		s.GetWndDim(window);  window->close();  break;
 			}
 		}
-		ImGui::SFML::Update(*window, dt.restart());
+		Update(*window, dt.restart());
 
 
 		//  Draw
@@ -112,11 +118,13 @@ bool AppMain::Run()
 
 		window->display();
 
-		//sf::Sleep(0.20f);
+		//Sleep(0.20f);
 	}
 
 	//  dtor
 	//------------------
+	s.Save();
+
 	ImGui::Shutdown();
 	delete window;
 	delete app;

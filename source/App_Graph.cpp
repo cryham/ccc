@@ -54,15 +54,13 @@ void App::Graph()
 		yc = y+2;
 		if (i == iCur)  // current
 			Frame(x, yc, xw, yc+ya, 1, p.c);
-//			Rect(x, yc, xw, yc+ya, p.c);
 		else  // mouse over
-		if (tab == Tab_List)  //*
+		if (tab == Tab_List)  //+
 		if (xm >= x && xm < xw && ym >= y && ym < y+ya)
 		{
 			Frame(x, yc, xw, yc+ya, 2, p.c);
-			//iPick = i;
 			if (mb)
-				SetCur(i);  // button pick
+				SetCur(i);  // mouse pick
 		}
 		++i;
 	}

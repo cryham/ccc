@@ -72,8 +72,8 @@ public:
 	void SetApp(App* p) {  app = p;  }
 
 	//  load, import
-	bool LoadDC(std::string file);  // from DC doublecmd.xml
-	bool SaveDC(std::string file);
+	bool LoadDC(const char* file);  // from DC doublecmd.xml
+	bool SaveDC(const char* file);
 
 	bool ImportTC(std::string file);  // TC color.ini
 
