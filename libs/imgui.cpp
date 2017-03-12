@@ -4671,6 +4671,71 @@ void ImGui::TextWrapped(const char* fmt, ...)
 	va_end(args);
 }
 
+///EXTRA-----
+bool ImGui::TabLabels(int numTabs, const char** tabLabels, int& selectedIndex, bool autoLayout)
+{
+	ImGuiStyle& style = ImGui::GetStyle();
+	const ImVec2 itemSpacing =  style.ItemSpacing;
+	const ImVec4 color =        style.Colors[ImGuiCol_Button];
+	const ImVec4 colorActive =  style.Colors[ImGuiCol_ButtonActive];
+	const ImVec4 colorHover =   style.Colors[ImGuiCol_ButtonHovered];
+	style.ItemSpacing.x =       10;  // par
+	style.ItemSpacing.y =       10;
+
+	if (numTabs>0 && (selectedIndex<0 || selectedIndex>=numTabs)) selectedIndex = 0;
+
+	// Parameters to adjust to make autolayout work as expected:----------
+	// The correct values are probably the ones in the comments, but I took some margin so that they work well
+	// with a (medium size) vertical scrollbar too [Ok I should detect its presence and use the appropriate values...].
+	const float btnOffset =         2.f*style.FramePadding.x;   // [2.f*style.FramePadding.x] It should be: ImGui::Button(text).size.x = ImGui::CalcTextSize(text).x + btnOffset;
+	const float sameLineOffset =    2.f*style.ItemSpacing.x;    // [style.ItemSpacing.x]      It should be: sameLineOffset = ImGui::SameLine().size.x;
+	const float uniqueLineOffset =  2.f*style.WindowPadding.x;  // [style.WindowPadding.x]    Width to be sutracted by windowWidth to make it work.
+	//--------------------------------------------------------------------
+
+	float windowWidth = 0.f,sumX=0.f;
+	if (autoLayout) windowWidth = ImGui::GetWindowWidth() - uniqueLineOffset;
+
+	bool selection_changed = false;
+	for (int i = 0; i < numTabs; i++)
+	{
+		// push the style
+		if (i == selectedIndex)
+		{
+			style.Colors[ImGuiCol_Button] =         colorActive;
+			style.Colors[ImGuiCol_ButtonActive] =   colorActive;
+			style.Colors[ImGuiCol_ButtonHovered] =  colorActive;
+		}else{
+			style.Colors[ImGuiCol_Button] =         color;
+			style.Colors[ImGuiCol_ButtonActive] =   colorActive;
+			style.Colors[ImGuiCol_ButtonHovered] =  colorHover;
+		}
+
+		ImGui::PushID(i);   // otherwise two tabs with the same name would clash.
+
+		if (!autoLayout) {if (i>0) ImGui::SameLine();}
+		else if (sumX > 0.f) {
+			sumX+=sameLineOffset;   // Maybe we can skip it if we use SameLine(0,0) below
+			sumX+=ImGui::CalcTextSize(tabLabels[i]).x+btnOffset;
+			if (sumX>windowWidth) sumX = 0.f;
+			else ImGui::SameLine();
+		}
+
+		// Draw the button
+		if (ImGui::Button(tabLabels[i]))
+		{	selection_changed = (selectedIndex!=i);  selectedIndex = i;  }
+		if (autoLayout && sumX==0.f)  // First element of a line
+			sumX = ImGui::GetItemRectSize().x;
+
+		ImGui::PopID();
+	}
+	// Restore the style
+	style.Colors[ImGuiCol_Button] =         color;
+	style.Colors[ImGuiCol_ButtonActive] =   colorActive;
+	style.Colors[ImGuiCol_ButtonHovered] =  colorHover;
+	style.ItemSpacing =                     itemSpacing;
+	return selection_changed;
+}
+
 void ImGui::TextUnformatted(const char* text, const char* text_end)
 {
 	ImGuiWindow* window = GetCurrentWindow();
@@ -6759,6 +6824,7 @@ static ImVec2 InputTextCalcTextSizeW(const ImWchar* text_begin, const ImWchar* t
 
 	return text_size;
 }
+
 
 // Wrapper for stb_textedit.h to edit text (our wrapper is for: statically sized buffer, single-line, wchar characters. InputText converts between UTF-8 and wchar)
 namespace ImGuiStb
