@@ -1,15 +1,26 @@
 #include "App.h"
 #include <cstring>
+using namespace std;
 
 
 //  Tools, operations
 ///-----------------------------------------------------------------------------
+bool App::Check()
+{
+	if (li.pat.empty())  return true;
+	//  range, just to be sure
+	int lMax = li.pat.size()-1;
+	if (iCur < 0)    {  iCur = 0;     return true;  }
+	if (iCur > lMax) {  iCur = lMax;  return true;  }
+	return false;
+}
 
 //  copy, set color
 void App::CopyClr()
 {
-	if (li.pat.empty())  return;
-	cpy = li.pat[iCur].c;
+	if (Check())  return;
+	copyClr = li.pat[iCur].c;
+
 	txtStatus = "Copy color";
 	hueStatus = 0.6f;
 	iStatus = 0;
@@ -17,8 +28,9 @@ void App::CopyClr()
 
 void App::SetClr()
 {
-	if (li.pat.empty())  return;
-	li.pat[iCur].c = cpy;
+	if (Check())  return;
+	li.pat[iCur].c = copyClr;
+
 	txtStatus = "Set color";
 	hueStatus = 0.6f;
 	iStatus = 0;
@@ -27,27 +39,33 @@ void App::SetClr()
 //  toggle
 void App::InvDir()
 {
-	if (li.pat.empty())  return;
+	if (Check())  return;
 	li.pat[iCur].dir = li.pat[iCur].dir;
+	ed.dir = li.pat[iCur].dir;  // set gui
 }
 
-//  set cursor, set gui from list
+
+//  set cursor, set gui from list  * * *
 void App::SetCur(int ic)
 {
+	if (li.pat.empty())  {  iCur = 0;  return;  }
 	iCur = ic;
-	//  range
-	int lMax = li.pat.size()-1;
-	if (iCur < 0)  iCur = 0;
-	if (iCur > lMax)  iCur = lMax;
+	Check();
 
-	//  set gui edit values
+	//  set gui  -----
 	const Pat& p = li.pat[iCur];
+	//  edits
 	strcpy(ed.pat, p.s.c_str());
 	strcpy(ed.attr, p.attr.c_str());
+	//  color
 	ed.r = p.c.r;  ed.g = p.c.g;  ed.b = p.c.b;
+	//  checks
+	ed.dir = p.attr.find('d') != string::npos;
+	ed.lnk = p.attr.find('l') != string::npos;
+	ed.exe = p.attr.find('x') != string::npos;
 }
 
-//  inc line
+//  inc line  ^ v
 void App::IncLine(int d)
 {
 	const Pat& p = li.pat[iCur];
@@ -59,19 +77,23 @@ void App::IncLine(int d)
 	SetCur(l + o);
 }
 
-//  add, del
+
+//  add new  +++
 void App::AddPat(bool start, bool end)
 {
 	Pat p = li.pat[iCur];  p.s = "new";
 	if (start)
 		li.pat.insert(li.pat.begin(), p);
 	if (end)
-		li.pat.insert(li.pat.end()-1, p);
+		li.pat.insert(li.pat.end(), p);
 	else   // after current
 		li.pat.insert(li.pat.begin()+iCur+1, p);
 }
 
+//  delete current  ---
 void App::DelPat()
 {
-
+	if (Check())  return;
+	li.pat.erase(li.pat.begin()+iCur);
+	SetCur(iCur);
 }

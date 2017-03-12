@@ -35,12 +35,12 @@ sf::Uint32 SClr::Get()
 
 //  Update  x,y,l,xw, lines
 //------------------------------------------------
-void List::Update(int xMax, int xa, int ya)
+void List::Update(int xMin, int xMax, int xa, int ya)
 {
 	//if (!app)  return;
 	SClr cOld;
 	int i, ii = pat.size(), l = 0;
-	int x = 0, xw = 0, y = 0;
+	int x = xMin, xw = 0, y = 0;
 	lines.clear();
 	lines.push_back(0);
 
@@ -55,7 +55,7 @@ void List::Update(int xMax, int xa, int ya)
 		if (x+xw >= xMax ||
 			i > 0 && p.c != cOld)  // new color
 		{
-			x = 0;  y += ya;
+			x = xMin;  y += ya;
 			lines.push_back(i);  ++l;  // next line
 		}
 		p.x = x;  p.y = y;  p.l = l;
@@ -214,12 +214,12 @@ bool List::ImportTC(string file)
 
 //  load project file, own
 //------------------------------------------------------------------------------------------------
-bool List::Load(string file)
+bool List::Load(const char* file)
 {
 	Default();
 
 	XMLDocument doc;
-	XMLError er = doc.LoadFile(file.c_str());
+	XMLError er = doc.LoadFile(file);
 	if (er != XML_SUCCESS)
 	{	/*Can't load: "+file);*/  return false;  }
 
@@ -252,7 +252,7 @@ bool List::Load(string file)
 
 //  save project file, own
 //------------------------------------------------
-bool List::Save(string file)
+bool List::Save(const char* file)
 {
 	XMLDocument xml;
 	XMLElement* root = xml.NewElement("ccc");
@@ -270,5 +270,5 @@ bool List::Save(string file)
 	}
 
 	xml.InsertEndChild(root);
-	return xml.SaveFile(file.c_str()) == XML_SUCCESS;
+	return xml.SaveFile(file) == XML_SUCCESS;
 }

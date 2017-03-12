@@ -12,6 +12,36 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	int r = alt ? 10 : ctrl ? 4 : 1;
 
 	using namespace sf;
+
+	//  global keys
+	switch (key.code)
+	{
+		//  esc close-
+		case Keyboard::Escape:  pWindow->close();  ret
+
+		//  font size
+		case Keyboard::F11:  IncFont(key.control ?-4:-1);  ret
+		case Keyboard::F12:  IncFont(key.control ? 4: 1);  ret
+
+
+		//  tab change --
+		case Keyboard::F1:  tab = ctrl||alt ? Tab_Help : Tab_Edit;  edFocus = true;  ret
+		case Keyboard::F2:  tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
+
+		//  load, save
+		case Keyboard::F8:
+			if (ctrl)	{	li.Default();  ret  }  // clear
+			else		{	li.SaveDC("dc.xml");  ret  }
+		case Keyboard::F9:  li.LoadDC("doublecmd.xml");  ret
+
+		case Keyboard::F4:  Save();  ret
+		case Keyboard::F5:  Load();  ret
+
+	}
+
+	if (tab != Tab_List)
+		ret
+
 	switch (key.code)
 	{
 		//  esc close-
@@ -29,19 +59,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::PageUp:	  line-=d;  if (line < 0)  line = 0;  ret
 		case Keyboard::PageDown:  line+=d;  if (line > lMax)  line = lMax;  ret
 
-
-		//  font size
-		case Keyboard::F11:  IncFont(key.control ?-4:-1);  ret
-		case Keyboard::F12:  IncFont(key.control ? 4: 1);  ret
-
-
-		//  load, save
-		case Keyboard::F1:  li.LoadDC("doublecmd.xml");  ret
-		case Keyboard::F2:  li.SaveDC("dc.xml");  ret
-		case Keyboard::F8:  li.Default();  ret  // clear
-
-		case Keyboard::F4:  Save();  ret
-		case Keyboard::F5:  Load();  ret
+		case Keyboard::Insert:  AddPat(shift, ctrl);  ret
 	}
 
 	if (alt)
@@ -56,7 +74,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::D:  InvDir();  ret
 
 		//  add, del
-		case Keyboard::A:  AddPat(shift, ctrl);  ret
+		//case Keyboard::A:		AddPat(shift, ctrl);  ret
 		case Keyboard::Delete:  DelPat();  ret
 
 		#if 0
@@ -69,10 +87,10 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 void App::IncFont(int d)
 {
-	iFontH += d;
-	if (iFontH < 1)   iFontH = 1;
-	if (iFontH > 32)  iFontH = 32;
-	text.setCharacterSize(iFontH);
+	set.iFontH += d;
+	if (set.iFontH < 1)   set.iFontH = 1;
+	if (set.iFontH > 32)  set.iFontH = 32;
+	text.setCharacterSize(set.iFontH);
 }
 
 void App::Wheel(float d)

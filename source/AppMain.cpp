@@ -66,7 +66,7 @@ bool AppMain::Run()
 	app->pBackgr = &back;
 	app->pFont = &font;
 	app->text.setFont(font);
-	app->text.setCharacterSize(app->iFontH);
+	app->text.setCharacterSize(app->set.iFontH);
 	//app.Fy = font.getLineSpacing();
 
 

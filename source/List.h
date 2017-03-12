@@ -3,8 +3,8 @@
 #include <string>
 #include <set>
 #include <SFML/Config.hpp>
-
 typedef sf::Uint8 byte;
+
 
 //  Color, for patterns
 //------------------------------------------------
@@ -38,7 +38,7 @@ struct Pat
 
 	bool dir, lnk, exe;   // attributes
 	std::string attr;
-	int grp;  // group for sorting..
+	char grp;  // group for sorting..
 
 	//  visual only,  not saved, computed by Update()
 	int x,y, xw, l;  // pos on screen, width, line
@@ -65,9 +65,10 @@ public:
 	List();
 	void Default();
 
-	//  run after any changes in pat
-	void Update(int xMax, int xa, int ya);  // x,y, xw, l, ofs
-	App* app;  // for text get width
+	//  update view,  run after any changes in pat
+	void Update(int xMin, int xMax, int xa, int ya);  // x,y, xw, l, ofs
+	//  app  for text get width
+	App* app = nullptr;
 	void SetApp(App* p) {  app = p;  }
 
 	//  load, import
@@ -77,6 +78,6 @@ public:
 	bool ImportTC(std::string file);  // TC color.ini
 
 	//  project file, own
-	bool Load(std::string file);
-	bool Save(std::string file);
+	bool Load(const char* file);
+	bool Save(const char* file);
 };
