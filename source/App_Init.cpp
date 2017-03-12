@@ -26,6 +26,7 @@ void App::UpdSplit()
 void App::Resize(int x, int y)
 {
 	xWindow = x;  yWindow = y;
+	set.xwSize = x;  set.ywSize = y;
 	UpdSplit();
 	if (pWindow)
 		pWindow->setView(sf::View(sf::FloatRect(0.f, 0.f, xWindow, yWindow)));
@@ -41,8 +42,8 @@ bool App::Init()
 {
 	SetupGuiClr();
 	li.SetApp(this);
-//	set.Load();
 
+//	LoadDC();
 	li.LoadDC("doublecmd.xml");
 
 	return true;
@@ -59,6 +60,8 @@ void App::StartDC()
 #endif
 }
 
+//  Load, Save, status
+//----------------------------------
 bool App::Load()
 {
 	bool er = !li.Load(set.pathProj);
@@ -69,5 +72,19 @@ bool App::Save()
 {
 	bool er = !li.Save(set.pathProj);
 	status.Set(er ? "Save error!" : "Saved.",
+		er ? 0.f : 0.55f);
+}
+
+bool App::LoadDC()
+{
+	bool er = !li.LoadDC(set.pathDCxml);
+	status.Set(er ? "Load DC error!" : "Loaded DC.",
+		er ? 0.2f : 0.42f);
+}
+
+bool App::SaveDC()
+{
+	bool er = !li.SaveDC(set.pathDCxml);
+	status.Set(er ? "Save DC error!" : "Saved DC.",
 		er ? 0.f : 0.55f);
 }

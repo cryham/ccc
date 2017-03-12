@@ -114,7 +114,7 @@ void App::Gui()
 
 	case Tab_Settings:  // -----
 	{
-		PushItemWidth(xSplit-10);
+		PushItemWidth(xSplit-80);
 		Text("Dimensions");
 		Dummy(sep);
 		Text("Font Height");
@@ -126,7 +126,9 @@ void App::Gui()
 		Text("Splitter");
 		e = DragFloat("", &set.fSplit, 1.f, 0.1f, 0.9f, "%4.2f");  if (e)  UpdSplit();  //-
 		Dummy(sep);
+		PopItemWidth();
 
+		PushItemWidth(xSplit-40);
 		Text("Paths");
 		Dummy(sep);
 		Text("Project file");
@@ -141,7 +143,8 @@ void App::Gui()
 
 	case Tab_Help:  // -----
 	{
-		Text("Crystal Color Center");
+		const static ImVec4 c2(0.8f,0.9f,1.f,1.f);
+		TextColored(c2, "Crystal Color Center");
 		string s = "version ";  s += f2s(set.ver/100.f);
 		Text(s.c_str());
 		Dummy(sep);

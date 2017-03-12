@@ -1,6 +1,7 @@
 #include "App.h"
 #define  ret  return true;
 
+
 //  Keys input
 ///-----------------------------------------------------------------------------
 bool App::KeyDown(const sf::Event::KeyEvent& key)
@@ -31,8 +32,8 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		//  load, save
 		case Keyboard::F8:
 			if (ctrl)	{	li.Default();  ret  }  // clear
-			else		{	li.SaveDC("dc.xml");  ret  }
-		case Keyboard::F9:  li.LoadDC("doublecmd.xml");  ret
+			else		{	SaveDC();  ret  }
+		case Keyboard::F9:  LoadDC();  ret
 
 		case Keyboard::F4:  Save();  ret
 		case Keyboard::F5:  Load();  ret

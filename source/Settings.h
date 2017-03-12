@@ -15,7 +15,7 @@ public:
 	Settings();
 	void Default();
 
-	bool Load();  // xml
+	bool Load();  // set.xml
 	bool Save();
 
 

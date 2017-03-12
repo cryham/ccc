@@ -8,20 +8,22 @@ Currently you can:
 - Import from Double Commander's file: doublecmd.xml.
 - Save and load the program's own project xml file
 - Export result to doublecmd.xml
+- Managing the list
+  * edit, add, remove patterns
+  * adjust color with R,G,B sliders
 
 TODO (In future it will allow to):
-- import from Total Commander's file: color.ini.
-- export results to colors.ini.
-- import with merge into current set
-
-- managing the list of patterns and colors
-  * edit, add, remove
-  * adjust color rgb, hsv sliders
+- managing
   * rearrange (move), split, merge
+  * edit whole row, color, move
+  * hsv sliders
   * group by id
-  * sort by name, color
-  * multi select / group color adjust
+  * sort by name, color, group
+  * multi select, move, edit
+  * search pattern names
   * rating groups
+- import and export Total Commander's file: color.ini.
+- import with merge into current list
 
 ## General
 This utility program is written in C++, using [SFML](https://github.com/SFML/SFML) for graphics,

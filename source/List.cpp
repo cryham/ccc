@@ -92,9 +92,9 @@ bool List::LoadDC(const char* file)
 	while (fi)
 	{
 		Pat q;  sf::Uint32 c;
-		e = fi->FirstChildElement("FileMasks");		if (e) q.s = e->GetText();
+		e = fi->FirstChildElement("FileMasks");		if (e)  q.s = e->GetText();
 		e = fi->FirstChildElement("Color");			if (e){  c = atoi(e->GetText());  q.c.Set(c);  }
-		e = fi->FirstChildElement("Attributes");	if (e) q.attr = e->GetText();
+		e = fi->FirstChildElement("Attributes");	if (e)  q.attr = e->GetText();
 		clr.insert(c);
 
 		//  split each pattern
@@ -124,7 +124,7 @@ bool List::LoadDC(const char* file)
 
 //  save, export to  DC doublecmd.xml
 //  will replace the section in existing xml
-//------------------------------------------------
+//------------------------------------------------------------------------------------------------
 bool List::SaveDC(const char* file)
 {
 	if (pat.empty())  return false;
@@ -138,12 +138,10 @@ bool List::SaveDC(const char* file)
 	for (auto& p : pat)
 	{
 		if (i > 0)
-		{
-			const Pat& o = pat[i-1];
+		{	const Pat& o = pat[i-1];
 			if (o.c != p.c)
 				id.push_back(i);
-		}
-		++i;
+		}	++i;
 	}
 	id.push_back(pat.size());
 
@@ -169,26 +167,41 @@ bool List::SaveDC(const char* file)
 		filt->InsertEndChild(fi);
 	}
 
-	if (0)
-	{
-		xml.InsertEndChild(filt);
-		return xml.SaveFile(file) == XML_SUCCESS;
-	}
-	else
-	{	char l[1024];
-//		ofstream fi;
-		ifstream fi;
-//		fi.open(file.c_str());
-		fi.open("dc.xml");
-		if (fi.good())
-		{
-			fi.getline(l, sizeof(l)-1);
-		}
+	//  save  --------------
+	//  original dc xml
+	ifstream fi;
+	fi.open(file);  if (!fi.good())  return false;
+	//  temp save
+	ofstream fo;
+	string ss = string(file) + "1";
+	const char* file1 = ss.c_str();
+	fo.open(file1);  if (!fo.good())  return false;
 
-		XMLPrinter printer;
-		filt->Accept(&printer);
-		const char* fo = printer.CStr();
+	//  read lines
+	bool ff = false;
+	char l[1024];
+	while (fi.good())
+	{
+		fi.getline(l, sizeof(l)-1);
+		if (strstr(l, "<FileFilters>"))
+		{	ff = true;
+			//  write our section instead
+			XMLPrinter printer;
+			filt->Accept(&printer);
+			const char* fs = printer.CStr();
+			fo << fs << endl;
+		}else
+		if (strstr(l, "</FileFilters>"))
+			ff = false;
+		else
+		if (!ff)
+			fo << l << endl;  // write line
 	}
+	fi.close();
+	fo.close();
+	//  replace old with new
+	remove(file);
+	rename(file1, file);
 }
 
 //  load, import from  TC color.ini

@@ -49,6 +49,7 @@ public:
 
 	//  project
 	bool Load(), Save();
+	bool LoadDC(), SaveDC();
 	void StartDC();  // extras
 	Settings set;  //*  Settings
 
