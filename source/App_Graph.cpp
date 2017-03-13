@@ -35,10 +35,12 @@ void App::Graph()
 	//  vars
 	int x = 0, y = 0, xw = 0;
 	int i = li.lines[line], ii = li.pat.size();
-	int i1 = i, yc;
+	int i1 = i, yc, yy;
 	const Pat& p0 = li.pat[i];
 
 	iFound = 0;
+	int iPick = -1, d = -1;
+	const static SClr mrk(215,255,255);
 
 	//  list  ----------
 	while (i < ii)
@@ -54,26 +56,39 @@ void App::Graph()
 
 		Txt(x, y);  // write
 
-		//  cursor []
-		yc = y+2;
+		//  cursor []  -----
+		yc = y+2;  yy = yc+ya;
+
 		if (i == iCur)  // current
-			Frame(x, yc, xw, yc+ya, 1, p.c);
-		else  // mouse over
+		{
+			Frame(x, yc, xw, yy, 1, p.c);
+		}
+		else  // mouse over []
 		if (tab == Tab_List)  //+
 		if (xm >= x && xm < xw && ym >= y && ym < y+ya)
 		{
-			Frame(x, yc, xw, yc+ya, 2, p.c);
-			if (mb)
-			if (alt)  // move
-				;
-			else
+			Frame(x, yc, xw, yy, 2, p.c);
+
+			if (alt)  // move marker |
+			{
+				int x2 = x + p.xw/2;
+				d = xm < x2 ? -1 : 0;
+				if (!shift && !ctrl)  // |
+				{	if (xm < x2)
+						Rect(x-2,  y-5, x+1,  yy+5, mrk);
+					else
+						Rect(xw-1, y-5, xw+2, yy+5, mrk);
+					iPick = i;
+				}
+			}
+			if (mb && !alt)
 				SetCur(i);  // mouse pick
 		}
 
 		//  find match __
 		if (p.match)
 		{	++iFound;  // visible only
-			Rect(x, yc+ya-1, xw, yc+ya, 255,255,255);
+			Rect(x, yy-1, xw, yy, 255,255,255);
 		}
 		++i;
 	}
@@ -87,7 +102,40 @@ void App::Graph()
 	Rect(x0, 0, xMax, yMax, sldBack);
 	Rect(x0, y1, xMax, y2, sldView);  // visible area
 	Rect(x0, p1, xMax, p2, sldPos);  // cursor
+
+
+	if (alt)  // move marker -
+	if (shift)  // begin
+		Rect(xMin, 0, xMin+20, 2, mrk);
+	else
+	if (ctrl)  // end
+		Rect(xMin, yMax-2, xMin+20, yMax, mrk);
+
+	//  move  |[]
+	if (alt && mb && !mbo)
+		if (shift)  // begin
+		{
+			Pat p = li.pat[iCur];
+			li.pat.erase(li.pat.begin()+iCur);
+			li.pat.push_front(p);
+		}else
+		if (ctrl)  // end
+		{
+			Pat p = li.pat[iCur];
+			li.pat.erase(li.pat.begin()+iCur);
+			li.pat.push_back(p);
+		}else
+		if (iPick >= 0)
+		{	//  move
+			Pat p = li.pat[iCur];
+			li.pat.erase(li.pat.begin()+iCur);
+			if (iPick < iCur)  ++iPick;
+			li.pat.insert(li.pat.begin() + iPick + d, p);
+		}
+
+	mbo = mb;
 }
+
 
 //  Find
 //-----------------------------------------------------------------------------

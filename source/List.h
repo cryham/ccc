@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <deque>
 #include <SFML/Config.hpp>
 typedef sf::Uint8 byte;
 
@@ -59,7 +60,7 @@ class App;
 class List
 {
 public:
-	std::vector<Pat> pat;  // patterns
+	std::deque<Pat> pat;  // patterns
 	std::vector<int> lines;  // line offsets for patterns
 
 	std::set<sf::Uint32> clr;  // colors, for count

@@ -11,6 +11,7 @@ Currently you can:
 - Managing the list
   * edit, add, remove patterns
   * adjust color with R,G,B sliders
+  * search pattern names
 
 TODO (In future it will allow to):
 - managing
@@ -20,7 +21,6 @@ TODO (In future it will allow to):
   * group by id
   * sort by name, color, group
   * multi select, move, edit
-  * search pattern names
   * rating groups
 - import and export Total Commander's file: color.ini.
 - import with merge into current list

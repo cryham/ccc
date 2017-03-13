@@ -75,7 +75,7 @@ public:
 
 	//  dimensions
 	//--------------------------
-	int xm=0, ym=0, mb=0;   // mouse pos, btn
+	int xm=0, ym=0, mb=0, mbo=0;   // mouse pos, btn
 
 	int xWindow =600, yWindow =400, xSplit =200;   // screen size
 	void IncFont(int d);  // change font size
