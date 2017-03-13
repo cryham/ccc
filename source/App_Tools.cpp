@@ -88,6 +88,7 @@ void App::IncLine(int d, int end)
 		SetCur(end < 0 ? l : l-1);
 }
 
+//  home, end
 void App::First(bool ctrl)
 {
 	if (Check())  return;

@@ -109,6 +109,14 @@ void App::Gui()
 	//	e = SliderInt("Group", &ed.grp, -120, 120, "");  SameLine();  Text(i2s(ed.grp).c_str());  if (e && p)  p->grp = ed.grp;  // set
 		PopItemWidth();
 
+		Dummy(sep2);
+		Text("Search");
+		if (sFind[0]) {  SameLine();  Text("Found: %d / %d", iFound, iFoundAll);  }
+		PushItemWidth(180);
+		e = InputText("", sFind, sizeof(sFind));  SameLine();  if (e)  DoFind();
+		PopItemWidth();
+		e = Button("X");  if (e) {  sFind[0]=0;  DoFind();  }
+
 	}	break;
 
 
@@ -124,7 +132,7 @@ void App::Gui()
 		Text("Item X Spacing");
 		e = SliderFloat("", &set.fXMargin, 0.1f, 2.f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());
 		Text("Splitter");
-		e = DragFloat("", &set.fSplit, 1.f, 0.1f, 0.9f, "%4.2f");  if (e)  UpdSplit();  //-
+		e = InputFloat("", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();  //-
 		Dummy(sep);
 		PopItemWidth();
 
@@ -133,9 +141,9 @@ void App::Gui()
 		Dummy(sep);
 		Text("Project file");
 		e = InputText("", set.pathProj, sizeof(set.pathProj));
-		Text("DC doublecmd.xml location");
+		Text("doublecmd.xml location");
 		e = InputText("", set.pathDCxml, sizeof(set.pathDCxml));
-		Text("DC exe location");
+		Text("Double Commander executable");
 		e = InputText("", set.pathDCexe, sizeof(set.pathDCexe));
 		PopItemWidth();
 	}	break;

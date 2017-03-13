@@ -1,5 +1,7 @@
 #include "App.h"
 #include "Util.h"
+#include <string.h>
+using namespace std;
 
 
 //  Graphics draw  list
@@ -36,7 +38,9 @@ void App::Graph()
 	int i1 = i, yc;
 	const Pat& p0 = li.pat[i];
 
-	//  list  -----
+	iFound = 0;
+
+	//  list  ----------
 	while (i < ii)
 	{
 		const Pat& p = li.pat[i];
@@ -50,7 +54,7 @@ void App::Graph()
 
 		Txt(x, y);  // write
 
-		//  cursor
+		//  cursor []
 		yc = y+2;
 		if (i == iCur)  // current
 			Frame(x, yc, xw, yc+ya, 1, p.c);
@@ -60,12 +64,21 @@ void App::Graph()
 		{
 			Frame(x, yc, xw, yc+ya, 2, p.c);
 			if (mb)
+			if (alt)  // move
+				;
+			else
 				SetCur(i);  // mouse pick
+		}
+
+		//  find match __
+		if (p.match)
+		{	++iFound;  // visible only
+			Rect(x, yc+ya-1, xw, yc+ya, 255,255,255);
 		}
 		++i;
 	}
 
-	//  slider  pos, view size  -----
+	//  slider |  pos, view size  -----
 	const SClr sldBack(40,40,60), sldView(80,80,140), sldPos(230,230,255);
 	#define Y(y)  float(y) / ii * yMax
 	int y1 = Y(i1), y2 = Y(i),
@@ -74,4 +87,34 @@ void App::Graph()
 	Rect(x0, 0, xMax, yMax, sldBack);
 	Rect(x0, y1, xMax, y2, sldView);  // visible area
 	Rect(x0, p1, xMax, p2, sldPos);  // cursor
+}
+
+//  Find
+//-----------------------------------------------------------------------------
+void App::DoFind()
+{
+	//  find vars
+	iFoundAll = 0;
+	bool doFind = sFind[0] != 0;
+	string strFind;
+	if (doFind)
+		strFind = strlower(sFind);
+
+	int i = 0, ii = li.pat.size();
+	while (i < ii)
+	{
+		Pat& p = li.pat[i];
+		bool found = false;
+
+		//  find match __
+		if (doFind)
+		//if (p.s.find(sFind) != string::npos)  // case sens
+		if (strlower(p.s).find(strFind) != string::npos)  // case insens
+		{
+			++iFoundAll;
+			found = true;
+		}
+		p.match = found;
+		++i;
+	}
 }

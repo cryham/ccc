@@ -8,19 +8,19 @@ using namespace std;
 //  string utils
 //------------------------------------------------------------------
 
-std::string i2s(const int v, const char width)
+string i2s(const int v, const char width)
 {
-	std::ostringstream s;
+	ostringstream s;
 	if (width != 0)  s.width(width);  //s.fill(fill);
-	s << std::fixed << v;
+	s << fixed << v;
 	return s.str();
 }
 
-std::string f2s(const float v, const char precision, const char width)
+string f2s(const float v, const char precision, const char width)
 {
-	std::ostringstream s;
+	ostringstream s;
 	if (width != 0)  s.width(width);
-	s << std::fixed << std::setprecision(precision) << v;
+	s << fixed << setprecision(precision) << v;
 	return s.str();
 }
 
@@ -32,4 +32,12 @@ vector<string> split(const string& s, const string& reg)
 		first{s.begin(), s.end(), re, -1},  // -1 split
 		last;
 	return {first, last};
+}
+
+
+string strlower(const string& s)
+{
+	string ss = s;
+	transform(ss.begin(), ss.end(), ss.begin(), ::tolower);
+	return ss;
 }

@@ -53,6 +53,12 @@ public:
 	void StartDC();  // extras
 	Settings set;  //*  Settings
 
+	//  find
+	const static int maxPat = 64;
+	char sFind[maxPat]={0};
+	int iFound = 0, iFoundAll = 0;
+	void DoFind();
+
 
 	//  list operations
 	//--------------------------
@@ -80,7 +86,7 @@ public:
 	struct Ed
 	{
 		int r,g,b;  // clr
-		char pat[64], attr[12];
+		char pat[maxPat], attr[12];
 		bool dir, lnk, exe;
 		int grp;
 		Ed();

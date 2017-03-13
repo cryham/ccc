@@ -42,11 +42,13 @@ struct Pat
 
 	//  visual only,  not saved, computed by Update()
 	int x,y, xw, l;  // pos on screen, width, line
+	bool match;  // find
 
 	Pat()
 		:dir(false), lnk(false), exe(false)
 		,grp(0)
 		,x(0),y(0), xw(0), l(0)
+		,match(false)
 	{   }
 };
 
