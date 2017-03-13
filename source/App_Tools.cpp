@@ -66,22 +66,53 @@ void App::SetCur(int ic)
 	ed.exe = p.attr.find('x') != string::npos;
 }
 
-//  inc line  ^ v
-void App::IncLine(int d)
+void App::Move(bool shift, bool ctrl)
 {
+
+}
+
+
+//  inc line  ^ v
+void App::IncLine(int d, int end)
+{
+	if (Check())  return;
 	const Pat& p = li.pat[iCur];
 	int o = iCur - li.lines[p.l];  // ofs in cur line
 	int ls = li.lines.size()-1;
 	int l  = li.lines[std::max(0, std::min(ls, p.l+d))];
 //	int le = li.lines[std::max(0, std::min(ls, p.l+d+1))] - l;
 //	if (o > le)  o = le;
-	SetCur(l + o);
+	if (end==0)
+		SetCur(l + o);
+	else	// home or end
+		SetCur(end < 0 ? l : l-1);
+}
+
+void App::First(bool ctrl)
+{
+	if (Check())  return;
+	if (ctrl || li.lines.size()==1)
+	{	iCur = 0;  return;  }
+	IncLine(0,-1);
+}
+void App::Last(bool ctrl)
+{
+	if (Check())  return;
+	if (ctrl || li.lines.size()==1)
+	{	iCur = li.pat.size()-1;  return;  }
+	IncLine(1, 1);
 }
 
 
 //  add new  +++
 void App::AddPat(bool start, bool end)
 {
+	if (Check())
+	{	//  first
+		Pat p;  p.s = "new";
+		li.pat.push_back(p);
+		return;
+	}
 	Pat p = li.pat[iCur];  p.s = "new";
 	if (start)
 		li.pat.insert(li.pat.begin(), p);

@@ -88,8 +88,10 @@ public:
 
 	int iCur =0;  // list cursor id
 	void SetCur(int d);
+	void Move(bool shift, bool ctrl);
 
 	int line =0;  // page ofset lines
-	void IncLine(int d);
+	void IncLine(int d, int end=0);
+	void First(bool ctrl), Last(bool ctrl);  // home, end
 	List li;  //*  List
 };
