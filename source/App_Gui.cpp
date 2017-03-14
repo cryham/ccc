@@ -27,7 +27,7 @@ void App::Gui()
 	Dummy(sep);
 
 	//  unfocus gui,  keys for list
-	if (tab == Tab_List)
+	if (tab == Tab_List || bHelp)
 	{	sf::Event e;
 		e.type = sf::Event::MouseButtonPressed;
 		e.mouseButton.button = sf::Mouse::Left;
@@ -79,10 +79,10 @@ void App::Gui()
 		float x = q.x, y = q.y, z=40, sz=z+10;
 		ImColor c(ed.r, ed.g, ed.b);
 		dl->AddRectFilledMultiColor(ImVec2(x, y), ImVec2(x+z, y+z), c,c,c,c);
-		Dummy(ImVec2(sz, sz));
+		Dummy(ImVec2(sz, sz));  SameLine();  Text("%02X%02X%02X",ed.r,ed.g,ed.b);  // hex clr
 
 		//  r,g,b sliders  ==
-		PushItemWidth(260);  //PushAllowKeyboardFocus(false);
+		PushItemWidth(-120);  //PushAllowKeyboardFocus(false);
 		e = SliderInt("R", &ed.r, 0, 255, "");  SameLine();  Text(i2s(ed.r).c_str());  if (e && p)  p->c.r = ed.r;  // set
 		e = SliderInt("G", &ed.g, 0, 255, "");  SameLine();  Text(i2s(ed.g).c_str());  if (e && p)  p->c.g = ed.g;
 		e = SliderInt("B", &ed.b, 0, 255, "");  SameLine();  Text(i2s(ed.b).c_str());  if (e && p)  p->c.b = ed.b;
@@ -148,25 +148,11 @@ void App::Gui()
 		PopItemWidth();
 	}	break;
 
-
-	case Tab_Help:  // -----
-	{
-		const static ImVec4 c2(0.8f,0.9f,1.f,1.f);
-		TextColored(c2, "Crystal Color Center");
-		string s = "version ";  s += f2s(set.ver/100.f);
-		Text(s.c_str());
-		Dummy(sep);
-
-		Text("Ctrl-F1  Help");
-		Dummy(sep);
-		Text("F1  focus List");
-		Text("F2  focus Edit");
-
-		Dummy(sep);
-		Text("Ctr-F2  Settings");
-	}	break;
 	}
 	End();
+
+
+	if (bHelp)  Help();
 
 
 	//  debug  wnd  =====

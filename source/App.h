@@ -11,7 +11,7 @@ public:
 	//--------------------------
 	App();
 	bool Init();
-	void Graph(), Gui();
+	void Graph(), Gui(), Help();
 	void SetupGuiClr();
 
 	//  input events
@@ -40,9 +40,9 @@ public:
 
 	//  tabs  -----
 	enum ETabs {
-		Tab_Edit, Tab_List, Tab_Settings, Tab_Help, Tab_ALL };
+		Tab_Edit, Tab_List, Tab_Settings, Tab_ALL };
 	const char* tabNames[Tab_ALL] = {
-		"F1 Edit", "F2 List", "Settings", "Help"};
+		"F1 Edit", "F2 List", "Settings" };
 	int tab = 1;
 	bool edFocus = false;
 
@@ -78,6 +78,7 @@ public:
 	int xm=0, ym=0, mb=0, mbo=0;   // mouse pos, btn
 
 	int xWindow =600, yWindow =400, xSplit =200;   // screen size
+	bool bHelp = false;
 	void IncFont(int d);  // change font size
 
 

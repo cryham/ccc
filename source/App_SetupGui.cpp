@@ -23,7 +23,7 @@ void App::SetupGuiClr()
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.Colors[ImGuiCol_Text]                  = ImVec4(0.79f, 0.83f, 1.00f, 0.87f);
 	style.Colors[ImGuiCol_TextDisabled]          = ImVec4(0.59f, 0.62f, 0.75f, 0.51f);
-	style.Colors[ImGuiCol_WindowBg]              = ImVec4(0.03f, 0.03f, 0.08f, 0.70f);
+	style.Colors[ImGuiCol_WindowBg]              = ImVec4(0.03f, 0.03f, 0.08f, 0.90f);
 	style.Colors[ImGuiCol_ChildWindowBg]         = ImVec4(0.00f, 0.00f, 0.00f, 0.65f);
 	style.Colors[ImGuiCol_PopupBg]               = ImVec4(0.05f, 0.05f, 0.10f, 0.82f);
 	style.Colors[ImGuiCol_Border]                = ImVec4(0.13f, 0.13f, 0.20f, 0.81f);
@@ -33,7 +33,7 @@ void App::SetupGuiClr()
 	style.Colors[ImGuiCol_FrameBgActive]         = ImVec4(0.70f, 0.80f, 1.00f, 0.48f);
 	style.Colors[ImGuiCol_TitleBg]               = ImVec4(0.27f, 0.27f, 0.54f, 0.61f);
 	style.Colors[ImGuiCol_TitleBgCollapsed]      = ImVec4(0.40f, 0.40f, 0.80f, 0.45f);
-	style.Colors[ImGuiCol_TitleBgActive]         = ImVec4(0.32f, 0.32f, 0.63f, 0.29f);
+	style.Colors[ImGuiCol_TitleBgActive]         = ImVec4(0.32f, 0.32f, 0.63f, 0.89f);
 	style.Colors[ImGuiCol_MenuBarBg]             = ImVec4(0.45f, 0.45f, 0.55f, 0.19f);
 	style.Colors[ImGuiCol_ScrollbarBg]           = ImVec4(0.14f, 0.13f, 0.22f, 0.60f);
 	style.Colors[ImGuiCol_ScrollbarGrab]         = ImVec4(0.42f, 0.42f, 0.85f, 0.30f);

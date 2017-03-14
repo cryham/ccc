@@ -1,4 +1,6 @@
 #include "App.h"
+using namespace sf;
+
 #define  ret  return true;
 
 
@@ -12,7 +14,13 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	int d = alt ? 20 : ctrl ? 12 : shift ? 1 : 4;  // diff
 	int r = alt ? 10 : ctrl ? 4 : 1;
 
-	using namespace sf;
+
+	//  help ctrl-F1 toggle, esc close
+	if (key.code == Keyboard::F1 && ctrl ||
+		key.code == Keyboard::Escape && bHelp)
+	{	bHelp = 1-bHelp;  ret  }
+	if (bHelp)  ret
+
 
 	//  global keys
 	switch (key.code)
@@ -26,8 +34,10 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 
 		//  tab change --
-		case Keyboard::F1:  tab = ctrl||alt ? Tab_Help : Tab_Edit;  edFocus = true;  ret
-		case Keyboard::F2:  tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
+		case Keyboard::F1:
+			tab = Tab_Edit;  edFocus = true;  ret
+		case Keyboard::F2:
+			tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
 
 		//  load, save
 		case Keyboard::F8:
@@ -40,6 +50,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 	}
 
+	//  list only  ----
 	if (tab != Tab_List)
 		ret
 
@@ -95,6 +106,7 @@ void App::IncFont(int d)
 
 void App::Wheel(float d)
 {
+	if (bHelp)  return;
 	if (alt)
 	{	d *= ctrl ? 4 : shift ? 1 : 2;
 		IncFont(d);
@@ -107,7 +119,8 @@ void App::Wheel(float d)
 	if (line > lMax)  line = lMax;
 }
 
-//  utils  ----
+
+//  utils input  ----
 void App::Mouse(int x, int y)
 {
 	xm = x;  ym = y;
