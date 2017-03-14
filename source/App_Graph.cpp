@@ -39,7 +39,7 @@ void App::Graph()
 	const Pat& p0 = li.pat[i];
 
 	iFound = 0;
-	int iPick = -1, d = -1;
+	int iPick = -1;
 	const static SClr mrk(215,255,255);
 
 	//  list  ----------
@@ -69,18 +69,9 @@ void App::Graph()
 		{
 			Frame(x, yc, xw, yy, 2, p.c);
 
-			if (alt)  // move marker |
-			{
-				int x2 = x + p.xw/2;
-				d = xm < x2 ? -1 : 0;
-				if (!shift && !ctrl)  // |
-				{	if (xm < x2)
-						Rect(x-2,  y-5, x+1,  yy+5, mrk);
-					else
-						Rect(xw-1, y-5, xw+2, yy+5, mrk);
-					iPick = i;
-				}
-			}
+			if (alt && !shift && !ctrl)
+				iPick = i;  // move marker |
+
 			if (mb && !alt)
 				SetCur(i);  // mouse pick
 		}
@@ -111,28 +102,21 @@ void App::Graph()
 	if (ctrl)  // end
 		Rect(xMin, yMax-2, xMin+20, yMax, mrk);
 
-	//  move  |[]
+	//  move  []<-
 	if (alt && mb && !mbo)
-		if (shift)  // begin
-		{
-			Pat p = li.pat[iCur];
-			li.pat.erase(li.pat.begin()+iCur);
-			li.pat.push_front(p);
-		}else
-		if (ctrl)  // end
-		{
-			Pat p = li.pat[iCur];
-			li.pat.erase(li.pat.begin()+iCur);
-			li.pat.push_back(p);
-		}else
-		if (iPick >= 0)
-		{	//  move
-			Pat p = li.pat[iCur];
-			li.pat.erase(li.pat.begin()+iCur);
-			if (iPick < iCur)  ++iPick;
-			li.pat.insert(li.pat.begin() + iPick + d, p);
-		}
+	if (shift || ctrl || iPick >= 0)
+	{
+		//  common
+		Pat p = li.pat[iCur];  // cur copy
+		li.pat.erase(li.pat.begin()+iCur);  // del
 
+		if (shift)
+			li.pat.push_front(p);  // begin
+		else if (ctrl)
+			li.pat.push_back(p);  // end
+		else
+			li.pat.insert(li.pat.begin() + iPick, p);  // pick pos
+	}
 	mbo = mb;
 }
 
