@@ -38,12 +38,12 @@ void App::SetClr()
 }
 
 //  toggle
-void App::InvDir()
+/*void App::InvDir()
 {
 	if (Check())  return;
 	li.pat[iCur].dir = li.pat[iCur].dir;
 	ed.dir = li.pat[iCur].dir;  // set gui
-}
+}/**/
 
 
 //  set cursor, set gui from list  * * *

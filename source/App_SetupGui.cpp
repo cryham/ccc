@@ -64,5 +64,22 @@ void App::SetupGuiClr()
 	style.Colors[ImGuiCol_PlotHistogramHovered]  = ImVec4(0.55f, 0.76f, 1.00f, 1.00f);
 	style.Colors[ImGuiCol_TextSelectedBg]        = ImVec4(0.13f, 0.20f, 0.76f, 0.47f);
 	style.Colors[ImGuiCol_ModalWindowDarkening]  = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
+}
 
+//  separator line
+const ImVec4 App::cl2(0.6f,0.65f,0.7f, 0.7f);
+const ImVec4 App::cl0(0.6f,0.65f,0.7f, 0.5f);
+
+
+//  gui util  -----
+void App::Sep(int y)
+{
+	Dummy(ImVec2(50, y));
+}
+
+void App::Line(const ImVec4& cl)
+{
+	PushStyleColor(ImGuiCol_Border, cl);
+	Separator();  Sep(5);
+	PopStyleColor();
 }

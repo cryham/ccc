@@ -2,6 +2,7 @@
 #include "AppDraw.h"
 #include "Settings.h"
 #include "List.h"
+#include "../libs/imgui.h"  // ImVec4
 
 
 class App : public AppDraw
@@ -12,7 +13,7 @@ public:
 	App();
 	bool Init();
 	void Graph(), Gui(), Help();
-	void SetupGuiClr();
+
 
 	//  input events
 	//--------------------------
@@ -25,6 +26,13 @@ public:
 	void Mouse(int x, int y);
 	void Wheel(float d);
 	void Resize(int x, int y), UpdSplit();
+
+
+	//  gui util  -----
+	void SetupGuiClr();
+	void Sep(int y);
+	void Line(const ImVec4& cl);
+	const static ImVec4 cl2, cl0;
 
 
 	//  status info  -----
@@ -66,11 +74,11 @@ public:
 	SClr copyClr;
 	void CopyClr(), SetClr();  // copy and paste color
 
-	//  toggle
-	void InvDir();
 	//  add, del
 	void AddPat(bool start=false, bool end=false);
 	void DelPat();
+	//  toggle
+	//void InvDir();
 
 
 	//  dimensions

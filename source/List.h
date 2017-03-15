@@ -37,19 +37,21 @@ struct Pat
 	std::string s;  // eg. *.cpp
 	SClr c;
 
-	bool dir, lnk, exe;   // attributes
 	std::string attr;
-	char grp;  // group for sorting..
+//	bool dir, lnk, exe;   //todo attributes..
+//	char grp;  //todo group for sorting..
 
 	//  visual only,  not saved, computed by Update()
 	int x,y, xw, l;  // pos on screen, width, line
+
 	bool match;  // find
+	bool sel;  // selected
 
 	Pat()
-		:dir(false), lnk(false), exe(false)
-		,grp(0)
-		,x(0),y(0), xw(0), l(0)
-		,match(false)
+		:x(0),y(0), xw(0), l(0)
+		,match(false), sel(false)
+//		,dir(false), lnk(false), exe(false)
+//		,grp(0)
 	{   }
 };
 

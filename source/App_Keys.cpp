@@ -40,14 +40,15 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 			tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
 
 		//  load, save
-		case Keyboard::F8:
-			if (ctrl)	{	li.Default();  ret  }  // clear
-			else		{	SaveDC();  ret  }
-		case Keyboard::F9:  LoadDC();  ret
-
 		case Keyboard::F4:  Save();  ret
 		case Keyboard::F5:  Load();  ret
 
+		case Keyboard::F8:  SaveDC();  ret
+		case Keyboard::F9:
+			if (ctrl)	{	li.Default();  ret  }  // clear
+			else		{	LoadDC();  ret  }
+
+		case Keyboard::F7:  StartDC();  ret
 	}
 
 	//  list only  ----
@@ -82,7 +83,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::V:  SetClr();  ret
 
 		//  toggle checks
-		case Keyboard::D:  InvDir();  ret
+		//case Keyboard::D:  InvDir();  ret
 
 		//  add, del
 		//case Keyboard::A:		AddPat(shift, ctrl);  ret

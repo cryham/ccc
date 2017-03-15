@@ -64,7 +64,7 @@ void App::Graph()
 			Frame(x, yc, xw, yy, 1, p.c);
 		}
 		else  // mouse over []
-		if (!bHelp && tab == Tab_List)  //+
+		if (tab == Tab_List && !bHelp)  //+
 		if (xm >= x && xm < xw && ym >= y && ym < y+ya)
 		{
 			Frame(x, yc, xw, yy, 2, p.c);
@@ -77,7 +77,7 @@ void App::Graph()
 		}
 
 		//  find match __
-		if (p.match &&!bHelp)
+		if (p.match && !bHelp)
 		{	++iFound;  // visible only
 			Rect(x, yy-1, xw, yy, 255,255,255);
 		}

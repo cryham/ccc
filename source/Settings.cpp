@@ -45,7 +45,7 @@ void Settings::Default()
 	char username[UNLEN+1];
 	DWORD username_len = UNLEN+1;
 	GetUserName(username, &username_len);
-	string usr = string("c:\\Users\\")+username+"\\AppData\\Roaming\\doublecmd";
+	string usr = string("c:\\Users\\")+username+"\\AppData\\Roaming\\doublecmd\\doublecmd.xml";
 	strcpy(pathDCxml, usr.c_str());
 
 	strcpy(pathDCexe, "c:\\Program Files\\Double Commander\\doublecmd.exe");

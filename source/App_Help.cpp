@@ -6,7 +6,7 @@ using namespace ImGui;
 using namespace std;
 
 
-//  Gui draw and process
+//  Help window
 ///-----------------------------------------------------------------------------
 void App::Help()
 {
@@ -17,11 +17,8 @@ void App::Help()
 		cl2(0.6f,0.65f,0.7f, 0.7f);
 
 	//  utils
-	#define Sep(y)  Dummy(ImVec2(50, y))
-	#define H(k,t)  TextColored(c1, k);  SameLine(110);  TextColored(c2, t);
+	#define H(k,t)   TextColored(c1, k);  SameLine(110);  TextColored(c2, t);
 	#define H3(k,t)  TextColored(c2, k);  SameLine(110);  TextColored(c3, t);
-	#define Line(cl)  PushStyleColor(ImGuiCol_Border, cl);  \
-		Separator();  Sep(5);  PopStyleColor();
 
 
 	//  center wnd
@@ -61,10 +58,11 @@ void App::Help()
 	H("F5", "Reload project");
 
 	Sep(10);
-	H("Ctr-F8", "New, clear");
+	H("Ctr-F9", "New, clear");
 	Sep(10);
 	H("F8", "Export to DC");
 	H("F9", "Import from DC");
+	H("F7", "Start DC");
 
 //--  column 2
 	EndChild();  SameLine();
@@ -73,7 +71,8 @@ void App::Help()
 	//  arrows, cursor move
 	TextColored(c0, "Navigation");
 	Line(cl2);
-	H("Arrows", "move cursor");
+	H("Arrows or LMB", "");
+	H("", "move cursor");
 
 	//  page, line offset
 	Sep(5);
@@ -91,6 +90,9 @@ void App::Help()
 	H3("", "shift at top, ctrl at end");
 	//Sep(5);
 	H("alt-Del", "Delete current");
+	Sep(5);
+	H("alt-LMB", "Move current");
+	H("", "pattern to cursor");
 
 //--  column 3
 	EndChild();  SameLine();
