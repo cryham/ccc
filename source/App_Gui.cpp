@@ -7,6 +7,19 @@ using namespace ImGui;
 using namespace SFML;
 
 
+void RGBtoHSV(int r, int g, int b,  int& h, int& s, int& v)
+{
+	float fh, fs, fv;
+	ColorConvertRGBtoHSV(r/255.f, g/255.f, b/255.f, fh, fs, fv);
+	h = fh*255.f;  s = fs*255.f;  v = fv*255.f;
+}
+void HSVtoRGB(int h, int s, int v,  int& r, int& g, int& b)
+{
+	float fr, fg, fb;
+	ColorConvertHSVtoRGB(h/255.f, s/255.f, v/255.f, fr, fg, fb);
+	r = fr*255.f;  g = fg*255.f;  b = fb*255.f;
+}
+
 
 //  Gui draw and process
 ///-----------------------------------------------------------------------------
@@ -77,6 +90,20 @@ void App::Gui()
 		e |= SliderInt("B", &ed.b, 0, 255, "");  SameLine();  Text(("B  "+i2s(ed.b)).c_str());
 		if (e && p)  SetClr();
 
+		//  h,s,v sliders  ..
+		#if 0
+		Sep(10);
+		int ih, is, iv;  bool eh, es, ev;
+		RGBtoHSV(ed.r, ed.g, ed.b, ih, is, iv);
+		eh = SliderInt("H", &ih, 0, 255, "");  SameLine();  Text(i2s(ih).c_str());
+		es = SliderInt("S", &is, 0, 255, "");  SameLine();  Text(i2s(is).c_str());
+		ev = SliderInt("V", &iv, 0, 255, "");  SameLine();  Text(i2s(iv).c_str());
+		if (p && (eh || es || ev))
+		{
+			int r, g, b;
+			HSVtoRGB(ih, is, iv, r, g, b);
+			p->c.r = ed.r = r;  p->c.g = ed.g = g;  p->c.b = ed.b = b;
+		}
 		PopItemWidth();
 		#endif
 
