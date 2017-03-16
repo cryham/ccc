@@ -2,11 +2,10 @@
 #include "../libs/imgui-SFML.h"
 #include "App.h"
 #include "Util.h"
-using namespace std;
-using namespace ImGui;
-using namespace SFML;
+using namespace std;  using namespace ImGui;  using namespace SFML;
 
 
+#if 0
 void RGBtoHSV(int r, int g, int b,  int& h, int& s, int& v)
 {
 	float fh, fs, fv;
@@ -19,7 +18,7 @@ void HSVtoRGB(int h, int s, int v,  int& r, int& g, int& b)
 	ColorConvertHSVtoRGB(h/255.f, s/255.f, v/255.f, fr, fg, fb);
 	r = fr*255.f;  g = fg*255.f;  b = fb*255.f;
 }
-
+#endif
 
 //  Gui draw and process
 ///-----------------------------------------------------------------------------
@@ -42,7 +41,7 @@ void App::Gui()
 
 
 	//  unfocus gui,  keys for list
-	/*if (tab == Tab_List || bHelp)
+	if (tab == Tab_List || bHelp)
 	{	sf::Event e;
 		e.type = sf::Event::MouseButtonPressed;
 		e.mouseButton.button = sf::Mouse::Left;
@@ -50,11 +49,11 @@ void App::Gui()
 		ProcessEvent(e);
 		e.type = sf::Event::MouseButtonReleased;
 		ProcessEvent(e);
-	}/**/
+	}
 
 	switch (tab)
 	{
-	case Tab_List:  //  -------------------------
+	case Tab_List:
 	case Tab_Edit:
 	{
 		//  Properties title
@@ -90,7 +89,7 @@ void App::Gui()
 		e |= SliderInt("B", &ed.b, 0, 255, "");  SameLine();  Text(("B  "+i2s(ed.b)).c_str());
 		if (e && p)  SetClr();
 
-		//  h,s,v sliders  ..
+		//  h,s,v sliders  todo floats..
 		#if 0
 		Sep(10);
 		int ih, is, iv;  bool eh, es, ev;
@@ -120,7 +119,7 @@ void App::Gui()
 		if (e && p)  p->attr = ed.attr;  // set
 		PopItemWidth();
 
-		//  group todo sort
+		//  group  todo sort
 		/*Sep(20);
 		PushItemWidth(80);
 		e = DragInt("Group", &ed.grp, 0.1f);  ed.grp = std::min(10, std::max(-10, ed.grp));
@@ -148,8 +147,8 @@ void App::Gui()
 		Text("Project");  Sep(5);
 		e = Button("F4 Save");    if (e)  Save();  SameLine();
 		e = Button("F5 Reload");  if (e)  Load();
-		///  status  -----
-		Status& st = status;
+
+		Status& st = status;  //  status  ----
 		if (!st.txt.empty() && st.cnt < st.end)
 		{	SameLine(0, 20);
 			TextColored(ImColor::HSV(st.hue, 0.5f, 1.f-float(st.cnt)/st.end),
@@ -157,15 +156,15 @@ void App::Gui()
 			++st.cnt;
 		}
 		Sep(5);
-		Text("DC");  Sep(5);
+		Text("Double Commander ");  Sep(5);
 		e = Button("F8 Export");  if (e)  SaveDC();  SameLine();
 		e = Button("F9 Import");  if (e)  LoadDC();
 
 	}	break;
 
 
-	case Tab_Settings:  // -----
-	{
+	case Tab_Settings:
+	{	//---------------------------------------------
 		PushItemWidth(xSplit-100);
 		Text("Dimensions");
 		Sep(20);
@@ -176,7 +175,7 @@ void App::Gui()
 		Text("Item X Spacing");  float f = set.fXMargin;
 		e = SliderFloat("X", &f, 0.1f, 2.f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
 		Text("Splitter");
-		PushItemWidth(140);
+		PushItemWidth(170);
 		e = InputFloat("S", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();  //-
 		PopItemWidth();
 		Sep(20);
@@ -200,7 +199,6 @@ void App::Gui()
 		e = Button("Save");  if (e)  set.Save();
 		Sep(20);
 		e = Button("Defaults");  if (e)  set.Default();
-		/**/
 	}	break;
 
 	}
@@ -210,31 +208,30 @@ void App::Gui()
 	if (bHelp)  Help();
 
 
-	//  debug  wnd  =====
+	//  debug  wnd
+	//---------------------------------------------
 	SetNextWindowPos( ImVec2(0, yWindow-yDbg),  ImGuiSetCond_Always);
 	SetNextWindowSize(ImVec2(xSplit, yDbg), ImGuiSetCond_Always);
-
 	Begin("Status", &open, wfl);
 
-	string s =  // -----
+	string s =  // info
 		"Patterns: " + i2s(li.pat.size()) +
-		"  Colors: " + i2s(li.clr.size());
+		//"  Colors: " + i2s(li.clr.size()) +
+		"   Lines: " + i2s(li.lines.size());
 	Text(s.c_str());
-	Sep(20);
 
-	if (TreeNode("Debug"))
-	{
+	Sep(10);  Line(cl0);  //Sep(5);
+
+	if (TreeNode("Debug"))  // hidden
+	{	Sep(5);
 		string s;
 		s = "Cur: " + i2s(iCur) + "  Line: " + i2s(line);
 		Text(s.c_str());
-		s = "iCur: " + i2s(xSplit) + " xe: " + i2s(xWindow) + " | ye: " + i2s(yWindow);
+		s = "xs: " + i2s(xSplit) + "  xe: " + i2s(xWindow) + "  ye: " + i2s(yWindow);
 		Text(s.c_str());
-		s = "xs: " + i2s(xSplit) + " xe: " + i2s(xWindow) + " | ye: " + i2s(yWindow);
-		Text(s.c_str());
-		s = "xm: " + i2s(xm) + " ym: " + i2s(ym) + " mb: " + i2s(mb);
+		s = "xm: " + i2s(xm) + "  ym: " + i2s(ym) + "  mb: " + i2s(mb);
 		Text(s.c_str());
 		TreePop();
 	}
-
 	End();
 }

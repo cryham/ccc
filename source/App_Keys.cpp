@@ -39,6 +39,9 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F2:
 			tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
 
+		case Keyboard::F3:
+			tab = Tab_Settings;  ret
+
 		//  load, save
 		case Keyboard::F4:  Save();  ret
 		case Keyboard::F5:  Load();  ret
@@ -58,8 +61,8 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	switch (key.code)
 	{
 		//  arrows, cursor move
-		case Keyboard::Left:  if (alt)  Move(shift,ctrl);  else  SetCur(iCur-r);  ret
-		case Keyboard::Right: if (alt)  Move(shift,ctrl);  else  SetCur(iCur+r);  ret
+		case Keyboard::Left:  /*if (alt)  Move(shift,ctrl);  else*/  SetCur(iCur-r);  ret
+		case Keyboard::Right: /*if (alt)  Move(shift,ctrl);  else*/  SetCur(iCur+r);  ret
 
 		case Keyboard::Up:	  IncLine(-r);  ret
 		case Keyboard::Down:  IncLine( r);  ret
@@ -80,7 +83,11 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		//  color
 		case Keyboard::C:  CopyClr();  ret
 		case Keyboard::S:
-		case Keyboard::V:  SetClr();  ret
+		case Keyboard::V:  PasteClr();  ret
+
+		//  find
+		case Keyboard::F:
+			tab = Tab_Edit;  findFocus = true;  ret
 
 		//  toggle checks
 		//case Keyboard::D:  InvDir();  ret
@@ -125,6 +132,11 @@ void App::Wheel(float d)
 void App::Mouse(int x, int y)
 {
 	xm = x;  ym = y;
+	if (tab == Tab_Edit && xm > xSplit)
+		tab = Tab_List;
+	else
+	if (tab == Tab_List && xm < xSplit)
+		tab = Tab_Edit;
 }
 
 void App::Mods(const sf::Event::KeyEvent& key)

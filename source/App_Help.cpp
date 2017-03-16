@@ -2,8 +2,7 @@
 #include "../libs/imgui-SFML.h"
 #include "App.h"
 #include "Util.h"
-using namespace ImGui;
-using namespace std;
+using namespace std;  using namespace ImGui;
 
 
 //  Help window
@@ -50,7 +49,7 @@ void App::Help()
 
 	Sep(10);
 	H("Ctrl-F1", "Help window");
-	H("Ctrl-F2", "Settings tab");
+	H("F3", "Settings tab");
 
 	//  load, save
 	Sep(20);
@@ -60,8 +59,9 @@ void App::Help()
 	Sep(10);
 	H("Ctr-F9", "New, clear");
 	Sep(10);
-	H("F8", "Export to DC");
 	H("F9", "Import from DC");
+	Sep(5);
+	H("F8", "Export to DC");
 	H("F7", "Start DC");
 
 //--  column 2
@@ -103,7 +103,9 @@ void App::Help()
 	Line(cl2);
 	H("alt-C", "copy color");
 	H("alt-S or V", "paste color");
-	H("alt-D", "toggle dir");
+	//H("alt-D", "toggle dir");
+	Sep(10);
+	H("alt-F", "focus search");
 
 	Sep(10);
 	H("F11, F12 or alt-Wheel", "");
