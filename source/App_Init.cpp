@@ -43,8 +43,7 @@ bool App::Init()
 	SetupGuiClr();
 	li.SetApp(this);
 
-//	LoadDC();
-	li.LoadDC("doublecmd.xml");
+	Load();  // load last proj
 
 	return true;
 }

@@ -4,8 +4,7 @@
 #include "../libs/tinyxml2.h"
 #include "Util.h"
 #include "App.h"
-using namespace std;
-using namespace tinyxml2;
+using namespace std;  using namespace tinyxml2;
 
 
 //  ctor

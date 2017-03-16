@@ -11,8 +11,9 @@ void App::SetupGuiClr()
 	st.WindowPadding = ImVec2(20,6);
 	st.WindowMinSize = ImVec2(100,20);
 	st.WindowRounding = 5;  st.ChildWindowRounding = 1;
-	st.FramePadding = ImVec2(5,2);  st.FrameRounding = 0;
-	st.ItemSpacing  = ImVec2(11,3);  //`
+//	st.FramePadding = ImVec2(5,2);  st.FrameRounding = 0;
+	st.FramePadding = ImVec2(12,3);  st.FrameRounding = 0;
+	st.ItemSpacing  = ImVec2(11,5);  //`
 	st.ItemInnerSpacing = ImVec2(11,4);
 	st.IndentSpacing = 14.f;
 	st.ColumnsMinSpacing = 21.f;

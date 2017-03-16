@@ -6,9 +6,7 @@
 #include <SFML/Window.hpp>
 #include "Settings.h"
 #include "../libs/tinyxml2.h"
-//#include "Util.h"
-using namespace std;
-using namespace tinyxml2;
+using namespace std;  using namespace tinyxml2;
 
 
 //  ctor
@@ -28,6 +26,7 @@ void Settings::GetWndDim(sf::Window* wnd)
 	xwSize = wnd->getSize().x;
 	ywSize = wnd->getSize().y;
 }
+
 
 //  Defaults, init paths
 //------------------------------------------------------------------------------------------------

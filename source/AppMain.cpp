@@ -3,9 +3,8 @@
 #include "../libs/imgui-SFML.h"
 #include "AppMain.h"
 #include "App.h"
-using namespace ImGui::SFML;
-using namespace sf;
-using namespace std;
+using namespace std;  using namespace sf;  using namespace ImGui::SFML;
+
 
 
 AppMain::AppMain()
