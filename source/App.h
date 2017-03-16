@@ -50,9 +50,9 @@ public:
 	enum ETabs {
 		Tab_Edit, Tab_List, Tab_Settings, Tab_ALL };
 	const char* tabNames[Tab_ALL] = {
-		"F1 Edit", "F2 List", "Settings" };
+		"F1 Edit", "F2 List", "F3 Settings" };
 	int tab = 1;
-	bool edFocus = false;
+	bool edFocus = false, findFocus = false;
 
 
 	//  project
@@ -72,13 +72,14 @@ public:
 	//--------------------------
 	bool Check();  // true if empty, quit all operations
 	SClr copyClr;
-	void CopyClr(), SetClr();  // copy and paste color
+	void CopyClr(), PasteClr();  // copy and paste color
 
 	//  add, del
 	void AddPat(bool start=false, bool end=false);
 	void DelPat();
 	//  toggle
 	//void InvDir();
+	void SetClr(bool line=true);
 
 
 	//  dimensions
@@ -103,7 +104,6 @@ public:
 
 	int iCur =0;  // list cursor id
 	void SetCur(int d);
-	void Move(bool shift, bool ctrl);
 
 	int line =0;  // page ofset lines
 	void IncLine(int d, int end=0);

@@ -29,12 +29,12 @@ void App::CopyClr()
 	status.Set("Copy color", 0.6f);
 }
 
-void App::SetClr()
+void App::PasteClr()
 {
 	if (Check())  return;
 	li.pat[iCur].c = copyClr;
 
-	status.Set("Set color", 0.6f);
+	status.Set("Paste color", 0.6f);
 }
 
 //  toggle
@@ -66,11 +66,6 @@ void App::SetCur(int ic)
 	ed.exe = p.attr.find('x') != string::npos;
 }
 
-void App::Move(bool shift, bool ctrl)
-{
-
-}
-
 
 //  inc line  ^ v
 void App::IncLine(int d, int end)
@@ -87,6 +82,23 @@ void App::IncLine(int d, int end)
 	else	// home or end
 		SetCur(end < 0 ? l : l-1);
 }
+
+//  set colors in line
+void App::SetClr(bool line)
+{
+	int a = iCur, b = iCur+1;
+	if (line)
+	{
+		const Pat& p = li.pat[iCur];
+		a = li.lines[p.l];  // begin of cur line
+		int ls = li.lines.size()-1, l1 = p.l+1;
+		b = l1 <= ls ? li.lines[l1] : li.pat.size();  // end of cur line
+	}
+	SClr ec(ed.r, ed.g, ed.b);
+	for (int i=a; i<b; ++i)
+		li.pat[i].c = ec;
+}
+
 
 //  home, end
 void App::First(bool ctrl)
