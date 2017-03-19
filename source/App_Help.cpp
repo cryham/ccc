@@ -63,6 +63,9 @@ void App::Help()
 	Sep(5);
 	H("F8", "Export to DC");
 	H("F7", "Start DC");
+	Sep(5);
+	H("alt-F9", "Import from TC");
+	H("alt-F8", "Export to TC");
 
 //--  column 2
 	EndChild();  SameLine();

@@ -81,10 +81,11 @@ public:
 	void SetApp(App* p) {  app = p;  }
 
 	//  load, import
-	bool LoadDC(const char* file);  // from DC doublecmd.xml
+	bool LoadDC(const char* file);  // DC doublecmd.xml
 	bool SaveDC(const char* file);
 
-	bool ImportTC(std::string file);  // TC color.ini
+	bool LoadTC(const char* file);  // TC color.ini
+	bool SaveTC(const char* file);
 
 	//  project file, own
 	bool Load(const char* file);

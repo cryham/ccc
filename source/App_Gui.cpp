@@ -144,10 +144,7 @@ void App::Gui()
 		e = Button("X");  if (e) {  sFind[0]=0;  DoFind();  }
 
 		Sep(20);  Line(cl0);  Sep(10);
-		Text("Project");  Sep(5);
-		e = Button("F4 Save");    if (e)  Save();  SameLine();
-		e = Button("F5 Reload");  if (e)  Load();
-
+		Text("Project");
 		Status& st = status;  //  status  ----
 		if (!st.txt.empty() && st.cnt < st.end)
 		{	SameLine(0, 20);
@@ -156,9 +153,15 @@ void App::Gui()
 			++st.cnt;
 		}
 		Sep(5);
+		e = Button("F4 Save");    if (e)  Save();  SameLine();
+		e = Button("F5 Reload");  if (e)  Load();
+
+		Sep(5);
 		Text("Double Commander ");  Sep(5);
 		e = Button("F8 Export");  if (e)  SaveDC();  SameLine();
 		e = Button("F9 Import");  if (e)  LoadDC();
+		Sep(5);
+		Text("alt for Total Commander");
 
 	}	break;
 
@@ -191,6 +194,8 @@ void App::Gui()
 		e = InputText("DCxml", set.pathDCxml, sizeof(set.pathDCxml));
 		Sep(5);  Text("Double Commander executable");
 		e = InputText("DCexe", set.pathDCexe, sizeof(set.pathDCexe));
+		Sep(5);  Text("Total commander color.ini location");
+		e = InputText("TCini", set.pathTCini, sizeof(set.pathTCini));
 		PopItemWidth();
 
 		Sep(20);
@@ -221,9 +226,11 @@ void App::Gui()
 	Text(s.c_str());
 
 	Sep(10);  Line(cl0);  //Sep(5);
+	e = Button("Ctrl-F1  Help");  if (e)  bHelp = 1-bHelp;
+	Sep(5);
 
 	if (TreeNode("Debug"))  // hidden
-	{	Sep(5);
+	{	Sep(3);
 		string s;
 		s = "Cur: " + i2s(iCur) + "  Line: " + i2s(line);
 		Text(s.c_str());

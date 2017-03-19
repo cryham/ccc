@@ -16,6 +16,7 @@ Settings::Settings()
 	memset(pathProj,0,sizeof(pathProj));
 	memset(pathDCxml,0,sizeof(pathDCxml));
 	memset(pathDCexe,0,sizeof(pathDCexe));
+	memset(pathTCini,0,sizeof(pathTCini));
 	Default();
 }
 
@@ -48,6 +49,8 @@ void Settings::Default()
 	strcpy(pathDCxml, usr.c_str());
 
 	strcpy(pathDCexe, "c:\\Program Files\\Double Commander\\doublecmd.exe");
+
+	strcpy(pathTCini, "color.ini");
 #else
 	//todo
 	strcpy(pathDC, "");
@@ -80,6 +83,7 @@ bool Settings::Load()
 	e = root->FirstChildElement("pathProj");   if (e){  a = e->Attribute("p");  if (a)  strcpy(pathProj,a);  }
 	e = root->FirstChildElement("pathDCexe");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCexe,a);  }
 	e = root->FirstChildElement("pathDCxml");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCxml,a);  }
+	e = root->FirstChildElement("pathTCini");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathTCini,a);  }
 
 	e = root->FirstChildElement("dim");
 	if (e)
@@ -95,7 +99,6 @@ bool Settings::Load()
 		a = e->Attribute("sx");  if (a)  xwSize = atoi(a);
 		a = e->Attribute("sy");  if (a)  ywSize = atoi(a);
 	}
-
 	return true;
 }
 
@@ -112,6 +115,7 @@ bool Settings::Save()
 	e = xml.NewElement("pathProj");   e->SetAttribute("p", pathProj);  root->InsertEndChild(e);
 	e = xml.NewElement("pathDCexe");  e->SetAttribute("p", pathDCexe);  root->InsertEndChild(e);
 	e = xml.NewElement("pathDCxml");  e->SetAttribute("p", pathDCxml);  root->InsertEndChild(e);
+	e = xml.NewElement("pathTCini");  e->SetAttribute("p", pathTCini);  root->InsertEndChild(e);
 
 	e = xml.NewElement("dim");
 	e->SetAttribute("fSplit", fSplit);

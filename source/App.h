@@ -59,7 +59,10 @@ public:
 	bool Load(), Save();
 	bool LoadDC(), SaveDC();
 	void StartDC();  // extras
+	bool LoadTC(), SaveTC();
+
 	Settings set;  //*  Settings
+
 
 	//  find
 	const static int maxPat = 64;

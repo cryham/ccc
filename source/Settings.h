@@ -27,6 +27,8 @@ public:
 	char pathDCxml[PathLen]={0};  // doublecmd.xml to save into
 	char pathDCexe[PathLen]={0};  // to start DC
 
+	char pathTCini[PathLen]={0};  // TC color.ini
+
 
 	//  dimensions  -----
 	float fSplit = 0.27f;   // splitter 0..1

@@ -149,6 +149,12 @@ void App::DelPat()
 	SetCur(iCur);
 }
 
+void App::Erase(int a, int b)
+{
+	for (int i=b-1; i>=a; --i)
+		li.pat.erase(li.pat.begin()+i);
+}
+
 
 //  Find
 //-----------------------------------------------------------------------------
@@ -183,11 +189,6 @@ void App::DoFind()
 
 ///  Move  in list
 //-----------------------------------------------------------------------------
-void App::Erase(int a, int b)
-{
-	for (int i=b-1; i>=a; --i)
-		li.pat.erase(li.pat.begin()+i);
-}
 void App::Move()
 {
 	//  Move  line

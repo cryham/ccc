@@ -46,10 +46,10 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F4:  Save();  ret
 		case Keyboard::F5:  Load();  ret
 
-		case Keyboard::F8:  SaveDC();  ret
+		case Keyboard::F8:  if (alt)  SaveTC();  else  SaveDC();  ret
 		case Keyboard::F9:
 			if (ctrl)	{	li.Default();  ret  }  // clear
-			else		{	LoadDC();  ret  }
+			else		{	if (alt)  LoadTC();  else  LoadDC();  ret  }
 
 		case Keyboard::F7:  StartDC();  ret
 	}

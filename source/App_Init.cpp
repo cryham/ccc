@@ -60,31 +60,41 @@ void App::StartDC()
 #endif
 }
 
-//  Load, Save, status
+//  Load, Save
 //----------------------------------
 bool App::Load()
 {
 	bool er = !li.Load(set.pathProj);
-	status.Set(er ? "Load error!" : "Loaded.",
-		er ? 0.2f : 0.42f);
+	status.Set(er ? "Load error!" : "Loaded.", er ? 0.2f : 0.42f);
 }
 bool App::Save()
 {
 	bool er = !li.Save(set.pathProj);
-	status.Set(er ? "Save error!" : "Saved.",
-		er ? 0.f : 0.55f);
+	status.Set(er ? "Save error!" : "Saved.", er ? 0.f : 0.55f);
 }
 
+//  DC  ----
 bool App::LoadDC()
 {
 	bool er = !li.LoadDC(set.pathDCxml);
-	status.Set(er ? "Load DC error!" : "Loaded DC.",
-		er ? 0.2f : 0.42f);
+	status.Set(er ? "Load DC error!" : "Loaded DC.", er ? 0.2f : 0.42f);
 }
 
 bool App::SaveDC()
 {
 	bool er = !li.SaveDC(set.pathDCxml);
-	status.Set(er ? "Save DC error!" : "Saved DC.",
-		er ? 0.f : 0.55f);
+	status.Set(er ? "Save DC error!" : "Saved DC.", er ? 0.f : 0.55f);
+}
+
+//  TC  ----
+bool App::LoadTC()
+{
+	bool er = !li.LoadTC(set.pathTCini);
+	status.Set(er ? "Load TC error!" : "Loaded TC.", er ? 0.2f : 0.42f);
+}
+
+bool App::SaveTC()
+{
+	bool er = !li.SaveTC(set.pathTCini);
+	status.Set(er ? "Save TC error!" : "Saved TC.", er ? 0.f : 0.55f);
 }

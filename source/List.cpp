@@ -167,6 +167,7 @@ bool List::SaveDC(const char* file)
 		if (fnd("l"))  n = "Link";  else
 		if (fnd("d"))  n = "Dir";  else
 		if (fnd("x"))  n = "Exe";
+		#undef fnd
 
 		e = xml.NewElement("Name");			e->SetText(n.c_str());  fi->InsertEndChild(e);
 		e = xml.NewElement("FileMasks");	e->SetText(s.c_str());  fi->InsertEndChild(e);
@@ -210,13 +211,6 @@ bool List::SaveDC(const char* file)
 	//  replace old with new
 	remove(file);
 	rename(file1, file);
-}
-
-//  load, import from  TC color.ini
-bool List::ImportTC(string file)
-{
-	Default();
-	return true;
 }
 
 
@@ -279,4 +273,58 @@ bool List::Save(const char* file)
 
 	xml.InsertEndChild(root);
 	return xml.SaveFile(file) == XML_SUCCESS;
+}
+
+
+//  load, import from  TC color.ini
+//------------------------------------------------------------------------------------------------
+bool List::LoadTC(const char* file)
+{
+	ifstream fi;
+	fi.open(file);  if (!fi.good())  return false;
+
+	Default();
+
+	//  read lines
+	char l[1024], sPat[512]={0}, sClr[32]={0};
+	int id=0;
+	while (fi.good())
+	{
+		fi.getline(l, sizeof(l)-1);
+	/*
+		ColorFilter1=*+*.;*up.;*#.;
+		ColorFilter1Color=16753488
+	*/
+		if (!strstr(l, "ColorFilter"))  continue;
+
+		if (strstr(l, "Color="))
+		{
+			sscanf(l, "ColorFilter%dColor=%s", &id, sClr);
+
+			//  clr
+			sf::Uint32 u = atoi(sClr);
+			SClr c;  c.Set(u);
+
+			//  split each pattern
+			auto vs = split(sPat, ";");
+			for (auto& s : vs)
+			{	Pat p;
+				p.s = s;  p.c = c;
+				//p.attr = q.attr;
+				pat.push_back(p);
+			}
+		}
+		else
+			sscanf(l, "ColorFilter%d=%s", &id, sPat);
+	}
+	return true;
+}
+
+//  save, export to  TC color.ini
+//------------------------------------------------
+bool List::SaveTC(const char* file)
+{
+
+
+	return true;
 }
