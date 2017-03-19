@@ -5,25 +5,25 @@ for [Double Commander](http://doublecmd.sourceforge.net/) (in Options - Colors -
 Since editing many patterns there is way too slow.  
 
 Currently you can:
-- Import from Double Commander's file: doublecmd.xml.
 - Save and load the program's own project xml file
-- Export result to doublecmd.xml
-- Managing the list
+- Import from Double Commander's file: doublecmd.xml.
+- Export into doublecmd.xml
+- Manage the list
   * edit, add, remove patterns
   * adjust color with R,G,B sliders
   * search pattern names
+  * rearrange: move patterns and rows
+  * edit pattern and row color
 
-TODO (In future it will allow to):
-- managing
-  * rearrange (move), split, merge
-  * edit whole row, color, move
+TODO (less important):
+- Import and export Total Commander's file: color.ini.
+- Import with merge into current list
+- Manage
+  * dir, link, exe checkboxes, updating attributes string
   * hsv sliders
-  * group by id
-  * sort by name, color, group
+  * group by id, sorting
   * multi select, move, edit
   * rating groups
-- import and export Total Commander's file: color.ini.
-- import with merge into current list
 
 ## General
 This utility program is written in C++, using [SFML](https://github.com/SFML/SFML) for graphics,

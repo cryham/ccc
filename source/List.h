@@ -12,6 +12,7 @@ typedef sf::Uint8 byte;
 struct SClr
 {
 	byte r,g,b;  // color
+	//float h,s,v;  //todo: use,save hsv
 
 	SClr()
 		:r(255),g(255),b(255)
