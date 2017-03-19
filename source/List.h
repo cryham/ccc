@@ -67,11 +67,14 @@ public:
 
 	std::set<sf::Uint32> clr;  // colors, for count
 
+	int LineLen(int id);  // get line length, id of line
+
 	List();
 	void Default();
 
 	//  update view,  run after any changes in pat
 	void Update(int xMin, int xMax, int xa, int ya);  // x,y, xw, l, ofs
+
 	//  app  for text get width
 	App* app = nullptr;
 	void SetApp(App* p) {  app = p;  }

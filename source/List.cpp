@@ -63,6 +63,15 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 	}
 }
 
+//  line length
+int List::LineLen(int id)
+{
+	if (pat.empty())  return -1;
+	int last = lines.size()-1, next = id+1;
+	int end = next <= last ? lines[next] : pat.size();  // end of cur line
+	return end - lines[id];
+}
+
 
 //  load, import from  DC doublecmd.xml
 //------------------------------------------------------------------------------------------------

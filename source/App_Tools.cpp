@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Util.h"
 #include <cstring>
 using namespace std;
 
@@ -47,6 +48,7 @@ void App::PasteClr()
 
 
 //  set cursor, set gui from list  * * *
+//-----------------------------------------------------------------------------
 void App::SetCur(int ic)
 {
 	if (li.pat.empty())  {  iCur = 0;  return;  }
@@ -68,15 +70,17 @@ void App::SetCur(int ic)
 
 
 //  inc line  ^ v
+//-----------------------------------------------------------------------------
 void App::IncLine(int d, int end)
 {
 	if (Check())  return;
-	const Pat& p = li.pat[iCur];
-	int o = iCur - li.lines[p.l];  // ofs in cur line
-	int ls = li.lines.size()-1;
-	int l  = li.lines[std::max(0, std::min(ls, p.l+d))];
-//	int le = li.lines[std::max(0, std::min(ls, p.l+d+1))] - l;
-//	if (o > le)  o = le;
+	int lc = li.pat[iCur].l;  // cur line
+	int o = iCur - li.lines[lc];  // ofs in cur line
+	int lsi = li.lines.size()-1;
+	int ln = std::max(0, std::min(lsi, lc + d));  // new line
+	int l  = li.lines[ln];  // new line start
+	int le = li.LineLen(ln);  // new line length
+	if (o >= le)  o = le-1;
 	if (end==0)
 		SetCur(l + o);
 	else	// home or end
@@ -89,10 +93,9 @@ void App::SetClr(bool line)
 	int a = iCur, b = iCur+1;
 	if (line)
 	{
-		const Pat& p = li.pat[iCur];
+		const Pat& p = li.pat[iCur];  // cur pat
 		a = li.lines[p.l];  // begin of cur line
-		int ls = li.lines.size()-1, l1 = p.l+1;
-		b = l1 <= ls ? li.lines[l1] : li.pat.size();  // end of cur line
+		b = li.LineLen(p.l) + a;  // end
 	}
 	SClr ec(ed.r, ed.g, ed.b);
 	for (int i=a; i<b; ++i)
@@ -118,6 +121,7 @@ void App::Last(bool ctrl)
 
 
 //  add new  +++
+//-----------------------------------------------------------------------------
 void App::AddPat(bool start, bool end)
 {
 	if (Check())
