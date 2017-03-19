@@ -122,7 +122,7 @@ void App::Last(bool ctrl)
 
 //  add new  +++
 //-----------------------------------------------------------------------------
-void App::AddPat(bool start, bool end)
+void App::AddPat(bool start, bool end, bool alt)
 {
 	if (Check())
 	{	//  first
@@ -131,6 +131,8 @@ void App::AddPat(bool start, bool end)
 		return;
 	}
 	Pat p = li.pat[iCur];  p.s = "new";
+	if (alt)  p.c = SClr(255,255,255);  // to split when 1 line
+
 	if (start)
 		li.pat.insert(li.pat.begin(), p);
 	else if (end)

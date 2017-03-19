@@ -75,7 +75,7 @@ public:
 	void CopyClr(), PasteClr();  // copy and paste color
 
 	//  add, del, move
-	void AddPat(bool start=false, bool end=false);
+	void AddPat(bool start=false, bool end=false, bool alt=false);
 	void DelPat();
 	void Erase(int a, int b);
 	void Move();

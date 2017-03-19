@@ -1,5 +1,4 @@
 #pragma once
-//#include <string>
 
 namespace sf {  class Window;  }
 
@@ -9,7 +8,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const int ver = 40;
+	const int ver = 50;
 
 	//  main
 	Settings();

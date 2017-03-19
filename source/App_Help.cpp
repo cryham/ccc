@@ -87,6 +87,7 @@ void App::Help()
 
 	Sep(20);
 	H("Ins", "Insert new");
+	H3("", "alt  white, to split");
 	H3("", "shift at top, ctrl at end");
 	//Sep(5);
 	H("alt-Del", "Delete current");

@@ -74,7 +74,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::Home:   First(ctrl);  ret
 		case Keyboard::End:    Last(ctrl);  ret
 
-		case Keyboard::Insert:  AddPat(shift, ctrl);  ret
+		case Keyboard::Insert:  AddPat(shift, ctrl, alt);  ret
 	}
 
 	if (alt)
