@@ -1,6 +1,5 @@
 #include "App.h"
 #include "Util.h"
-#include <string.h>
 using namespace std;
 
 
@@ -14,18 +13,14 @@ void App::Graph()
 	const int
 		xa = set.iFontH * set.fXMargin,  // add x, margin
 		ya = set.iFontH + set.iLineH,  // line height
-	#if 0  // left
-		xMin = 0, xMax = xSplit,  // area
-	#else  // right
 		xMin = xSplit+10, xMax = xWindow,  // area
-	#endif
-		yMax = yWindow;// - ya;
+		yMax = yWindow;
 
 	//  frame  _|
-	Rect(xMax-1,0, xMax+1,yMax, 60,40,20);
+	//Rect(xMax-1,0, xMax+1,yMax, 60,40,20);
 	//Rect(0,yMax-1, xMax,yMax+1, 60,40,20);
 
-	//  update
+	//  update  //todo: not every frame..
 	li.Update(xMin, xMax, xa, ya);
 
 	if (line < 0)  line = 0;
@@ -39,10 +34,11 @@ void App::Graph()
 	const Pat& p0 = li.pat[i];
 
 	iFound = 0;
-	int iPick = -1;
+	iPick = -1;
 	const static SClr mrk(215,255,255);
 
-	//  list  ----------
+
+	//  List  --------------
 	while (i < ii)
 	{
 		const Pat& p = li.pat[i];
@@ -59,22 +55,34 @@ void App::Graph()
 		//  cursor []  -----
 		yc = y+2;  yy = yc+ya;
 
-		if (i == iCur)  // current
+
+		if (p.l == iLineSel && iLineSel >= 0)  // selected line
 		{
 			Frame(x, yc, xw, yy, 1, p.c);
 		}
-		else  // mouse over []
+		if (i == iCur && iLineSel < 0)  // current
+		{
+			Frame(x, yc, xw, yy, 1, p.c);
+		}
+		//  mouse over []
 		if (tab == Tab_List && !bHelp)  //+
 		if (xm >= x && xm < xw && ym >= y && ym < y+ya)
 		{
+			if (i != iCur)
 			Frame(x, yc, xw, yy, 2, p.c);
 
 			if (alt && !shift && !ctrl)
 				iPick = i;  // move marker |
 
-			if (mb && !alt)
-				SetCur(i);  // mouse pick
-		}
+			if (!alt)
+			if (mb == 1)  // LMB
+			{	SetCur(i);  // mouse pick 1
+				iLineSel = -1;  // unselect line
+			}else
+			if (mb == 2)  // RMB
+			{	SetCur(i);  // for color edit
+				iLineSel = i < 0 ? -1 : p.l;  // select line
+		}	}
 
 		//  find match __
 		if (p.match && !bHelp)
@@ -84,69 +92,39 @@ void App::Graph()
 		++i;
 	}
 
-	//  slider |  pos, view size  -----
-	const SClr sldBack(40,40,60), sldView(80,80,140), sldPos(230,230,255);
+
+	//  Slider  |  pos, view size
+	//-----------------------------------
+	const static SClr sldBack(40,40,60), sldView(80,80,140), sldPos(230,230,255);
+	const int x0 = xMax-15;
+
 	#define Y(y)  float(y) / ii * yMax
 	int y1 = Y(i1), y2 = Y(i),
-		p1 = Y(iCur), p2 = Y(iCur+1);  if (p2==p1)  ++p2;
-	const int x0 = xMax-15;
+		p1 = Y(iCur), p2 = Y(iCur+1);
+	if (p2==p1)  ++p2;
+	#undef Y
+
 	Rect(x0, 0, xMax, yMax, sldBack);
 	Rect(x0, y1, xMax, y2, sldView);  // visible area
 	Rect(x0, p1, xMax, p2, sldPos);  // cursor
 
 
-	if (alt)  // move marker -
-	if (shift)  // begin
-		Rect(xMin, 0, xMin+20, 2, mrk);
-	else
-	if (ctrl)  // end
-		Rect(xMin, yMax-2, xMin+20, yMax, mrk);
+	//  move marker
+	//--------------------
+	if (alt)
+	{	x = iLineSel < 0 ? 40 : 90;  // long if line
 
-	//  move  []<-
-	if (alt && mb && !mbo)
-	if (shift || ctrl || iPick >= 0)
-	{
-		//  common
-		Pat p = li.pat[iCur];  // cur copy
-		li.pat.erase(li.pat.begin()+iCur);  // del
-
-		if (shift)
-			li.pat.push_front(p);  // begin
-		else if (ctrl)
-			li.pat.push_back(p);  // end
+		if (shift)  // begin
+			Rect(xMin, 0, xMin+x, 2, mrk);
 		else
-			li.pat.insert(li.pat.begin() + iPick, p);  // pick pos
+		if (ctrl)  // end
+			Rect(xMin, yMax-2, xMin+x, yMax, mrk);
 	}
+
+	///  Move  alt-LMB
+	///-------------------
+	if (alt && mb==1 && !mbo)
+		Move();
+
 	mbo = mb;
-}
-
-
-//  Find
-//-----------------------------------------------------------------------------
-void App::DoFind()
-{
-	//  find vars
-	iFoundAll = 0;
-	bool doFind = sFind[0] != 0;
-	string strFind;
-	if (doFind)
-		strFind = strlower(sFind);
-
-	int i = 0, ii = li.pat.size();
-	while (i < ii)
-	{
-		Pat& p = li.pat[i];
-		bool found = false;
-
-		//  find match __
-		if (doFind)
-		//if (p.s.find(sFind) != string::npos)  // case sens
-		if (strlower(p.s).find(strFind) != string::npos)  // case insens
-		{
-			++iFoundAll;
-			found = true;
-		}
-		p.match = found;
-		++i;
-	}
 }

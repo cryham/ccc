@@ -90,9 +90,11 @@ void App::Help()
 	H3("", "shift at top, ctrl at end");
 	//Sep(5);
 	H("alt-Del", "Delete current");
+	Sep(10);
+	H("alt-LMB", "Move current pattern");
+	H("", "(or row) to cursor");
 	Sep(5);
-	H("alt-LMB", "Move current");
-	H("", "pattern to cursor");
+	H("RMB", "Select row");
 
 //--  column 3
 	EndChild();  SameLine();

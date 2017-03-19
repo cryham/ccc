@@ -74,9 +74,12 @@ public:
 	SClr copyClr;
 	void CopyClr(), PasteClr();  // copy and paste color
 
-	//  add, del
+	//  add, del, move
 	void AddPat(bool start=false, bool end=false);
 	void DelPat();
+	void Erase(int a, int b);
+	void Move();
+
 	//  toggle
 	//void InvDir();
 	void SetClr(bool line=true);
@@ -84,7 +87,8 @@ public:
 
 	//  dimensions
 	//--------------------------
-	int xm=0, ym=0, mb=0, mbo=0;   // mouse pos, btn
+	int xm=0, ym=0;  // mouse pos
+	int mb=0, mbo=0;   // mouse buttons state, old
 
 	int xWindow =600, yWindow =400, xSplit =200;   // screen size
 	bool bHelp = false;
@@ -108,5 +112,8 @@ public:
 	int line =0;  // page ofset lines
 	void IncLine(int d, int end=0);
 	void First(bool ctrl), Last(bool ctrl);  // home, end
+
+	int iPick =-1;  // mouse over, id
+	int iLineSel =-1;  // selected row, line id
 	List li;  //*  List
 };

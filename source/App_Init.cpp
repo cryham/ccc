@@ -44,6 +44,7 @@ bool App::Init()
 	li.SetApp(this);
 
 	Load();  // load last proj
+	SetCur(0);  // set gui
 
 	return true;
 }

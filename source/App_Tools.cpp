@@ -133,7 +133,7 @@ void App::AddPat(bool start, bool end)
 	Pat p = li.pat[iCur];  p.s = "new";
 	if (start)
 		li.pat.insert(li.pat.begin(), p);
-	if (end)
+	else if (end)
 		li.pat.insert(li.pat.end(), p);
 	else   // after current
 		li.pat.insert(li.pat.begin()+iCur+1, p);
@@ -145,4 +145,114 @@ void App::DelPat()
 	if (Check())  return;
 	li.pat.erase(li.pat.begin()+iCur);
 	SetCur(iCur);
+}
+
+
+//  Find
+//-----------------------------------------------------------------------------
+void App::DoFind()
+{
+	//  find vars
+	iFoundAll = 0;
+	bool doFind = sFind[0] != 0;
+	string strFind;
+	if (doFind)
+		strFind = strlower(sFind);
+
+	int i = 0, ii = li.pat.size();
+	while (i < ii)
+	{
+		Pat& p = li.pat[i];
+		bool found = false;
+
+		//  find match __
+		if (doFind)
+		//if (p.s.find(sFind) != string::npos)  // case sens
+		if (strlower(p.s).find(strFind) != string::npos)  // case insens
+		{
+			++iFoundAll;
+			found = true;
+		}
+		p.match = found;
+		++i;
+	}
+}
+
+
+///  Move  in list
+//-----------------------------------------------------------------------------
+void App::Erase(int a, int b)
+{
+	for (int i=b-1; i>=a; --i)
+		li.pat.erase(li.pat.begin()+i);
+}
+void App::Move()
+{
+	//  Move  line
+	//---------------------------
+	if (iLineSel >= 0)
+	{
+		vector<Pat> sel;
+		int a = iCur, b = iCur+1;
+
+		int l = iLineSel;  // cur line
+		a = li.lines[l];  // begin of cur line
+		b = li.LineLen(l) + a;  // end
+
+		for (int i=a; i<b; ++i)  // copy sel
+			sel.push_back(li.pat[i]);
+
+		//  insert
+		int s = sel.size();
+		if (shift)
+		{
+			Erase(a,b);
+			for (int i=s-1; i>=0; --i)
+				li.pat.push_front(sel[i]);  // begin
+		}
+		else
+		if (ctrl)
+		{
+			for (int i=0; i<s; ++i)
+				li.pat.push_back(sel[i]);  // end
+			Erase(a,b);
+		}
+		else
+		if (iPick >= 0)
+		{
+			int l = li.pat[iPick].l;  // pick pos line
+			if (l != iLineSel)  // needs different line
+			{
+				int ii = li.lines[l];  // line start
+				if (l > iLineSel)  // after
+					ii += li.LineLen(l);
+
+				if (l < iLineSel)  // before
+					Erase(a,b);
+
+				//  insert sel
+				for (int i=s-1; i>=0; --i)
+					li.pat.insert(li.pat.begin() + ii, sel[i]);
+
+				if (l > iLineSel)  // after
+					Erase(a,b);
+			}
+		}
+	}
+	//  Move  1
+	//---------------------------
+	else
+	if (shift || ctrl || iPick >= 0)
+	{
+		//  common
+		Pat p = li.pat[iCur];  // cur copy
+		li.pat.erase(li.pat.begin()+iCur);  // del
+
+		if (shift)
+			li.pat.push_front(p);  // begin
+		else if (ctrl)
+			li.pat.push_back(p);  // end
+		else
+			li.pat.insert(li.pat.begin() + iPick, p);  // pick pos
+	}
 }
