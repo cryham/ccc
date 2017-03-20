@@ -293,10 +293,7 @@ bool List::LoadTC(const char* file)
 	while (fi.good())
 	{
 		fi.getline(l, sizeof(l)-1);
-	/*
-		ColorFilter1=*+*.;*up.;*#.;
-		ColorFilter1Color=16753488
-	*/
+
 		if (!strstr(l, "ColorFilter"))  continue;
 
 		if (strstr(l, "Color="))
@@ -317,16 +314,80 @@ bool List::LoadTC(const char* file)
 			}
 		}
 		else
-			sscanf(l, "ColorFilter%d=%s", &id, sPat);
+		{	//sscanf(l, "ColorFilter%d=%s", &id, sPat);  // can't read "
+			string s(l);
+			auto p = s.find('=');
+			if (p != string::npos)
+				s = s.substr(p+1);
+			strcpy(sPat, s.c_str());
+		}
 	}
 	return true;
 }
 
+/*
+	ColorFilter1=*+*.;*up.;*#.;
+	ColorFilter1Color=16753488
+*/
+
 //  save, export to  TC color.ini
-//------------------------------------------------
+//------------------------------------------------------------------------------------------------
 bool List::SaveTC(const char* file)
 {
+	if (pat.empty())  return false;
 
+	//  original tc ini
+	ifstream fi;
+	fi.open(file);  if (!fi.good())  return false;
+	//  temp save
+	ofstream fo;
+	string ss = string(file) + "1";
+	const char* file1 = ss.c_str();
+	fo.open(file1);  if (!fo.good())  return false;
 
+	//  read lines
+	bool ff = true;
+	char l[1024];
+	while (fi.good() && ff)
+	{
+		fi.getline(l, sizeof(l)-1);
+		if (strstr(l, "ColorFilter"))
+			ff = false;  // copy beginning, until found
+		else
+			fo << l << endl;  // write line
+	}
+	fi.close();
+
+	vector<int> id;
+	id.push_back(0);
+	int i = 0;
+	for (auto& p : pat)
+	{
+		if (i > 0)
+		{	const Pat& o = pat[i-1];
+			if (o.c != p.c)
+				id.push_back(i);
+		}	++i;
+	}
+	id.push_back(pat.size());
+
+	for (int ii=0; ii < id.size()-1; ++ii)
+	{
+		int i0 = id[ii], i1 = id[ii+1];
+
+		string s;
+		for (int i=i0; i < i1; ++i)
+			s += pat[i].s + ";";
+		Pat p = pat[i0];
+
+		i1 = ii + 1;
+		fo << "ColorFilter" << i1 << "=" << s.c_str() << endl;
+		fo << "ColorFilter" << i1 << "Color=" << p.c.Get() << endl;
+	}
+
+	fo.close();
+	//  replace old with new
+	remove(file);
+	rename(file1, file);
 	return true;
 }
