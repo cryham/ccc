@@ -211,6 +211,7 @@ bool List::SaveDC(const char* file)
 	//  replace old with new
 	remove(file);
 	rename(file1, file);
+	return true;
 }
 
 
