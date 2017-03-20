@@ -41,4 +41,6 @@ public:
 	//  frame rect
 	void Frame(int x, int y,  int sx, int sy,  int d,  const SClr& c);
 	void Frame(int x, int y,  int sx, int sy,  int d,  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
+	void Frame(int x, int y,  int sx, int sy,  int d,  bool le, bool ri,  const SClr& c);
+	void Frame(int x, int y,  int sx, int sy,  int d,  bool le, bool ri,  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b);
 };

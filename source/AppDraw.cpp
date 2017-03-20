@@ -32,16 +32,30 @@ void AppDraw::Rect(int x, int y,  int sx, int sy,
 }
 
 //  frame rect, inefficient
+void AppDraw::Frame(int x, int y,  int sx, int sy,  int d,  bool le, bool ri,
+		const SClr& c)
+{
+	Frame(x, y,  sx, sy,  d,  le, ri,  c.b, c.g, c.r);
+}
+void AppDraw::Frame(int x, int y,  int sx, int sy,  int d,  bool le, bool ri,
+		sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
+{
+	Rect(x,   y,    sx-d, y+d,  r, g, b);  // top
+	Rect(x,   sy-d, sx-d, sy,   r, g, b);  // bottom
+	if (le)  Rect(x,   y,    x+d,  sy-d, r, g, b);  // left
+	if (ri)  Rect(sx-d,y,    sx,   sy,   r, g, b);  // right
+}
+
 void AppDraw::Frame(int x, int y,  int sx, int sy,  int d,
-		  const SClr& c)
+		const SClr& c)
 {
 	Frame(x, y,  sx, sy,  d,  c.b, c.g, c.r);
 }
 void AppDraw::Frame(int x, int y,  int sx, int sy,  int d,
-		  sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
+		sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
 {
-	Rect(x,   y,    sx-d, y+d,  r, g, b);
-	Rect(x,   sy-d, sx-d, sy,   r, g, b);
-	Rect(x,   y,    x+d,  sy-d, r, g, b);
-	Rect(sx-d,y,    sx,   sy,   r, g, b);
+	Rect(x,   y,    sx-d, y+d,  r, g, b);  // top
+	Rect(x,   sy-d, sx-d, sy,   r, g, b);  // bottom
+	Rect(x,   y,    x+d,  sy-d, r, g, b);  // left
+	Rect(sx-d,y,    sx,   sy,   r, g, b);  // right
 }

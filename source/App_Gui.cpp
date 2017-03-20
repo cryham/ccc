@@ -161,7 +161,7 @@ void App::Gui()
 		e = Button("F8 Export");  if (e)  SaveDC();  SameLine();
 		e = Button("F9 Import");  if (e)  LoadDC();
 		Sep(5);
-		Text("alt for Total Commander");
+		//Text("alt for Total Commander");
 
 	}	break;
 
@@ -194,7 +194,7 @@ void App::Gui()
 		e = InputText("DCxml", set.pathDCxml, sizeof(set.pathDCxml));
 		Sep(5);  Text("Double Commander executable");
 		e = InputText("DCexe", set.pathDCexe, sizeof(set.pathDCexe));
-		Sep(5);  Text("Total commander color.ini location");
+		Sep(5);  Text("Total Commander color.ini");
 		e = InputText("TCini", set.pathTCini, sizeof(set.pathTCini));
 		PopItemWidth();
 

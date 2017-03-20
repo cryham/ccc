@@ -60,7 +60,6 @@ void App::Help()
 	H("Ctr-F9", "New, clear");
 	Sep(10);
 	H("F9", "Import from DC");
-	Sep(5);
 	H("F8", "Export to DC");
 	H("F7", "Start DC");
 	Sep(5);
