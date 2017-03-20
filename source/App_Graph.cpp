@@ -14,9 +14,13 @@ void App::Graph()
 		xMin = xSplit + 10, xMax = xWindow,  // area
 		yMax = yWindow;
 
-	//  frame  _|
-	//Rect(xMax-1,0, xMax+1,yMax, 60,40,20);
-	//Rect(0,yMax-1, xMax,yMax+1, 60,40,20);
+	const static SClr
+		findBack(25,25,35), findRect(255,255,255),
+		curBack(40,40,60),
+		sldBack(40,40,60), sldView(80,80,140),
+		sldSel(170,170,200), sldPick(170,170,255), sldPos(200,200,240),
+		moveMark(215,255,255);
+
 
 	//  update  //todo: not every frame..
 	li.Update(xMin, xMax, xa, ya);
@@ -55,11 +59,11 @@ void App::Graph()
 
 		//  find __
 		if (p.match && !bHelp)
-			Rect(x, yc+2, xw, yy-1, 35,25,25);
+			Rect(x, yc+2, xw, yy-1, findBack);
 
 		//  current []
 		if (i == iCur)
-			Rect(x, yc+2, xw, yy-1, 60,40,40);
+			Rect(x, yc+2, xw, yy-1, curBack);
 
 
 		///  text write  --
@@ -96,7 +100,7 @@ void App::Graph()
 		//  find match __
 		if (p.match && !bHelp)
 		{	++iFound;  // visible only
-			Rect(x, yy-1, xw, yy, 255,255,255);
+			Rect(x, yy-1, xw, yy, findRect);
 		}
 		++i;
 	}
@@ -104,9 +108,6 @@ void App::Graph()
 
 	//  Slider  |  pos, view size
 	//-----------------------------------
-	const static SClr sldBack(40,40,60), sldView(80,80,140),
-		sldSel(170,170,200), sldPick(170,170,255), sldPos(200,200,240),
-		mrk(215,255,255);
 	const int x0 = xMax-15;
 
 	#define Y(y)  float(y) / ii * yMax
@@ -139,10 +140,10 @@ void App::Graph()
 	{	int x = iLineSel < 0 ? 40 : 90;  // long if line
 
 		if (shift)  // begin
-			Rect(xMin, 0, xMin+x, 2, mrk);
+			Rect(xMin, 0, xMin+x, 2, moveMark);
 		else
 		if (ctrl)  // end
-			Rect(xMin, yMax-2, xMin+x, yMax, mrk);
+			Rect(xMin, yMax-2, xMin+x, yMax, moveMark);
 	}
 
 	///  Move  alt-LMB
