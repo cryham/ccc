@@ -1,22 +1,24 @@
 
 ## Crystal Color Center
 The program allows managing file and directory patterns (e.g. extension or name matches)  
-for [Double Commander](http://doublecmd.sourceforge.net/) (in Options - Colors - File types).  
+for [Double Commander](http://doublecmd.sourceforge.net/) (in Options - Colors - File types),  
+and also for Total Commander (in Configuration - Display - Color - Define colors by file type).  
 Since editing many patterns there is way too slow.  
+
+Press Ctrl-F1 in program to see Help screen.  
 
 Currently you can:
 - Save and load the program's own project xml file
-- Import from Double Commander's file: doublecmd.xml.
-- Export into doublecmd.xml
+- Import from and export back into:
+  * Double Commander's file: doublecmd.xml
+  * Total Commander's file: color.ini
 - Manage the list
   * edit, add, remove patterns
-  * adjust color with R,G,B sliders
+  * adjust row color with R,G,B sliders
+  * rearrange, move patterns and rows
   * search pattern names
-  * rearrange: move patterns and rows
-  * edit pattern and row color
-
+  
 TODO (less important):
-- Import and export Total Commander's file: color.ini.
 - Import with merge into current list
 - Manage
   * dir, link, exe checkboxes, updating attributes string
