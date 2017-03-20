@@ -9,6 +9,7 @@ using namespace std;
 
 
 //  edit ctor
+//----------------------------------
 App::Ed::Ed()
 	:r(0), g(0), b(0)
 	,dir(false), lnk(false), exe(false)

@@ -7,8 +7,6 @@ using namespace std;
 ///-----------------------------------------------------------------------------
 void App::Graph()
 {
-	if (li.pat.empty())  return;
-
 	///  dim params  -----
 	const int
 		xa = set.iFontH * set.fXMargin,  // add x, margin

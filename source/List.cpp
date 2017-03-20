@@ -4,6 +4,7 @@
 #include "../libs/tinyxml2.h"
 #include "Util.h"
 #include "App.h"
+#include "Settings.h"
 using namespace std;  using namespace tinyxml2;
 
 
@@ -259,7 +260,7 @@ bool List::Save(const char* file)
 {
 	XMLDocument xml;
 	XMLElement* root = xml.NewElement("ccc");
-	root->SetAttribute("ver", 20);
+	root->SetAttribute("ver", Settings::ver);
 
 	for (auto& p : pat)
 	{
