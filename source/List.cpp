@@ -32,6 +32,18 @@ sf::Uint32 SClr::Get()
 	return (b << 16) + (g << 8) + r;
 }
 
+void Pat::SetDir(bool d)
+{
+	dir = d;
+	//  dir and attr has no d
+	if (d && attr == "**")
+		attr = "d*";
+	else
+	if (!d && attr == "d*")
+		attr = "**";
+}
+
+
 
 //  Update  x,y,l,xw, lines
 //------------------------------------------------
@@ -165,9 +177,12 @@ bool List::SaveDC(const char* file)
 
 		//  name special cases
 		#define fnd(s)  p.attr.find(s) != string::npos
-		if (fnd("l"))  n = "Link";  else
-		if (fnd("d"))  n = "Dir";  else
-		if (fnd("x"))  n = "Exe";
+		if (n == "*;")
+		{
+			if (fnd("l"))  n = "Link";  else
+			if (fnd("d"))  n = "Dir";  else
+			if (fnd("x"))  n = "Exe";
+		}
 		#undef fnd
 
 		e = xml.NewElement("Name");			e->SetText(n.c_str());  fi->InsertEndChild(e);

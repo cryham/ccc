@@ -39,12 +39,14 @@ void App::PasteClr()
 }
 
 //  toggle
-/*void App::InvDir()
+void App::InvDir()
 {
 	if (Check())  return;
-	li.pat[iCur].dir = li.pat[iCur].dir;
-	ed.dir = li.pat[iCur].dir;  // set gui
-}/**/
+	ed.dir = !ed.dir;
+	Pat& p = li.pat[iCur];
+	p.SetDir(ed.dir);
+	strcpy(ed.attr, p.attr.c_str());
+}
 
 
 //  set cursor, set gui from list  * * *
@@ -63,9 +65,7 @@ void App::SetCur(int ic)
 	//  color
 	ed.r = p.c.r;  ed.g = p.c.g;  ed.b = p.c.b;
 	//  checks
-	ed.dir = p.attr.find('d') != string::npos;
-	ed.lnk = p.attr.find('l') != string::npos;
-	ed.exe = p.attr.find('x') != string::npos;
+	ed.dir = p.dir;
 }
 
 

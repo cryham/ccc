@@ -39,8 +39,8 @@ struct Pat
 	SClr c;
 
 	std::string attr;
-//	bool dir, lnk, exe;   //todo attributes..
-//	char grp;  //todo group for sorting..
+	bool dir;  //, lnk, exe;  //todo attributes..
+	//char grp;  //todo group, sorting..
 
 	//  visual only,  not saved, computed by Update()
 	int x,y, xw, l;  // pos on screen, width, line
@@ -51,9 +51,11 @@ struct Pat
 	Pat()
 		:x(0),y(0), xw(0), l(0)
 		,match(false), sel(false)
-//		,dir(false), lnk(false), exe(false)
-//		,grp(0)
+		,dir(false)  //, lnk(false), exe(false)
+		//,grp(0)
 	{   }
+
+	void SetDir(bool d);
 };
 
 
