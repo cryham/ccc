@@ -41,7 +41,7 @@ bool AppMain::Run()
 	//  font
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->ClearFonts();
-	ImFont* fnt = io.Fonts->AddFontFromFileTTF("data/DejaVuLGCSans.ttf", 18);
+	ImFont* fnt = io.Fonts->AddFontFromFileTTF("data/DejaVuLGCSans.ttf", app->set.iFontGui);
 	Texture* fntTex = new Texture;
 	createFontTexture(*fntTex);
 	setFontTexture(*fntTex);

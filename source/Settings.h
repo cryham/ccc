@@ -32,9 +32,12 @@ public:
 
 	//  dimensions  -----
 	float fSplit = 0.27f;   // splitter 0..1
-	int   iFontH = 16;      // font height
+	int   iFontH = 16;      // font height in list
+	int   iFontGui = 18;    // font height in gui
 	int   iLineH = 2;       // line spacing
 	float fXMargin = 0.7f;  // item x extra spacing
+
+	int   cmbDC = 0;  // import/export combo  DC 0, TC 1
 
 	//  window  -----
 	int xwPos=0, ywPos=0;

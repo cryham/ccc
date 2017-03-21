@@ -7843,8 +7843,8 @@ bool ImGui::Combo(const char* label, int* current_item, bool (*items_getter)(voi
 			RenderTextClipped(frame_bb.Min + style.FramePadding, value_bb.Max, item_text, NULL, NULL);
 	}
 
-	if (label_size.x > 0)
-		RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
+//	if (label_size.x > 0)
+//		RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
 
 	if (hovered)
 	{

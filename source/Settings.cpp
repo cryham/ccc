@@ -91,6 +91,8 @@ bool Settings::Load()
 		a = e->Attribute("iFontH");  if (a)  iFontH = atoi(a);
 		a = e->Attribute("iLineH");  if (a)  iLineH = atoi(a);
 		a = e->Attribute("fXMargin");  if (a)  fXMargin = atof(a);
+		a = e->Attribute("iFontGui");  if (a)  iFontGui = atoi(a);
+		a = e->Attribute("cmbDC");  if (a)  cmbDC = atoi(a);
 	}
 	e = root->FirstChildElement("window");
 	if (e)
@@ -122,6 +124,8 @@ bool Settings::Save()
 	e->SetAttribute("iFontH", iFontH);
 	e->SetAttribute("iLineH", iLineH);
 	e->SetAttribute("fXMargin", fXMargin);
+	e->SetAttribute("iFontGui", iFontGui);
+	e->SetAttribute("cmbDC", cmbDC);
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("window");
