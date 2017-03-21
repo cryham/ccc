@@ -46,11 +46,10 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F4:  Save();  ret
 		case Keyboard::F5:  Load();  ret
 
-		case Keyboard::F8:  if (alt)  SaveTC();  else  SaveDC();  ret
-		case Keyboard::F9:
-			if (ctrl)	{	li.Default();  ret  }  // clear
-			else		{	if (alt)  LoadTC();  else  LoadDC();  ret  }
+		case Keyboard::F8:  Export();  ret
+		case Keyboard::F9:  Import();  ret
 
+		case Keyboard::F10:  li.Default();  ret  // clear
 		case Keyboard::F7:  StartDC();  ret
 	}
 
@@ -89,8 +88,8 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F:
 			tab = Tab_Edit;  findFocus = true;  ret
 
-		//  toggle checks
-		//case Keyboard::D:  InvDir();  ret
+		//  toggle
+		case Keyboard::D:  InvDir();  ret
 
 		//  add, del
 		//case Keyboard::A:		AddPat(shift, ctrl);  ret
@@ -114,12 +113,14 @@ void App::IncFont(int d)
 
 void App::Wheel(float d)
 {
-	if (bHelp)  return;
+	if (xm < xSplit || bHelp)  return;
+
 	if (alt)
 	{	d *= ctrl ? 4 : shift ? 1 : 2;
 		IncFont(d);
 		return;
 	}
+
 	d *= ctrl ? 12 : shift ? 1 : 4;
 	int lMax = li.pat.size()-1;  // lines
 	line -= d;

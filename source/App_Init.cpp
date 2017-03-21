@@ -12,8 +12,7 @@ using namespace std;
 //----------------------------------
 App::Ed::Ed()
 	:r(0), g(0), b(0)
-	,dir(false), lnk(false), exe(false)
-	,grp(0)
+	,dir(false)
 {
 	memset(pat,0,sizeof(pat));
 	memset(attr,0,sizeof(attr));
@@ -81,14 +80,14 @@ bool App::Save()
 bool App::LoadDC()
 {
 	bool er = !li.LoadDC(set.pathDCxml);
-	status.Set(er ? "Load DC error!" : "Loaded DC.", er ? 0.2f : 0.42f);
+	status.Set(er ? "Import DC error!" : "Imported from DC.", er ? 0.2f : 0.42f);
 	return er;
 }
 
 bool App::SaveDC()
 {
 	bool er = !li.SaveDC(set.pathDCxml);
-	status.Set(er ? "Save DC error!" : "Saved DC.", er ? 0.f : 0.55f);
+	status.Set(er ? "Export DC error!" : "Exported into DC.", er ? 0.f : 0.55f);
 	return er;
 }
 
@@ -96,13 +95,28 @@ bool App::SaveDC()
 bool App::LoadTC()
 {
 	bool er = !li.LoadTC(set.pathTCini);
-	status.Set(er ? "Load TC error!" : "Loaded TC.", er ? 0.2f : 0.42f);
+	status.Set(er ? "Import TC error!" : "Imported from TC.", er ? 0.2f : 0.42f);
 	return er;
 }
 
 bool App::SaveTC()
 {
 	bool er = !li.SaveTC(set.pathTCini);
-	status.Set(er ? "Save TC error!" : "Saved TC.", er ? 0.f : 0.55f);
+	status.Set(er ? "Export TC error!" : "Exported into TC.", er ? 0.f : 0.55f);
 	return er;
+}
+
+//  DC/TC  ------------
+void App::Export()
+{
+	if (set.cmbDC==0)
+	{	if (alt)  SaveTC();  else  SaveDC();  }else
+	{	if (alt)  SaveDC();  else  SaveTC();  }
+}
+
+void App::Import()
+{
+	if (set.cmbDC==0)
+	{	if (alt)  LoadTC();  else  LoadDC();  }else
+	{	if (alt)  LoadDC();  else  LoadTC();  }
 }

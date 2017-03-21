@@ -57,14 +57,11 @@ void App::Help()
 	H("F5", "Reload project");
 
 	Sep(10);
-	H("Ctr-F9", "New, clear");
+	H("F10", "New, clear");
 	Sep(10);
-	H("F9", "Import from DC");
-	H("F8", "Export to DC");
+	H("F9", "Import");
+	H("F8", "Export");
 	H("F7", "Start DC");
-	Sep(5);
-	H("alt-F9", "Import from TC");
-	H("alt-F8", "Export to TC");
 
 //--  column 2
 	EndChild();  SameLine();
@@ -108,7 +105,7 @@ void App::Help()
 	Line(cl2);
 	H("alt-C", "copy color");
 	H("alt-S or V", "paste color");
-	//H("alt-D", "toggle dir");
+	H("alt-D", "toggle dir");
 	Sep(10);
 	H("alt-F", "focus search");
 

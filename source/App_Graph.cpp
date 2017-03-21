@@ -25,9 +25,11 @@ void App::Graph()
 	//  update  //todo: not every frame..
 	li.Update(xMin, xMax, xa, ya);
 
+	const int
+		ll = li.lines.size();
+
 	if (line < 0)  line = 0;
-	if (line >= li.lines.size())
-		line = li.lines.size()-1;
+	if (line >= ll)  line = ll-1;
 
 	const int
 		ii = li.pat.size(),
@@ -110,26 +112,30 @@ void App::Graph()
 	//-----------------------------------
 	const int x0 = xMax-15;
 
-	#define Y(y)  float(y) / ii * yMax
-	int y1 = Y(i1), y2 = Y(i),
-		p1 = Y(iCur), p2 = Y(iCur+1);  if (p2==p1)  ++p2;
-
-	Rect(x0, 0, xMax, yMax, sldBack);  // background
-	Rect(x0, y1, xMax, y2, sldView);  // visible area
-
-	if (iLineSel >= 0 &&  // sel
-		iLineSel < li.lines.size())
+	//  hide if not much
+	if (ii > 5 || ll > 1)
 	{
-		int a = li.lines[iLineSel];  // begin of sel line
-		int b = li.LineLen(iLineSel) + a;  // end
-		y1 = Y(a);  y2 = Y(b);
-		Rect(x0, y1, xMax, y2, sldSel);  // sel line
-	}
+		#define Y(y)  float(y) / ii * yMax
+		int y1 = Y(i1), y2 = Y(i),
+			p1 = Y(iCur), p2 = Y(iCur+1);  if (p2==p1)  ++p2;
 
-	Rect(x0, p1, xMax, p2, sldPos);  // cursor
-	if (iPick >= 0)  // pick.
-	{	p1 = Y(iPick);  p2 = Y(iPick+1);  if (p2==p1)  ++p2;
-		Rect(x0+4, p1, xMax-4, p2, sldPick);  // pick
+		Rect(x0, 0, xMax, yMax, sldBack);  // background
+		Rect(x0, y1, xMax, y2, sldView);  // visible area
+
+		if (iLineSel >= 0 &&  // sel
+			iLineSel < li.lines.size())
+		{
+			int a = li.lines[iLineSel];  // begin of sel line
+			int b = li.LineLen(iLineSel) + a;  // end
+			y1 = Y(a);  y2 = Y(b);
+			Rect(x0, y1, xMax, y2, sldSel);  // sel line
+		}
+
+		Rect(x0, p1, xMax, p2, sldPos);  // cursor
+		if (iPick >= 0)  // pick.
+		{	p1 = Y(iPick);  p2 = Y(iPick+1);  if (p2==p1)  ++p2;
+			Rect(x0+4, p1, xMax-4, p2, sldPick);  // pick
+		}
 	}
 	#undef Y
 

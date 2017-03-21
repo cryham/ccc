@@ -62,7 +62,7 @@ public:
 	bool LoadDC(), SaveDC();
 	void StartDC();  // extras
 	bool LoadTC(), SaveTC();
-	void Export(bool alt), Import(bool alt);
+	void Export(), Import();
 
 	Settings set;  //*  Settings
 

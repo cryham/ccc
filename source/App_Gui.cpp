@@ -158,13 +158,12 @@ void App::Gui()
 		e = Button("F4 Save");    if (e)  Save();  SameLine();
 		e = Button("F5 Reload");  if (e)  Load();
 
-		Sep(10);
-		Combo("cmbDC", &set.cmbDC, "Double Commander\0Total Commander\0\0");
-		/*Text("Double Commander ");/**/  Sep(5);
-		e = Button("F8 Export");  if (e)  SaveDC();  SameLine();
-		e = Button("F9 Import");  if (e)  LoadDC();
+		Sep(10);  int i = set.cmbDC;
+		e = Combo("cmbDC", &i, "Double Commander\0Total Commander\0\0");  if (e)  set.cmbDC = i;
 		Sep(5);
-		//Text("alt for Total Commander");
+		e = Button("F8 Export");  if (e)  Export();  SameLine();
+		e = Button("F9 Import");  if (e)  Import();
+		Sep(5);
 
 	}	break;
 
