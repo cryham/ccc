@@ -12,7 +12,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 	int lMax = li.pat.size()-1;  // lines
 	int d = alt ? 20 : ctrl ? 12 : shift ? 1 : 4;  // diff
-	int r = alt ? 10 : ctrl ? 4 : 1;
+	int r = alt ? 1 : ctrl ? 4 : 1;
 
 
 	//  help ctrl-F1 toggle, esc close

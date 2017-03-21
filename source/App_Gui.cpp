@@ -175,7 +175,7 @@ void App::Gui()
 		Sep(20);
 		Text("List Font Height");  int i = set.iFontH;
 		e = SliderInt("F", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
-		Text("Gui Font Height");  i = set.iFontGui;
+		Text("Gui Font Height (restart)");  i = set.iFontGui;
 		e = SliderInt("FG", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
 		Text("Line Y Spacing");  i = set.iLineH;
 		e = SliderInt("L", &i, -2, 12, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
