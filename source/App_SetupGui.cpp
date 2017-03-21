@@ -75,12 +75,12 @@ const ImVec4 App::cl0(0.6f,0.65f,0.7f, 0.5f);
 //  gui util  -----
 void App::Sep(int y)
 {
-	Dummy(ImVec2(50, y));
+	Dummy(ImVec2(50, y*sp));
 }
 
 void App::Line(const ImVec4& cl)
 {
 	PushStyleColor(ImGuiCol_Border, cl);
-	Separator();  Sep(5);
+	Separator();  Sep(5*sp);
 	PopStyleColor();
 }

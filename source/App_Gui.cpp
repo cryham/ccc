@@ -25,6 +25,7 @@ void HSVtoRGB(int h, int s, int v,  int& r, int& g, int& b)
 void App::Gui()
 {
 	const int yDbg = 200;  // par
+	sp = (yWindow - 600.f) / 600.f;  if (sp < 0.f)  sp = 0.f;
 
 
 	//  controls  wnd  =====
@@ -58,7 +59,7 @@ void App::Gui()
 	{
 		//  Properties title
 		//---------------------------------------------
-		Text("Properties");  Sep(20);
+		Text("Properties");  Sep(10);
 
 		Pat* p = nullptr;  // current, for edit, set
 		if (iCur >= 0 && iCur < li.pat.size())
@@ -68,11 +69,11 @@ void App::Gui()
 		if (edFocus)  // after F2
 		{	edFocus = false;  SetKeyboardFocusHere();
 		}
-		PushItemWidth(180);
+		PushItemWidth(160);
 		e = InputText("Pattern", ed.pat, sizeof(ed.pat));
 		if (e && p)  p->s = ed.pat;  // set
 		PopItemWidth();
-		Sep(20);
+		Sep(10);
 
 		//  color rect  [ ]
 		ImDrawList* dl = GetWindowDrawList();
@@ -83,7 +84,8 @@ void App::Gui()
 		Dummy(ImVec2(sz, sz));  SameLine(sz+10, 20);  Text("\nColor  %02X%02X%02X",ed.r,ed.g,ed.b);  // hex clr
 
 		//  r,g,b sliders  ==
-		e = false;  PushItemWidth(-60);  //PushAllowKeyboardFocus(false);
+		PushItemWidth(-60);  //PushAllowKeyboardFocus(false);
+		e = false;
 		e |= SliderInt("R", &ed.r, 0, 255, "");  SameLine();  Text(("R  "+i2s(ed.r)).c_str());  // set
 		e |= SliderInt("G", &ed.g, 0, 255, "");  SameLine();  Text(("G  "+i2s(ed.g)).c_str());
 		e |= SliderInt("B", &ed.b, 0, 255, "");  SameLine();  Text(("B  "+i2s(ed.b)).c_str());
@@ -107,13 +109,13 @@ void App::Gui()
 		#endif
 
 		//  checks  ...
-		//Sep(10);
-		//e = Checkbox("Dir",  &ed.dir);  if (e && p)  p->dir = ed.dir;  SameLine();  // set
+		Sep(10);
+		e = Checkbox("Dir",  &ed.dir);  if (e && p)  p->dir = ed.dir;  //SameLine();  // set
 		//e = Checkbox("Link", &ed.lnk);  if (e && p)  p->lnk = ed.lnk;  SameLine();
 		//e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;  //SameLine();
 
 		//  attrib  own, or from checks
-		Sep(10);
+		SameLine();  //Sep(5);
 		PushItemWidth(100);
 		e = InputText("Attributes", ed.attr, sizeof(ed.attr));
 		if (e && p)  p->attr = ed.attr;  // set
@@ -130,10 +132,10 @@ void App::Gui()
 
 		//  quick tools
 		//---------------------------------------------
-		Sep(20);  Line(cl0);  Sep(10);
+		Sep(10);  Line(cl0);  Sep(10);
 		Text("Search");
 		if (sFind[0]) {  SameLine(110);  Text("Found: %d  visible: %d", iFoundAll, iFound);  }
-		Sep(10);
+		Sep(5);
 
 		PushItemWidth(180);
 		if (findFocus)  // after alt-F
@@ -156,8 +158,9 @@ void App::Gui()
 		e = Button("F4 Save");    if (e)  Save();  SameLine();
 		e = Button("F5 Reload");  if (e)  Load();
 
-		Sep(5);
-		Text("Double Commander ");  Sep(5);
+		Sep(10);
+		Combo("cmbDC", &set.cmbDC, "Double Commander\0Total Commander\0\0");
+		/*Text("Double Commander ");/**/  Sep(5);
 		e = Button("F8 Export");  if (e)  SaveDC();  SameLine();
 		e = Button("F9 Import");  if (e)  LoadDC();
 		Sep(5);
@@ -171,8 +174,10 @@ void App::Gui()
 		PushItemWidth(xSplit-100);
 		Text("Dimensions");
 		Sep(20);
-		Text("Font Height");  int i = set.iFontH;
+		Text("List Font Height");  int i = set.iFontH;
 		e = SliderInt("F", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
+		Text("Gui Font Height");  i = set.iFontGui;
+		e = SliderInt("FG", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
 		Text("Line Y Spacing");  i = set.iLineH;
 		e = SliderInt("L", &i, -2, 12, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
 		Text("Item X Spacing");  float f = set.fXMargin;
@@ -185,7 +190,7 @@ void App::Gui()
 		PopItemWidth();
 
 		PushItemWidth(xSplit-40);
-		Sep(40);  Line(cl0);  Sep(10);
+		Sep(20);  Line(cl0);  Sep(10);
 		Text("Paths");  Sep(20);
 
 		Text("Project file");
@@ -200,9 +205,10 @@ void App::Gui()
 
 		Sep(20);
 		Text("Settings");
+		Sep(10);
 		e = Button("Reload");  if (e)  set.Load();  SameLine();
 		e = Button("Save");  if (e)  set.Save();
-		Sep(20);
+		Sep(5);
 		e = Button("Defaults");  if (e)  set.Default();
 	}	break;
 

@@ -30,8 +30,10 @@ public:
 
 	//  gui util  -----
 	void SetupGuiClr();
-	void Sep(int y);
-	void Line(const ImVec4& cl);
+	void Sep(int y);  // dummy separator
+	void Line(const ImVec4& cl);  //--
+
+	float sp;  // spacing for Sep
 	const static ImVec4 cl2, cl0;
 
 
@@ -60,6 +62,7 @@ public:
 	bool LoadDC(), SaveDC();
 	void StartDC();  // extras
 	bool LoadTC(), SaveTC();
+	void Export(bool alt), Import(bool alt);
 
 	Settings set;  //*  Settings
 
@@ -84,7 +87,7 @@ public:
 	void Move();
 
 	//  toggle
-	//void InvDir();
+	void InvDir();
 	void SetClr(bool line=true);
 
 
@@ -100,12 +103,13 @@ public:
 
 	//  list, edit params
 	//--------------------------
-	struct Ed
+	struct Ed  // edit for gui
 	{
 		int r,g,b;  // clr
+		//float h,s,v;
 		char pat[maxPat], attr[12];
-		bool dir, lnk, exe;
-		int grp;
+		bool dir;
+		//int grp;
 		Ed();
 	}ed;
 
@@ -118,5 +122,6 @@ public:
 
 	int iPick =-1;  // mouse over, id
 	int iLineSel =-1;  // selected row, line id
+
 	List li;  //*  List
 };
