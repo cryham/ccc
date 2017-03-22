@@ -163,7 +163,10 @@ void App::Gui()
 		Sep(5);
 		e = Button("F8 Export");  if (e)  Export();  SameLine();
 		e = Button("F9 Import");  if (e)  Import();
-		Sep(5);
+		//Sep(5);
+
+		bool mrg = set.merge;  SameLine();
+		e = Checkbox("Merging", &mrg);  if (e && p)  set.merge = mrg;
 
 	}	break;
 

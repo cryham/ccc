@@ -262,6 +262,7 @@ bool List::Load(const char* file)
 		a = pt->Attribute("b");  p.c.b = atoi(a);
 		a = pt->Attribute("s");  p.s = a;
 		a = pt->Attribute("a");  p.attr = a;
+		p.dir = p.attr == "d*";  // set dir from attr
 		clr.insert(p.c.Get());
 		pat.push_back(p);
 		pt = pt->NextSiblingElement();

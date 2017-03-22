@@ -63,6 +63,7 @@ public:
 	void StartDC();  // extras
 	bool LoadTC(), SaveTC();
 	void Export(), Import();
+	void Merge(const List& l);  // merge l into cur list, add only new patterns
 
 	Settings set;  //*  Settings
 

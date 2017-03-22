@@ -38,6 +38,8 @@ public:
 	float fXMargin = 0.7f;  // item x extra spacing
 
 	int   cmbDC = 0;  // import/export combo  DC 0, TC 1
+	bool  merge = false;  // merge load, without clear, load into current set
+
 
 	//  window  -----
 	int xwPos=0, ywPos=0;

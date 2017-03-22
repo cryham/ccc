@@ -93,6 +93,7 @@ bool Settings::Load()
 		a = e->Attribute("fXMargin");  if (a)  fXMargin = atof(a);
 		a = e->Attribute("iFontGui");  if (a)  iFontGui = atoi(a);
 		a = e->Attribute("cmbDC");  if (a)  cmbDC = atoi(a);
+		a = e->Attribute("merge");  if (a)  merge = atoi(a) > 0? true: false;
 	}
 	e = root->FirstChildElement("window");
 	if (e)
@@ -126,6 +127,7 @@ bool Settings::Save()
 	e->SetAttribute("fXMargin", fXMargin);
 	e->SetAttribute("iFontGui", iFontGui);
 	e->SetAttribute("cmbDC", cmbDC);
+	e->SetAttribute("merge", merge ? 1 : 0);
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("window");

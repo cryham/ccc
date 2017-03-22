@@ -116,7 +116,37 @@ void App::Export()
 
 void App::Import()
 {
+	List l;
+	if (set.merge)
+		l = li;
+
 	if (set.cmbDC==0)
 	{	if (alt)  LoadTC();  else  LoadDC();  }else
 	{	if (alt)  LoadDC();  else  LoadTC();  }
+
+	if (set.merge)
+		Merge(l);
+}
+
+void App::Merge(const List& l)
+{
+	int jj = li.pat.size();
+	int ii = l.pat.size();
+	for (int i = 0; i < ii; ++i)
+	{
+		const Pat& p = l.pat[i];  // new list
+
+		//  search for it in cur list
+		bool found = false;  //int jf = -1;
+		int j = 0;
+		while (!found && j < jj)
+		{
+			if (li.pat[j].s == p.s)
+				found = true;
+			else
+				++j;
+		}
+		if (!found)  // add if new
+			li.pat.push_back(p);
+	}
 }
