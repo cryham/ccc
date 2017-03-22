@@ -20,11 +20,13 @@ void HSVtoRGB(int h, int s, int v,  int& r, int& g, int& b)
 }
 #endif
 
+
 //  Gui draw and process
 ///-----------------------------------------------------------------------------
 void App::Gui()
 {
-	const int yDbg = 200;  // par
+	const static bool Debug = 0;  //1
+	const int yDbg = Debug ? 200 : 100;  // par
 	sp = (yWindow - 600.f) / 600.f;  if (sp < 0.f)  sp = 0.f;
 
 
@@ -110,7 +112,7 @@ void App::Gui()
 
 		//  checks  ...
 		Sep(10);
-		e = Checkbox("Dir",  &ed.dir);  if (e && p)  p->dir = ed.dir;  //SameLine();  // set
+		e = Checkbox("Dir",  &ed.dir);  if (e && p)  UpdDir(*p);
 		//e = Checkbox("Link", &ed.lnk);  if (e && p)  p->lnk = ed.lnk;  SameLine();
 		//e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;  //SameLine();
 
@@ -237,6 +239,8 @@ void App::Gui()
 	e = Button("Ctrl-F1  Help");  if (e)  bHelp = 1-bHelp;
 	Sep(5);
 
+
+	if (Debug)
 	if (TreeNode("Debug"))  // hidden
 	{	Sep(3);
 		string s;

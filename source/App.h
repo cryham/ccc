@@ -88,7 +88,7 @@ public:
 	void Move();
 
 	//  toggle
-	void InvDir();
+	void InvDir(), UpdDir(Pat& p);
 	void SetClr(bool line=true);
 
 

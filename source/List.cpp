@@ -36,10 +36,10 @@ void Pat::SetDir(bool d)
 {
 	dir = d;
 	//  dir and attr has no d
-	if (d && attr == "**")
+	if (d && (attr == "**" || attr.empty()))
 		attr = "d*";
 	else
-	if (!d && attr == "d*")
+	if (!d && (attr == "d*" || attr.empty()))
 		attr = "**";
 }
 

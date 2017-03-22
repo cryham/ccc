@@ -44,6 +44,10 @@ void App::InvDir()
 	if (Check())  return;
 	ed.dir = !ed.dir;
 	Pat& p = li.pat[iCur];
+	UpdDir(p);
+}
+void App::UpdDir(Pat& p)
+{
 	p.SetDir(ed.dir);
 	strcpy(ed.attr, p.attr.c_str());
 }
