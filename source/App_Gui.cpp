@@ -71,7 +71,7 @@ void App::Gui()
 		if (edFocus)  // after F2
 		{	edFocus = false;  SetKeyboardFocusHere();
 		}
-		PushItemWidth(160);
+		PushItemWidth(140);
 		e = InputText("Pattern", ed.pat, sizeof(ed.pat));
 		if (e && p)  p->s = ed.pat;  // set
 		PopItemWidth();
@@ -96,18 +96,16 @@ void App::Gui()
 		//  h,s,v sliders  todo floats..
 		#if 0
 		Sep(10);
-		int ih, is, iv;  bool eh, es, ev;
-		RGBtoHSV(ed.r, ed.g, ed.b, ih, is, iv);
-		eh = SliderInt("H", &ih, 0, 255, "");  SameLine();  Text(i2s(ih).c_str());
-		es = SliderInt("S", &is, 0, 255, "");  SameLine();  Text(i2s(is).c_str());
-		ev = SliderInt("V", &iv, 0, 255, "");  SameLine();  Text(i2s(iv).c_str());
-		if (p && (eh || es || ev))
+		bool eh, es, ev;
+		//RGBtoHSV(ed.r, ed.g, ed.b, ih, is, iv);
+		eh = SliderFloat("H", &ed.h, 0.f, 1.f, "");  SameLine();  Text(("H "+f2s(ed.h,3)).c_str());
+		es = SliderFloat("S", &ed.s, 0.f, 1.f, "");  SameLine();  Text(("S "+f2s(ed.s,3)).c_str());
+		ev = SliderFloat("V", &ed.v, 0.f, 1.f, "");  SameLine();  Text(("V "+f2s(ed.v,3)).c_str());
+		/*if (p && (eh || es || ev))
 		{
-			int r, g, b;
-			HSVtoRGB(ih, is, iv, r, g, b);
+			int r, g, b;  HSVtoRGB(ih, is, iv, r, g, b);
 			p->c.r = ed.r = r;  p->c.g = ed.g = g;  p->c.b = ed.b = b;
-		}
-		PopItemWidth();
+		}/**/
 		#endif
 
 		//  checks  ...
@@ -117,11 +115,17 @@ void App::Gui()
 		//e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;  //SameLine();
 
 		//  attrib  own, or from checks
-		SameLine();  //Sep(5);
-		PushItemWidth(100);
+		SameLine(130);  //Sep(5);
+		PushItemWidth(80);
 		e = InputText("Attributes", ed.attr, sizeof(ed.attr));
 		if (e && p)  p->attr = ed.attr;  // set
 		PopItemWidth();
+
+		//  hide, group
+		Sep(10);
+		e = Checkbox("Hidden",  &ed.hide);  if (e && p)  p->hide = ed.hide;
+		SameLine(130);
+		e = Checkbox("Group",  &ed.group);  if (e && p)  p->group = ed.group;
 
 		//  group  todo sort
 		/*Sep(20);
@@ -136,7 +140,16 @@ void App::Gui()
 		//---------------------------------------------
 		Sep(10);  Line(cl0);  Sep(10);
 		Text("Search");
-		if (sFind[0]) {  SameLine(110);  Text("Found: %d  visible: %d", iFoundAll, iFound);  }
+		/*e = TreeNode("Search");  // hidden
+		if (sFind[0]) {  SameLine(140);  Text("Found: %d  visible: %d", iFoundAll, iFound);  }
+		if (e)
+		{	Sep(3);
+			bool cas;
+			e = Checkbox("Case", &cas);  SameLine();
+			e = Checkbox("Whole", &cas);  SameLine();
+			e = Checkbox("Inverse", &cas);
+			TreePop();
+		}/**/
 		Sep(5);
 
 		PushItemWidth(180);

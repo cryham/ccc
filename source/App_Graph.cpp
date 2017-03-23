@@ -19,7 +19,7 @@ void App::Graph()
 		curBack(40,40,60),
 		sldBack(40,40,60), sldView(80,80,140),
 		sldSel(170,170,200), sldPick(170,170,255), sldPos(200,200,240),
-		moveMark(215,255,255);
+		moveMark(215,255,255), clrGroup(40,40,50);
 
 
 	//  update  //todo: not every frame..
@@ -58,6 +58,10 @@ void App::Graph()
 			break;  // outside
 		yc = y+2;  yy = yc+ya+2;  // cur
 
+
+		//  group  row backgr  ==
+		if (p.group)
+			Rect(x, yc+2, xMax/2, yy-1, clrGroup);
 
 		//  find __
 		if (p.match && !bHelp)

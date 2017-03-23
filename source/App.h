@@ -90,6 +90,7 @@ public:
 	//  toggle
 	void InvDir(), UpdDir(Pat& p);
 	void SetClr(bool line=true);
+	void InvHide(), InvGroup();
 
 
 	//  dimensions
@@ -107,10 +108,9 @@ public:
 	struct Ed  // edit for gui
 	{
 		int r,g,b;  // clr
-		//float h,s,v;
+		//float h,s,v;  //todo: HSV..
 		char pat[maxPat], attr[12];
-		bool dir;
-		//int grp;
+		bool dir, hide, group;
 		Ed();
 	}ed;
 

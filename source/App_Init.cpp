@@ -11,8 +11,8 @@ using namespace std;
 //  edit ctor
 //----------------------------------
 App::Ed::Ed()
-	:r(0), g(0), b(0)
-	,dir(false)
+	:r(120), g(120), b(120)
+	,dir(false), hide(false), group(false)
 {
 	memset(pat,0,sizeof(pat));
 	memset(attr,0,sizeof(attr));

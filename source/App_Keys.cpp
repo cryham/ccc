@@ -73,13 +73,14 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::Home:   First(ctrl);  ret
 		case Keyboard::End:    Last(ctrl);  ret
 
+		//  add
 		case Keyboard::Insert:  AddPat(shift, ctrl, alt);  ret
 	}
 
 	if (alt)
 	switch (key.code)
 	{
-		//  color
+		//  color copy
 		case Keyboard::C:  CopyClr();  ret
 		case Keyboard::S:
 		case Keyboard::V:  PasteClr();  ret
@@ -90,15 +91,11 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 		//  toggle
 		case Keyboard::D:  InvDir();  ret
+		case Keyboard::H:  InvHide();  ret
+		case Keyboard::G:  InvGroup();  ret
 
-		//  add, del
-		//case Keyboard::A:		AddPat(shift, ctrl);  ret
+		//  del
 		case Keyboard::Delete:  DelPat();  ret
-
-		#if 0
-		case Keyboard::Num1:  IncGrp(-1);  ret
-		case Keyboard::Num2:  IncGrp( 1);  ret
-		#endif
 	}
 	ret
 }

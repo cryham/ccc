@@ -172,18 +172,19 @@ bool List::SaveDC(const char* file)
 		XMLElement* fi = xml.NewElement("Filter"), *e;
 		string s, n;
 		for (int i=i0; i < i1; ++i)
-			s += pat[i].s + ";";
+			if (!pat[i].hide && !pat[i].group)  //*
+				s += pat[i].s + ";";
 		Pat p = pat[i0];  n = s;
 
 		//  name special cases
-		#define fnd(s)  p.attr.find(s) != string::npos
+		#define Find(s)  p.attr.find(s) != string::npos
 		if (n == "*;")
 		{
-			if (fnd("l"))  n = "Link";  else
-			if (fnd("d"))  n = "Dir";  else
-			if (fnd("x"))  n = "Exe";
+			if (Find("l"))  n = "Link";  else
+			if (Find("d"))  n = "Dir";  else
+			if (Find("x"))  n = "Exe";
 		}
-		#undef fnd
+		#undef Find
 
 		e = xml.NewElement("Name");			e->SetText(n.c_str());  fi->InsertEndChild(e);
 		e = xml.NewElement("FileMasks");	e->SetText(s.c_str());  fi->InsertEndChild(e);
@@ -257,12 +258,24 @@ bool List::Load(const char* file)
 	while (pt)
 	{
 		Pat p;
-		a = pt->Attribute("r");  p.c.r = atoi(a);
-		a = pt->Attribute("g");  p.c.g = atoi(a);
-		a = pt->Attribute("b");  p.c.b = atoi(a);
-		a = pt->Attribute("s");  p.s = a;
-		a = pt->Attribute("a");  p.attr = a;
-		p.dir = p.attr == "d*";  // set dir from attr
+		a = pt->Attribute("gr");  p.group = atoi(a) > 0;
+		if (p.group)
+		{
+			a = pt->Attribute("s");  p.s = a;
+			a = pt->Attribute("h");  p.hide = atoi(a) > 0;
+		}else
+		{
+			a = pt->Attribute("r");  p.c.r = atoi(a);
+			a = pt->Attribute("g");  p.c.g = atoi(a);
+			a = pt->Attribute("b");  p.c.b = atoi(a);
+
+			a = pt->Attribute("s");  p.s = a;
+			a = pt->Attribute("a");  p.attr = a;
+			p.dir = p.attr == "d*";  // set dir from attr
+
+			a = pt->Attribute("h");  p.hide = a && atoi(a) > 0;
+		}
+
 		clr.insert(p.c.Get());
 		pat.push_back(p);
 		pt = pt->NextSiblingElement();
@@ -281,11 +294,25 @@ bool List::Save(const char* file)
 	for (auto& p : pat)
 	{
 		XMLElement* pt = xml.NewElement("p");
-		pt->SetAttribute("r", i2s(p.c.r,3).c_str());
-		pt->SetAttribute("g", i2s(p.c.g,3).c_str());
-		pt->SetAttribute("b", i2s(p.c.b,3).c_str());
-		pt->SetAttribute("s", p.s.c_str());
-		pt->SetAttribute("a", p.attr.c_str());
+		if (p.group)
+		{
+			pt->SetAttribute("s", p.s.c_str());
+
+			pt->SetAttribute("h", p.hide? 1: 0);
+			pt->SetAttribute("gr", 1);
+		}else
+		{
+			pt->SetAttribute("r", i2s(p.c.r,3).c_str());
+			pt->SetAttribute("g", i2s(p.c.g,3).c_str());
+			pt->SetAttribute("b", i2s(p.c.b,3).c_str());
+
+			pt->SetAttribute("s", p.s.c_str());
+			pt->SetAttribute("a", p.attr.c_str());
+
+			if (p.hide)
+				pt->SetAttribute("h", 1);
+			//pt->SetAttribute("gr", p.gr? 1: 0);
+		}
 		root->InsertEndChild(pt);
 	}
 

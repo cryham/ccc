@@ -105,7 +105,7 @@ void App::Help()
 	Line(cl2);
 	H("alt-C", "copy color");
 	H("alt-S or V", "paste color");
-	H("alt-D", "toggle dir");
+	H("alt-D", "toggle directory");
 	Sep(10);
 	H("alt-F", "focus search");
 

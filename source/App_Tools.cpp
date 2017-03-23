@@ -52,6 +52,24 @@ void App::UpdDir(Pat& p)
 	strcpy(ed.attr, p.attr.c_str());
 }
 
+//  hide
+void App::InvHide()
+{
+	if (Check())  return;
+	ed.hide = !ed.hide;
+	Pat& p = li.pat[iCur];
+	p.hide = ed.hide;
+}
+
+//  group
+void App::InvGroup()
+{
+	if (Check())  return;
+	ed.group = !ed.group;
+	Pat& p = li.pat[iCur];
+	p.group = ed.group;
+}
+
 
 //  set cursor, set gui from list  * * *
 //-----------------------------------------------------------------------------
@@ -70,6 +88,8 @@ void App::SetCur(int ic)
 	ed.r = p.c.r;  ed.g = p.c.g;  ed.b = p.c.b;
 	//  checks
 	ed.dir = p.dir;
+	ed.hide = p.hide;
+	ed.group = p.group;
 }
 
 
@@ -78,13 +98,17 @@ void App::SetCur(int ic)
 void App::IncLine(int d, int end)
 {
 	if (Check())  return;
+
 	int lc = li.pat[iCur].l;  // cur line
 	int o = iCur - li.lines[lc];  // ofs in cur line
 	int lsi = li.lines.size()-1;
+
 	int ln = std::max(0, std::min(lsi, lc + d));  // new line
 	int l  = li.lines[ln];  // new line start
 	int le = li.LineLen(ln);  // new line length
+
 	if (o >= le)  o = le-1;
+
 	if (end==0)
 		SetCur(l + o);
 	else	// home or end

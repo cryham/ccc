@@ -35,12 +35,14 @@ struct SClr
 //------------------------------------------------
 struct Pat
 {
-	std::string s;  // eg. *.cpp
-	SClr c;
+	std::string s;  // pattern eg. *.cpp
+	SClr c;  // color
 
-	std::string attr;
-	bool dir;  //, lnk, exe;  //todo attributes..
-	//char grp;  //todo group, sorting..
+	std::string attr;  // DC syntax **
+	bool dir;  //, lnk, exe;
+
+	bool hide;   // hidden, if true won't be exported, s is group name
+	bool group;  // group start, s is group name, if hid then whole group hidden
 
 	//  visual only,  not saved, computed by Update()
 	int x,y, xw, l;  // pos on screen, width, line
@@ -52,7 +54,7 @@ struct Pat
 		:x(0),y(0), xw(0), l(0)
 		,match(false), sel(false)
 		,dir(false)  //, lnk(false), exe(false)
-		//,grp(0)
+		,hide(false), group(false)
 	{   }
 
 	void SetDir(bool d);
@@ -65,31 +67,36 @@ class App;
 class List
 {
 public:
+	//  vars
 	std::deque<Pat> pat;  // patterns
 	std::vector<int> lines;  // line offsets for patterns
 
 	std::set<sf::Uint32> clr;  // colors, for count
 
-	int LineLen(int id);  // get line length, id of line
-
+	//  ctor
 	List();
 	void Default();
-
-	//  update view,  run after any changes in pat
-	void Update(int xMin, int xMax, int xa, int ya);  // x,y, xw, l, ofs
 
 	//  app  for text get width
 	App* app = nullptr;
 	void SetApp(App* p) {  app = p;  }
 
-	//  load, import
+
+	//  view  ----
+	int LineLen(int id);  // get line length, id of line
+
+	//  update view,  run after any changes in pat
+	void Update(int xMin, int xMax, int xa, int ya);  // x,y, xw, l, ofs
+
+
+	//  import, export  ----
 	bool LoadDC(const char* file);  // DC doublecmd.xml
 	bool SaveDC(const char* file);
 
 	bool LoadTC(const char* file);  // TC color.ini
 	bool SaveTC(const char* file);
 
-	//  project file, own
+	//  project file, own xml
 	bool Load(const char* file);
 	bool Save(const char* file);
 };
