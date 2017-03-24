@@ -41,7 +41,10 @@ struct Pat
 	std::string attr;  // DC syntax **
 	bool dir;  //, lnk, exe;
 
-	bool hide;   // hidden, if true won't be exported, s is group name
+	bool hide;   // hidden, if true won't be exported
+	bool hideByGrp;  // hidden by group, set in Update
+	bool Visible() const
+	{	return !(hide || hideByGrp);  }
 	bool group;  // group start, s is group name, if hid then whole group hidden
 
 	//  visual only,  not saved, computed by Update()
@@ -54,7 +57,7 @@ struct Pat
 		:x(0),y(0), xw(0), l(0)
 		,match(false), sel(false)
 		,dir(false)  //, lnk(false), exe(false)
-		,hide(false), group(false)
+		,hide(false), hideByGrp(false), group(false)
 	{   }
 
 	void SetDir(bool d);

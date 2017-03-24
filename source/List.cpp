@@ -55,10 +55,15 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 	int x = xMin, xw = 0, y = 0;
 	lines.clear();
 	lines.push_back(0);
+	bool groupHide = false;
 
 	for (i=0; i < ii; ++i)
 	{
 		Pat& p = pat[i];
+		//  update group hide for all
+		if (p.group)
+			groupHide = p.hide;
+		p.hideByGrp = groupHide;
 
 		app->str = p.s;  // get text width
 		xw = app->Txt(x, y, false) + xa;
@@ -169,12 +174,18 @@ bool List::SaveDC(const char* file)
 	for (int ii=0; ii < id.size()-1; ++ii)
 	{
 		int i0 = id[ii], i1 = id[ii+1];
-		XMLElement* fi = xml.NewElement("Filter"), *e;
+
 		string s, n;
 		for (int i=i0; i < i1; ++i)
-			if (!pat[i].hide && !pat[i].group)  //*
+		{
+			if (pat[i].Visible() && !pat[i].group)  //*
 				s += pat[i].s + ";";
+		}
 		Pat p = pat[i0];  n = s;
+
+		if (n.empty())
+			continue;
+		XMLElement* fi = xml.NewElement("Filter"), *e;
 
 		//  name special cases
 		#define Find(s)  p.attr.find(s) != string::npos
@@ -220,7 +231,7 @@ bool List::SaveDC(const char* file)
 		if (strstr(l, "</FileFilters>"))
 			ff = false;
 		else
-		if (!ff)
+		if (!ff && l[0]!=0)
 			fo << l << endl;  // write line
 	}
 	fi.close();
@@ -414,23 +425,29 @@ bool List::SaveTC(const char* file)
 	}
 	id.push_back(pat.size());
 
+	int j = 1;
 	for (int ii=0; ii < id.size()-1; ++ii)
 	{
 		int i0 = id[ii], i1 = id[ii+1];
 
 		string s;
 		for (int i=i0; i < i1; ++i)
+		if (pat[i].Visible())
 			s += pat[i].s + ";";
 		Pat p = pat[i0];
 
-		i1 = ii + 1;
-		fo << "ColorFilter" << i1 << "=" << s.c_str() << endl;
-		fo << "ColorFilter" << i1 << "Color=" << p.c.Get() << endl;
+		if (!s.empty())
+		{
+			fo << "ColorFilter" << j << "=" << s.c_str() << endl;
+			fo << "ColorFilter" << j << "Color=" << p.c.Get() << endl;
+			++j;	
+		}
 	}
-
 	fo.close();
+
 	//  replace old with new
-	remove(file);
-	rename(file1, file);
-	return true;
+	bool ok = true;
+	if (remove(file)!=0)  ok = false;
+	if (rename(file1, file)!=0)  ok = false;
+	return ok;
 }

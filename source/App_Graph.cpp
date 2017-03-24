@@ -12,7 +12,7 @@ void App::Graph()
 		xa = set.iFontH * set.fXMargin,  // add x, margin
 		ya = set.iFontH + set.iLineH,  // line height
 		xMin = xSplit + 10, xMax = xWindow,  // area
-		yMax = yWindow;
+		yMax = yWindow, yf2 = set.iFontH/2;
 
 	const static SClr
 		findBack(25,25,35), findRect(255,255,255),
@@ -37,7 +37,7 @@ void App::Graph()
 		y0 = li.pat[i1].y;
 
 	//  vars
-	int x, y, xw, yc, yy;
+	int x, y, xw, yc, yy, yh;
 	int i = i1;
 
 	iFound = 0;  iPick = -1;
@@ -56,7 +56,9 @@ void App::Graph()
 		x = p.x;  y = p.y - y0;  xw = x + p.xw;
 		if (y + ya > yMax)
 			break;  // outside
+
 		yc = y+2;  yy = yc+ya+2;  // cur
+		yh = yc + yf2;
 
 
 		//  group  row backgr  ==
@@ -74,6 +76,10 @@ void App::Graph()
 
 		///  text write  --
 		Txt(x, y);
+
+		//  strikeout-- when hidden
+		if (!p.Visible())
+			Rect(x, yh, xw-xa, yh+1, p.c);
 
 		//  selected line  ==
 		if (p.l == iLineSel && iLineSel >= 0)

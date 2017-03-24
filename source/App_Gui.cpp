@@ -140,9 +140,9 @@ void App::Gui()
 		//---------------------------------------------
 		Sep(10);  Line(cl0);  Sep(10);
 		Text("Search");
-		/*e = TreeNode("Search");  // hidden
+		//e = TreeNode("Search");  // hidden
 		if (sFind[0]) {  SameLine(140);  Text("Found: %d  visible: %d", iFoundAll, iFound);  }
-		if (e)
+		/*if (e)
 		{	Sep(3);
 			bool cas;
 			e = Checkbox("Case", &cas);  SameLine();
