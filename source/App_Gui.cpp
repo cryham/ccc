@@ -246,6 +246,7 @@ void App::Gui()
 	Begin("Status", &open, wfl);
 
 	string s =  // info
+		//"Fps: " + f2s(1/dt,1,3) + "  "+
 		"Patterns: " + i2s(li.pat.size()) +
 		//"  Colors: " + i2s(li.clr.size()) +
 		"   Lines: " + i2s(li.lines.size());
@@ -260,7 +261,7 @@ void App::Gui()
 	if (TreeNode("Debug"))  // hidden
 	{	Sep(3);
 		string s;
-		s = "Cur: " + i2s(iCur) + "  Line: " + i2s(line);
+		s = "Fps: " + f2s(1/dt,1,3) + "  Cur: " + i2s(iCur) + "  Line: " + i2s(line);
 		Text(s.c_str());
 		s = "xs: " + i2s(xSplit) + "  xe: " + i2s(xWindow) + "  ye: " + i2s(yWindow);
 		Text(s.c_str());

@@ -105,12 +105,12 @@ void App::Help()
 	Line(cl2);
 	H("alt-C", "copy color");
 	H("alt-S or V", "paste color");
-	H("alt-D", "toggle directory");
 	Sep(5);
-	H("alt-H", "toggle hidden");
-	H("alt-G", "toggle group");
+	H("alt-D", "toggle Directory");
+	H("alt-H", "toggle Hidden");
+	H("alt-G", "toggle Group");
 	Sep(10);
-	H("alt-F", "focus search");
+	H("alt-F", "focus Search");
 
 	Sep(10);
 	H("F11, F12 or alt-Wheel", "");

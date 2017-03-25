@@ -11,7 +11,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	Mods(key);
 
 	int lMax = li.pat.size()-1;  // lines
-	int d = alt ? 20 : ctrl ? 12 : shift ? 1 : 4;  // diff
+	int d = alt ? 20 : ctrl ? 16 : shift ? 1 : 8;  // diff
 	int r = alt ? 1 : ctrl ? 4 : 1;
 
 
