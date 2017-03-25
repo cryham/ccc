@@ -78,7 +78,7 @@ bool AppMain::Run()
 
 	//  Loop
 	//------------------------------------------------
-	Clock dt;
+	Clock timer;
 	while (window->isOpen())
 	{
 		//  Process events
@@ -102,14 +102,15 @@ bool AppMain::Run()
 			case Event::Closed:		s.GetWndDim(window);  window->close();  break;
 			}
 		}
-		Update(*window, dt.restart());
-
+		sf::Time time = timer.restart();
+		Update(*window, time);
+		app->dt = time.asSeconds();
 
 		//  Draw
 		//------------------
 		app->Gui();
 
-		//window->resetGLStates();
+		window->resetGLStates();
 		window->clear();
 
 		app->Graph();

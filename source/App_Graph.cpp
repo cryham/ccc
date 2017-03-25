@@ -7,17 +7,25 @@ using namespace std;
 ///-----------------------------------------------------------------------------
 void App::Graph()
 {
+
 	///  dim params  -----
 	const int
-		xa = set.iFontH * set.fXMargin,  // add x, margin
-		ya = set.iFontH + set.iLineH,  // line height
+		xa = set.iFontH * set.fXMargin,  // add x  with margin
+		ya = set.iFontH + set.iLineH,    // line height
 		xMin = xSplit + 10, xMax = xWindow,  // area
-		yMax = yWindow, yf2 = set.iFontH/2;
+		yMax = yWindow,
+		yf2 = set.iFontH/2;
 
-	const static SClr
-		findBack(25,25,35), findRect(255,255,255),
+
+	//  animate find color
+	time += dt;
+	float a = 255.f * (0.75f + 0.25f * cosf(16.f * time));
+	const SClr findRect(a, 255, a);
+
+	const static SClr  ///  colors
+		findBack(25,25,35),
 		curBack(40,40,60),
-		sldBack(40,40,60), sldView(80,80,140),
+		sldBack(40,40,60), sldView(80,80,140), sldOver(120,120,180),
 		sldSel(170,170,200), sldPick(170,170,255), sldPos(200,200,240),
 		moveMark(215,255,255), clrGroup(40,40,50);
 
@@ -97,7 +105,7 @@ void App::Graph()
 				Frame(x, yc, xw, yy, 2, p.c);
 
 			//if (alt && !shift && !ctrl)
-				iPick = i;  // pick, move marker
+			iPick = i;  // pick, move marker
 
 			if (!alt)
 			if (mb == 1)  // LMB
@@ -157,7 +165,7 @@ void App::Graph()
 			//	Rect(x0, y1, x0+8, y2, findRect);
 		}
 	}
-	#undef Y
+		#undef Y
 
 
 	//  move marker
@@ -174,7 +182,7 @@ void App::Graph()
 
 	///  Move  alt-LMB
 	///-------------------
-	if (alt && mb==1 && !mbo)
+	if (alt && mb == 1 && !mbo)
 		Move();
 
 	mbo = mb;

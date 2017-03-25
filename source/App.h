@@ -14,6 +14,8 @@ public:
 	bool Init();
 	void Graph(), Gui(), Help();
 
+	float dt = 0.f, time = 0.f;  // animation
+
 
 	//  input events
 	//--------------------------
@@ -114,15 +116,15 @@ public:
 		Ed();
 	}ed;
 
-	int iCur =0;  // list cursor id
+	int iCur = 0;  // list cursor id
 	void SetCur(int d);
 
-	int line =0;  // page ofset lines
+	int line = 0;  // page ofset lines
 	void IncLine(int d, int end=0);
 	void First(bool ctrl), Last(bool ctrl);  // home, end
 
-	int iPick =-1;  // mouse over, id
-	int iLineSel =-1;  // selected row, line id
+	int iPick = -1;  // mouse over, id
+	int iLineSel = -1;  // selected row, line id
 
 	List li;  //*  List
 };
