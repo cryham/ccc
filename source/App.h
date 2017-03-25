@@ -97,12 +97,14 @@ public:
 
 	//  dimensions
 	//--------------------------
-	int xm=0, ym=0;  // mouse pos
-	int mb=0, mbo=0;   // mouse buttons state, old
-
-	int xWindow =600, yWindow =400, xSplit =200;   // screen size
-	bool bHelp = false;
+	int xWindow =600, yWindow =400, xSplit =200;   // window size
+	bool bHelp = false;  // show help
 	void IncFont(int d);  // change font size
+
+	//  mouse vars
+	int xm=0, ym=0, ymo=0, oline=0;  // mouse pos, old
+	int mb=0, mbo=0;   // buttons state, old
+	bool dragSplit = false, dragSlider = false;  // dragging
 
 
 	//  list, edit params

@@ -14,7 +14,9 @@ void App::Graph()
 		ya = set.iFontH + set.iLineH,    // line height
 		xMin = xSplit + 10, xMax = xWindow,  // area
 		yMax = yWindow,
-		yf2 = set.iFontH/2;
+		yf2 = set.iFontH/2,
+		xBack = std::min(xMax - 30.f,  // group row length
+			xMin + xa * 50 * set.fXBackGroup);
 
 
 	//  animate find color
@@ -30,7 +32,25 @@ void App::Graph()
 		moveMark(215,255,255), clrGroup(40,40,50);
 
 
-	//  update  //todo: not every frame..
+	//  drag | splitter
+	bool overSld = !alt && xm > xBack;  // over slider
+	bool overSpl = !alt && xm > xSplit-4 && xm < xSplit+2;
+
+	if (overSpl && mb == 1 && !mbo)
+		dragSplit = true;
+	if (dragSplit)
+	{
+		xSplit = std::max(150, std::min(xWindow - 200, xm));
+		set.fSplit = float(xSplit) / xWindow;
+		UpdSplit();
+		if (mb == 0)
+			dragSplit = false;
+	}
+	Rect(xSplit-2, 0, xSplit+2, yMax,
+		dragSplit || overSpl ? sldView : sldBack);
+
+
+	//  update list pos  //todo: not every frame..
 	li.Update(xMin, xMax, xa, ya);
 
 	const int
@@ -51,7 +71,7 @@ void App::Graph()
 	iFound = 0;  iPick = -1;
 
 
-	//  List  --------------
+	//  List  --------------------------------------------------------
 	while (i < ii)
 	{
 		const Pat& p = li.pat[i];
@@ -71,7 +91,7 @@ void App::Graph()
 
 		//  group  row backgr  ==
 		if (p.group)
-			Rect(x, yc+2, xMax/2, yy-1, clrGroup);
+			Rect(x, yc+2, xBack, yy-1, clrGroup);
 
 		//  find __
 		if (p.match && !bHelp)
@@ -82,12 +102,13 @@ void App::Graph()
 			Rect(x, yc+2, xw, yy-1, curBack);
 
 
-		///  text write  --
+		///  Text write
 		Txt(x, y);
 
 		//  strikeout-- when hidden
 		if (!p.Visible())
 			Rect(x, yh, xw-xa, yh+1, p.c);
+
 
 		//  selected line  ==
 		if (p.l == iLineSel && iLineSel >= 0)
@@ -98,13 +119,14 @@ void App::Graph()
 			Frame(x, yc, xw, yy, 1, p.c);
 
 		//  mouse over [ ]
-		if (tab == Tab_List && !bHelp)  //+
-		if (xm >= x && xm < xw && ym >= y && ym < y+ya)
+		if (tab == Tab_List &&
+			!bHelp && !dragSplit && !dragSlider)  //+
+		if (xm >= x && xm < xw &&
+			ym >= y && ym < y+ya)
 		{
 			if (i != iCur)
 				Frame(x, yc, xw, yy, 2, p.c);
 
-			//if (alt && !shift && !ctrl)
 			iPick = i;  // pick, move marker
 
 			if (!alt)
@@ -127,26 +149,47 @@ void App::Graph()
 
 
 	//  Slider  |  pos, view size
-	//-----------------------------------
-	const int x0 = xMax-22;  // par
+	//---------------------------------------------------------------
 
-	//  hide if not much
-	if (ii > 5 || ll > 1)
+	if (overSld && !dragSplit)
+	//if (!alt && iPick == -1)  // drag anywhere-
+		if (mb == 1 && !mbo)
+		{	ymo = ym;  oline = line;  dragSlider = true;  }
+
+	if (dragSlider)
+	{	/**/
+		while (ym - ymo > ya)
+		{	ymo += ya;  line += 4;  }  //par-
+		while (ym - ymo < ya)
+		{	ymo -= ya;  line -= 4;  }/**/
+		//line = float(ym) / yMax * (ll-1);
+		//line = oline + (ym - ymo) / ya;
+			// * float(ym) / yMax * (ll-1);
+	}
+	if (mb == 0)
+		dragSlider = false;
+
+	//  draw slider
+	if (ii > 5 || ll > 1)  // hide if not much
 	{
 		#define Y(y)  float(y) / ii * yMax
 		int y1 = Y(i1), y2 = Y(i),
-			p1 = Y(iCur), p2 = Y(iCur+1);  if (p2==p1)  ++p2;
+			p1 = Y(iCur), p2 = Y(iCur+1);
+		if (p2 == p1)  ++p2;  // mix 1 pix
+		const int x0 = xMax - 20;  //par
 
 		Rect(x0, 0, xMax, yMax, sldBack);  // background
 		Rect(x0, y1, xMax, y2, sldView);  // visible area
+		if (overSld)
+			Frame(x0, y1, xMax, y2, 1, sldOver);
 
-		if (iLineSel >= 0 &&  // sel
-			iLineSel < li.lines.size())
+		if (iLineSel >= 0 &&  // selected line
+			iLineSel < ll)
 		{
 			int a = li.lines[iLineSel];  // begin of sel line
 			int b = li.LineLen(iLineSel) + a;  // end
 			y1 = Y(a);  y2 = Y(b);
-			Rect(x0, y1, xMax, y2, sldSel);  // sel line
+			Rect(x0, y1, xMax, y2, sldSel);
 		}
 
 		Rect(x0, p1, xMax, p2, sldPos);  // cursor
@@ -164,8 +207,8 @@ void App::Graph()
 			//if (li.pat[i].sel)
 			//	Rect(x0, y1, x0+8, y2, findRect);
 		}
-	}
 		#undef Y
+	}
 
 
 	//  move marker
