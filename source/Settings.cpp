@@ -37,6 +37,10 @@ void Settings::Default()
 	iFontH = 16;
 	iLineH = 2;
 	fXMargin = 0.7f;
+	iFontGui = 18;
+
+	cmbDC = 0;
+	merge = false;
 
 	strcpy(pathSet, "ccc.set.xml");
 	strcpy(pathProj, "ccc.xml");
@@ -92,6 +96,7 @@ bool Settings::Load()
 		a = e->Attribute("iLineH");  if (a)  iLineH = atoi(a);
 		a = e->Attribute("fXMargin");  if (a)  fXMargin = atof(a);
 		a = e->Attribute("iFontGui");  if (a)  iFontGui = atoi(a);
+
 		a = e->Attribute("cmbDC");  if (a)  cmbDC = atoi(a);
 		a = e->Attribute("merge");  if (a)  merge = atoi(a) > 0? true: false;
 	}
@@ -121,20 +126,21 @@ bool Settings::Save()
 	e = xml.NewElement("pathTCini");  e->SetAttribute("p", pathTCini);  root->InsertEndChild(e);
 
 	e = xml.NewElement("dim");
-	e->SetAttribute("fSplit", fSplit);
-	e->SetAttribute("iFontH", iFontH);
-	e->SetAttribute("iLineH", iLineH);
-	e->SetAttribute("fXMargin", fXMargin);
-	e->SetAttribute("iFontGui", iFontGui);
-	e->SetAttribute("cmbDC", cmbDC);
-	e->SetAttribute("merge", merge ? 1 : 0);
+		e->SetAttribute("fSplit", fSplit);
+		e->SetAttribute("iFontH", iFontH);
+		e->SetAttribute("iLineH", iLineH);
+		e->SetAttribute("fXMargin", fXMargin);
+		e->SetAttribute("iFontGui", iFontGui);
+
+		e->SetAttribute("cmbDC", cmbDC);
+		e->SetAttribute("merge", merge ? 1 : 0);
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("window");
-	e->SetAttribute("x", xwPos);
-	e->SetAttribute("y", ywPos);
-	e->SetAttribute("sx", xwSize);
-	e->SetAttribute("sy", ywSize);
+		e->SetAttribute("x", xwPos);
+		e->SetAttribute("y", ywPos);
+		e->SetAttribute("sx", xwSize);
+		e->SetAttribute("sy", ywSize);
 	root->InsertEndChild(e);
 
 	xml.InsertEndChild(root);

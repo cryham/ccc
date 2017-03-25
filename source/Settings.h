@@ -8,7 +8,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const static int ver = 50;
+	const static int ver = 60;
 
 	//  main
 	Settings();
@@ -33,7 +33,7 @@ public:
 	//  dimensions  -----
 	float fSplit = 0.27f;   // splitter 0..1
 	int   iFontH = 16;      // font height in list
-	int   iFontGui = 18;    // font height in gui
+	int   iFontGui = 18;    // font height for Gui
 	int   iLineH = 2;       // line spacing
 	float fXMargin = 0.7f;  // item x extra spacing
 
@@ -42,7 +42,7 @@ public:
 
 
 	//  window  -----
-	int xwPos=0, ywPos=0;
-	int xwSize=1024, ywSize=768;
+	int xwPos = 0, ywPos = 0;
+	int xwSize = 1024, ywSize = 768;
 	void GetWndDim(sf::Window* wnd);
 };

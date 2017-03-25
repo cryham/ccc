@@ -432,15 +432,18 @@ bool List::SaveTC(const char* file)
 
 		string s;
 		for (int i=i0; i < i1; ++i)
-		if (pat[i].Visible())
-			s += pat[i].s + ";";
+		{
+			const Pat& p = pat[i];
+			if (p.Visible() && !p.group)
+				s += p.s + (p.dir ? ".;" : ";");  // end dirs with .
+		}
 		Pat p = pat[i0];
 
 		if (!s.empty())
 		{
 			fo << "ColorFilter" << j << "=" << s.c_str() << endl;
 			fo << "ColorFilter" << j << "Color=" << p.c.Get() << endl;
-			++j;	
+			++j;
 		}
 	}
 	fo.close();
