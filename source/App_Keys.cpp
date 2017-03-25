@@ -50,7 +50,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F9:  Import();  ret
 
 		case Keyboard::F10:  li.Default();  ret  // clear
-		case Keyboard::F7:  StartDC();  ret
+		case Keyboard::F7:  StartExe();  ret
 	}
 
 	//  list only  ----
@@ -77,7 +77,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::Insert:  AddPat(shift, ctrl, alt);  ret
 	}
 
-	if (alt)
+	if (alt)  // _alt_
 	switch (key.code)
 	{
 		//  color copy
@@ -99,15 +99,10 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	}
 	ret
 }
+#undef ret
 
-void App::IncFont(int d)
-{
-	set.iFontH += d;
-	if (set.iFontH < 1)   set.iFontH = 1;
-	if (set.iFontH > 32)  set.iFontH = 32;
-	text.setCharacterSize(set.iFontH);
-}
 
+//  utils, mouse  ----
 void App::Wheel(float d)
 {
 	if (xm < xSplit || bHelp)  return;
@@ -125,16 +120,25 @@ void App::Wheel(float d)
 	if (line > lMax)  line = lMax;
 }
 
-
-//  utils input  ----
 void App::Mouse(int x, int y)
 {
 	xm = x;  ym = y;
+	if (dragSplit)
+		return;
 	if (tab == Tab_Edit && xm > xSplit)
 		tab = Tab_List;
 	else
 	if (tab == Tab_List && xm < xSplit)
 		tab = Tab_Edit;
+}
+
+//  utils, keys  ----
+void App::IncFont(int d)
+{
+	set.iFontH += d;
+	if (set.iFontH < 1)   set.iFontH = 1;
+	if (set.iFontH > 32)  set.iFontH = 32;
+	text.setCharacterSize(set.iFontH);
 }
 
 void App::Mods(const sf::Event::KeyEvent& key)

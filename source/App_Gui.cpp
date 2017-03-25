@@ -186,19 +186,43 @@ void App::Gui()
 
 
 	case Tab_Settings:
-	{	//---------------------------------------------
+	{
+		//---------------------------------------------
+		e = Button("Defaults");  if (e)  set.Default();  SameLine();
+		e = Button("Reload");  if (e)  set.Load();  SameLine();
+		e = Button("Save");  if (e)  set.Save();
+		Sep(10);
+
+		PushItemWidth(xSplit-40);
+		Text("Paths");  Sep(10);
+
+		Text("Project file");
+		e = InputText("proj", set.pathProj, sizeof(set.pathProj));
+
+		Sep(10);  Text("doublecmd.xml location");
+		e = InputText("DCxml", set.pathDCxml, sizeof(set.pathDCxml));
+		Sep(5);  Text("Double Commander executable");
+		e = InputText("DCexe", set.pathDCexe, sizeof(set.pathDCexe));
+
+		Sep(10);  Text("Total Commander color.ini");
+		e = InputText("TCini", set.pathTCini, sizeof(set.pathTCini));
+		Sep(5);  Text("Total Commander executable");
+		e = InputText("TCexe", set.pathTCexe, sizeof(set.pathTCexe));
+		PopItemWidth();
+
 		PushItemWidth(xSplit-100);
+		Sep(10);  Line(cl0);  Sep(5);
 		Text("Dimensions");
-		Sep(20);
+		Sep(10);
 		Text("List Font Height");  int i = set.iFontH;
 		e = SliderInt("F", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
 		Text("Gui Font Height (restart)");  i = set.iFontGui;
 		e = SliderInt("FG", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
 		Text("Line Y Spacing");  i = set.iLineH;
-		e = SliderInt("L", &i, -2, 12, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
+		e = SliderInt("L", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
 
 		Text("Item X Spacing");  float f = set.fXMargin;
-		e = SliderFloat("X", &f, 0.1f, 2.f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+		e = SliderFloat("X", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
 		Text("Group row length");  f = set.fXBackGroup;
 		e = SliderFloat("GL", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
 
@@ -206,30 +230,9 @@ void App::Gui()
 		PushItemWidth(170);
 		e = InputFloat("S", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();  //-
 		PopItemWidth();
-		Sep(20);
-		PopItemWidth();
-
-		PushItemWidth(xSplit-40);
-		Sep(20);  Line(cl0);  Sep(10);
-		Text("Paths");  Sep(20);
-
-		Text("Project file");
-		e = InputText("proj", set.pathProj, sizeof(set.pathProj));
-		Sep(5);  Text("doublecmd.xml location");
-		e = InputText("DCxml", set.pathDCxml, sizeof(set.pathDCxml));
-		Sep(5);  Text("Double Commander executable");
-		e = InputText("DCexe", set.pathDCexe, sizeof(set.pathDCexe));
-		Sep(5);  Text("Total Commander color.ini");
-		e = InputText("TCini", set.pathTCini, sizeof(set.pathTCini));
-		PopItemWidth();
-
-		Sep(20);
-		Text("Settings");
 		Sep(10);
-		e = Button("Reload");  if (e)  set.Load();  SameLine();
-		e = Button("Save");  if (e)  set.Save();
-		Sep(5);
-		e = Button("Defaults");  if (e)  set.Default();
+		PopItemWidth();
+
 	}	break;
 
 	}

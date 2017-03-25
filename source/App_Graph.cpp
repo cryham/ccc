@@ -8,7 +8,7 @@ using namespace std;
 void App::Graph()
 {
 
-	///  dim params  -----
+	///  dim params  ----------
 	const int
 		xa = set.iFontH * set.fXMargin,  // add x  with margin
 		ya = set.iFontH + set.iLineH,    // line height
@@ -18,10 +18,9 @@ void App::Graph()
 		xBack = std::min(xMax - 30.f,  // group row length
 			xMin + xa * 50 * set.fXBackGroup);
 
-
 	//  animate find color
 	time += dt;
-	float a = 255.f * (0.75f + 0.25f * cosf(16.f * time));
+	float a = 255.f * (0.75f + 0.25f * cosf(12.f * time));
 	const SClr findRect(a, 255, a);
 
 	const static SClr  ///  colors
@@ -105,7 +104,7 @@ void App::Graph()
 		///  Text write
 		Txt(x, y);
 
-		//  strikeout-- when hidden
+		//  hidden strikeout--
 		if (!p.Visible())
 			Rect(x, yh, xw-xa, yh+1, p.c);
 
@@ -139,7 +138,7 @@ void App::Graph()
 				iLineSel = i < 0 ? -1 : p.l;  // select line
 		}	}
 
-		//  find match __
+		//  find match  underline __
 		if (p.match && !bHelp)
 		{	++iFound;  // visible only
 			Rect(x, yy-1, xw, yy, findRect);
@@ -154,7 +153,7 @@ void App::Graph()
 	if (overSld && !dragSplit)
 	//if (!alt && iPick == -1)  // drag anywhere-
 		if (mb == 1 && !mbo)
-		{	ymo = ym;  oline = line;  dragSlider = true;  }
+		{	ymo = ym;  lno = line;  dragSlider = true;  }
 
 	if (dragSlider)
 	{	/**/

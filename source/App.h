@@ -20,8 +20,8 @@ public:
 	//  input events
 	//--------------------------
 	#define EvKey  const sf::Event::KeyEvent& key
-	bool KeyDown(EvKey), KeyUp(EvKey);
-	void Mods(EvKey);
+		bool KeyDown(EvKey), KeyUp(EvKey);
+		void Mods(EvKey);
 	#undef EvKey
 	bool alt=0, ctrl=0, shift=0;  // mods
 
@@ -50,6 +50,7 @@ public:
 		void Set(std::string sText, float hue);
 	}status;
 
+
 	//  tabs  -----
 	enum ETabs {
 		Tab_Edit, Tab_List, Tab_Settings, Tab_ALL };
@@ -59,28 +60,44 @@ public:
 	bool edFocus = false, findFocus = false;
 
 
-	//  project
+	//  project  -----
 	bool Load(), Save();
-	bool LoadDC(), SaveDC();
-	void StartDC();  // extras
-	bool LoadTC(), SaveTC();
+	//  merge l into cur list, adds only new patterns
+	void Merge(const List& l);
+
 	void Export(), Import();
-	void Merge(const List& l);  // merge l into cur list, add only new patterns
+	bool LoadDC(), SaveDC();
+	bool LoadTC(), SaveTC();
+	bool StartExe();
 
 	Settings set;  //*  Settings
 
 
-	//  find
+	//  find  -----
 	const static int maxPat = 64;
-	char sFind[maxPat]={0};
-	int iFound = 0, iFoundAll = 0;
+	char sFind[maxPat]={0};  // string to find, options
+
 	bool findCase = false, findWhole = false, findInverse = false;
 	void DoFind();
+	int iFound = 0, iFoundAll = 0;  // results
 
 
-	//  list operations
+	//  dimensions
 	//--------------------------
-	bool Check();  // true if empty, quit all operations
+	int xWindow =600, yWindow =400, xSplit =200;   // window size
+	bool bHelp = false;  // show help
+	void IncFont(int d);  // change font size
+
+	//  mouse vars
+	int xm=0, ym=0, ymo=0, lno=0;  // mouse pos, old
+	int mb=0, mbo=0;   // buttons state, old
+	bool dragSplit = false, dragSlider = false;  // dragging
+
+
+
+	///  List operations
+	//----------------------------------------------------
+	bool Check();  // true if list empty, quit all operations
 	SClr copyClr;
 	void CopyClr(), PasteClr();  // copy and paste color
 
@@ -96,18 +113,6 @@ public:
 	void InvHide(), InvGroup();
 
 
-	//  dimensions
-	//--------------------------
-	int xWindow =600, yWindow =400, xSplit =200;   // window size
-	bool bHelp = false;  // show help
-	void IncFont(int d);  // change font size
-
-	//  mouse vars
-	int xm=0, ym=0, ymo=0, oline=0;  // mouse pos, old
-	int mb=0, mbo=0;   // buttons state, old
-	bool dragSplit = false, dragSlider = false;  // dragging
-
-
 	//  list, edit params
 	//--------------------------
 	struct Ed  // edit for gui
@@ -119,15 +124,15 @@ public:
 		Ed();
 	}ed;
 
-	int iCur = 0;  // list cursor id
+	int iCur = 0;  // list cursor, index
 	void SetCur(int d);
 
-	int line = 0;  // page ofset lines
+	int line = 0;  // page offset, lines
 	void IncLine(int d, int end=0);
 	void First(bool ctrl), Last(bool ctrl);  // home, end
 
-	int iPick = -1;  // mouse over, id
-	int iLineSel = -1;  // selected row, line id
+	int iPick =-1;  // mouse over, id
+	int iLineSel =-1;  // selected row, line id
 
 	List li;  //*  List
 };

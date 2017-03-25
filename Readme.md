@@ -12,19 +12,20 @@ Currently you can:
 - Import from and export back into:
   * Double Commander's file: doublecmd.xml
   * Total Commander's file: color.ini
+  * Import with merge into current list
 - Manage the list
   * edit, add, remove patterns
   * adjust row color with R,G,B sliders
   * rearrange, move patterns and rows
-  * search pattern names
+  * find pattern names, with occurences mark
+  * toggle directory, hidden or group
+  * change font size, spacing and other settings
   
 TODO (less important):
-- Import with merge into current list
 - Manage
-  * dir, link, exe checkboxes, updating attributes string
-  * hsv sliders
-  * group by id, sorting
+  * HSV sliders
   * multi select, move, edit
+  * group id, sorting
   * rating groups
 
 ## General

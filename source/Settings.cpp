@@ -15,9 +15,9 @@ Settings::Settings()
 {
 	memset(pathSet,0,sizeof(pathSet));
 	memset(pathProj,0,sizeof(pathProj));
-	memset(pathDCxml,0,sizeof(pathDCxml));
-	memset(pathDCexe,0,sizeof(pathDCexe));
-	memset(pathTCini,0,sizeof(pathTCini));
+
+	memset(pathDCxml,0,sizeof(pathDCxml));  memset(pathDCexe,0,sizeof(pathDCexe));
+	memset(pathTCini,0,sizeof(pathTCini));  memset(pathTCexe,0,sizeof(pathTCexe));
 	Default();
 }
 
@@ -34,11 +34,13 @@ void Settings::GetWndDim(sf::Window* wnd)
 //------------------------------------------------------------------------------------------------
 void Settings::Default()
 {
-	fSplit = 0.27f;
-	iFontH = 16;
+	fSplit = 0.22f;
+	iFontH = 18;
+	iFontGui = 17;
 	iLineH = 2;
-	fXMargin = 0.7f;
-	iFontGui = 18;
+
+	fXMargin = 1.7f;
+	fXBackGroup = 0.45f;
 
 	cmbDC = 0;
 	merge = false;
@@ -50,12 +52,13 @@ void Settings::Default()
 	char username[UNLEN+1];
 	DWORD username_len = UNLEN+1;
 	GetUserName(username, &username_len);
+
 	string usr = string("c:\\Users\\")+username+"\\AppData\\Roaming\\doublecmd\\doublecmd.xml";
 	strcpy(pathDCxml, usr.c_str());
-
 	strcpy(pathDCexe, "c:\\Program Files\\Double Commander\\doublecmd.exe");
 
 	strcpy(pathTCini, "color.ini");
+	strcpy(pathTCexe, "c:\\Program Files\\Total Commander\\totalcmd.exe");
 #else
 	//todo
 	strcpy(pathDC, "");
@@ -86,9 +89,10 @@ bool Settings::Load()
 
 	//  paths
 	e = root->FirstChildElement("pathProj");   if (e){  a = e->Attribute("p");  if (a)  strcpy(pathProj,a);  }
-	e = root->FirstChildElement("pathDCexe");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCexe,a);  }
 	e = root->FirstChildElement("pathDCxml");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCxml,a);  }
+	e = root->FirstChildElement("pathDCexe");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathDCexe,a);  }
 	e = root->FirstChildElement("pathTCini");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathTCini,a);  }
+	e = root->FirstChildElement("pathTCexe");  if (e){  a = e->Attribute("p");  if (a)  strcpy(pathTCexe,a);  }
 
 	e = root->FirstChildElement("dim");
 	if (e)
@@ -124,9 +128,10 @@ bool Settings::Save()
 
 	//  paths
 	e = xml.NewElement("pathProj");   e->SetAttribute("p", pathProj);  root->InsertEndChild(e);
-	e = xml.NewElement("pathDCexe");  e->SetAttribute("p", pathDCexe);  root->InsertEndChild(e);
 	e = xml.NewElement("pathDCxml");  e->SetAttribute("p", pathDCxml);  root->InsertEndChild(e);
+	e = xml.NewElement("pathDCexe");  e->SetAttribute("p", pathDCexe);  root->InsertEndChild(e);
 	e = xml.NewElement("pathTCini");  e->SetAttribute("p", pathTCini);  root->InsertEndChild(e);
+	e = xml.NewElement("pathTCexe");  e->SetAttribute("p", pathTCexe);  root->InsertEndChild(e);
 
 	e = xml.NewElement("dim");
 		e->SetAttribute("fSplit", f2s(fSplit,3).c_str());
