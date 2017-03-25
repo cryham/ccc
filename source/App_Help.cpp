@@ -106,6 +106,9 @@ void App::Help()
 	H("alt-C", "copy color");
 	H("alt-S or V", "paste color");
 	H("alt-D", "toggle directory");
+	Sep(5);
+	H("alt-H", "toggle hidden");
+	H("alt-G", "toggle group");
 	Sep(10);
 	H("alt-F", "focus search");
 

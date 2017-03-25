@@ -126,7 +126,7 @@ void App::SetClr(bool line)
 		b = li.LineLen(p.l) + a;  // end
 	}
 	SClr ec(ed.r, ed.g, ed.b);
-	for (int i=a; i<b; ++i)
+	for (int i = a; i < b; ++i)
 		li.pat[i].c = ec;
 }
 

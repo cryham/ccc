@@ -60,18 +60,18 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	switch (key.code)
 	{
 		//  arrows, cursor move
-		case Keyboard::Left:  /*if (alt)  Move(shift,ctrl);  else*/  SetCur(iCur-r);  ret
-		case Keyboard::Right: /*if (alt)  Move(shift,ctrl);  else*/  SetCur(iCur+r);  ret
+		case Keyboard::Left:  SetCur(iCur-r);  ret
+		case Keyboard::Right: SetCur(iCur+r);  ret
 
 		case Keyboard::Up:	  IncLine(-r);  ret
 		case Keyboard::Down:  IncLine( r);  ret
 
 		//  page, line offset
-		case Keyboard::PageUp:	  line-=d;  if (line < 0)  line = 0;  ret
-		case Keyboard::PageDown:  line+=d;  if (line > lMax)  line = lMax;  ret
+		case Keyboard::PageUp:	 line-=d;  if (line < 0)  line = 0;  ret
+		case Keyboard::PageDown: line+=d;  if (line > lMax)  line = lMax;  ret
 
-		case Keyboard::Home:   First(ctrl);  ret
-		case Keyboard::End:    Last(ctrl);  ret
+		case Keyboard::Home:  First(ctrl);  ret
+		case Keyboard::End:   Last(ctrl);  ret
 
 		//  add
 		case Keyboard::Insert:  AddPat(shift, ctrl, alt);  ret
@@ -118,7 +118,7 @@ void App::Wheel(float d)
 		return;
 	}
 
-	d *= ctrl ? 12 : shift ? 1 : 4;
+	d *= ctrl ? 16 : shift ? 1 : 8;
 	int lMax = li.pat.size()-1;  // lines
 	line -= d;
 	if (line < 0)  line = 0;
