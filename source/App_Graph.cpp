@@ -120,7 +120,7 @@ void App::Graph()
 
 	//  Slider  |  pos, view size
 	//-----------------------------------
-	const int x0 = xMax-15;
+	const int x0 = xMax-22;  // par
 
 	//  hide if not much
 	if (ii > 5 || ll > 1)
@@ -145,6 +145,16 @@ void App::Graph()
 		if (iPick >= 0)  // pick.
 		{	p1 = Y(iPick);  p2 = Y(iPick+1);  if (p2==p1)  ++p2;
 			Rect(x0+4, p1, xMax-4, p2, sldPick);  // pick
+		}
+
+		//  all find matches on slider
+		for (i=0; i < ii; ++i)
+		{
+			y1 = Y(i);  y2 = y1+1;
+			if (li.pat[i].match)
+				Rect(xMax-8, y1, xMax, y2, findRect);
+			//if (li.pat[i].sel)
+			//	Rect(x0, y1, x0+8, y2, findRect);
 		}
 	}
 	#undef Y
