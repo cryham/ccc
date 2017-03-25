@@ -219,6 +219,19 @@ void App::DoFind()
 }
 
 
+//  goto next/prev find occurence
+void App::NextFind(int r)
+{
+	if (Check())  return;
+	if (iFoundAll==0)  return;
+
+	if (r > 0)
+	{
+
+	}
+}
+
+
 ///  Move  in list
 //-----------------------------------------------------------------------------
 void App::Move()

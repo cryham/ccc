@@ -4,6 +4,7 @@
 	#include <Lmcons.h>
 #endif
 #include "App.h"
+#include "../libs/nfd.h"
 #include <cstring>
 using namespace std;
 
@@ -34,7 +35,9 @@ void App::Resize(int x, int y)
 
 //  ctor
 App::App()
+	:thrOpen(&App::OpenDialog, this)
 {	}
+
 
 //  Init
 //----------------------------------
@@ -48,6 +51,47 @@ bool App::Init()
 
 	return true;
 }
+
+
+//  Open file dialog
+//----------------------------------
+void App::OpenDialog()
+{
+	nfdchar_t *outPath = NULL;
+	nfdresult_t res;
+
+	//  get cur path
+	string s = pathToSet;
+	auto p = s.find_last_of("\\");
+	if (p != string::npos)
+		s = s.substr(0, p);
+
+	res = NFD_OpenDialog(NULL, s.c_str(), &outPath);
+
+	if (res == NFD_OKAY)
+	{
+		strcpy(pathToSet, outPath);
+		puts(outPath);
+		free(outPath);
+	}
+//	else if (res == NFD_CANCEL)
+//		puts("User pressed cancel.");
+//	else
+//		printf("Error: %s\n", NFD_GetError());
+
+	opened = false;
+}
+
+void App::Open(char* path)
+{
+	if (opened || !path)
+		return;
+
+	pathToSet = path;
+	opened = true;
+	thrOpen.launch();
+}
+
 
 //  start dc or tc exe
 //----------------------------------

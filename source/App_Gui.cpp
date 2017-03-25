@@ -193,42 +193,41 @@ void App::Gui()
 		e = Button("Save");  if (e)  set.Save();
 		Sep(10);
 
-		PushItemWidth(xSplit-40);
-		Text("Paths");  Sep(10);
+		PushItemWidth(xSplit-40);  Text("Paths");  Sep(10);
+		size_t sp = set.PathLen;  // all same size
 
-		Text("Project file");
-		e = InputText("proj", set.pathProj, sizeof(set.pathProj));
+		e = Button("Project file ...");  if (e)  Open(set.pathProj);
+		InputText("proj", set.pathProj, sp);
 
-		Sep(10);  Text("doublecmd.xml location");
-		e = InputText("DCxml", set.pathDCxml, sizeof(set.pathDCxml));
-		Sep(5);  Text("Double Commander executable");
-		e = InputText("DCexe", set.pathDCexe, sizeof(set.pathDCexe));
+		Sep(10);  e = Button("Double Commander - doublecmd.xml ...");  if (e)  Open(set.pathDCxml);
+		InputText("DCxml", set.pathDCxml, sp);
+		Sep(5);  e = Button("Double Commander - executable: ");  if (e)  Open(set.pathDCexe);
+		InputText("DCexe", set.pathDCexe, sp);
 
-		Sep(10);  Text("Total Commander color.ini");
-		e = InputText("TCini", set.pathTCini, sizeof(set.pathTCini));
-		Sep(5);  Text("Total Commander executable");
-		e = InputText("TCexe", set.pathTCexe, sizeof(set.pathTCexe));
+		Sep(10);  e = Button("Total Commander - color.ini ...");  if (e)  Open(set.pathTCini);
+		InputText("TCini", set.pathTCini, sp);
+		Sep(5);  e = Button("Total Commander - executable: ");  if (e)  Open(set.pathTCexe);
+		InputText("TCexe", set.pathTCexe, sp);
 		PopItemWidth();
 
-		PushItemWidth(xSplit-100);
 		Sep(10);  Line(cl0);  Sep(5);
-		Text("Dimensions");
-		Sep(10);
+		PushItemWidth(xSplit-100);  Text("Dimensions");  Sep(10);
+
 		Text("List Font Height");  int i = set.iFontH;
-		e = SliderInt("F", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
+		e = SliderInt("LFh", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
 		Text("Gui Font Height (restart)");  i = set.iFontGui;
-		e = SliderInt("FG", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
+		e = SliderInt("GFh", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
+		Sep(5);
 		Text("Line Y Spacing");  i = set.iLineH;
-		e = SliderInt("L", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
-
+		e = SliderInt("LYs", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
 		Text("Item X Spacing");  float f = set.fXMargin;
-		e = SliderFloat("X", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+		e = SliderFloat("IXs", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+		Sep(5);
 		Text("Group row length");  f = set.fXBackGroup;
-		e = SliderFloat("GL", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
+		e = SliderFloat("Grl", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
 
-		Text("Splitter");
-		PushItemWidth(170);
-		e = InputFloat("S", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();  //-
+		Text("Splitter");  PushItemWidth(170);
+		e = InputFloat("Spl", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();
 		PopItemWidth();
 		Sep(10);
 		PopItemWidth();

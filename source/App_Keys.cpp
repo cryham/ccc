@@ -29,18 +29,15 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::Escape:  set.GetWndDim(pWindow);  pWindow->close();  ret
 
 		//  font size
-		case Keyboard::F11:  IncFont(key.control ?-4:-1);  ret
-		case Keyboard::F12:  IncFont(key.control ? 4: 1);  ret
+		case Keyboard::F11:  IncFont(ctrl ?-4:-1);  ret
+		case Keyboard::F12:  IncFont(ctrl ? 4: 1);  ret
 
 
 		//  tab change --
-		case Keyboard::F1:
-			tab = Tab_Edit;  edFocus = true;  ret
-		case Keyboard::F2:
-			tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
+		case Keyboard::F1:  tab = Tab_Edit;  edFocus = true;  ret
+		case Keyboard::F2:  tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
 
-		case Keyboard::F3:
-			tab = Tab_Settings;  ret
+		case Keyboard::F3:  tab = Tab_Settings;  ret
 
 		//  load, save
 		case Keyboard::F4:  Save();  ret
@@ -49,7 +46,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F8:  Export();  ret
 		case Keyboard::F9:  Import();  ret
 
-		case Keyboard::F10:  li.Default();  ret  // clear
+		case Keyboard::F10: li.Default();  ret  // clear
 		case Keyboard::F7:  StartExe();  ret
 	}
 
@@ -75,6 +72,10 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 		//  add
 		case Keyboard::Insert:  AddPat(shift, ctrl, alt);  ret
+
+		//  next/prev find
+		case Keyboard::BackSlash:
+		case Keyboard::Return:  NextFind(alt||ctrl||shift ? -r : r);  ret
 	}
 
 	if (alt)  // _alt_
@@ -86,8 +87,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::V:  PasteClr();  ret
 
 		//  find
-		case Keyboard::F:
-			tab = Tab_Edit;  findFocus = true;  ret
+		case Keyboard::F:  tab = Tab_Edit;  findFocus = true;  ret
 
 		//  toggle
 		case Keyboard::D:  InvDir();  ret

@@ -3,6 +3,7 @@
 #include "Settings.h"
 #include "List.h"
 #include "../libs/imgui.h"  // ImVec4
+#include <SFML/System.hpp>
 
 
 class App : public AppDraw
@@ -78,8 +79,9 @@ public:
 	char sFind[maxPat]={0};  // string to find, options
 
 	bool findCase = false, findWhole = false, findInverse = false;
-	void DoFind();
+	void DoFind();  // search
 	int iFound = 0, iFoundAll = 0;  // results
+	void NextFind(int r);  //  goto next/prev occurence
 
 
 	//  dimensions
@@ -135,4 +137,11 @@ public:
 	int iLineSel =-1;  // selected row, line id
 
 	List li;  //*  List
+
+
+	//  open dialog for files  ----
+	void OpenDialog(), Open(char* path);
+	bool opened = false;
+	char* pathToSet = nullptr;  // path to set by dialog
+	sf::Thread thrOpen;
 };
