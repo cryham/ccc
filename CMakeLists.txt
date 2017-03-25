@@ -35,6 +35,11 @@ else()
 endif()
 
 
-add_executable(${PROJECT} ${SOURCES})
+if(WIN32)
+	add_executable(${PROJECT} WIN32 ${SOURCES})
+else()
+	add_executable(${PROJECT} ${SOURCES})
+endif()
+
 target_link_libraries(${PROJECT} ${SFML_LIBRARIES})
 target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
