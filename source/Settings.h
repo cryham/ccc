@@ -35,7 +35,8 @@ public:
 	int   iFontH = 16;      // font height in list
 	int   iFontGui = 18;    // font height for Gui
 	int   iLineH = 2;       // line spacing
-	float fXMargin = 0.7f;  // item x extra spacing
+	float fXMargin = 0.7f;  // item extra x spacing
+	float fXBackGroup = 0.55f;  // group background length 0..1
 
 	int   cmbDC = 0;  // import/export combo  DC 0, TC 1
 	bool  merge = false;  // merge load, without clear, load into current set

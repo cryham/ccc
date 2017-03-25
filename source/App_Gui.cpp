@@ -196,8 +196,12 @@ void App::Gui()
 		e = SliderInt("FG", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
 		Text("Line Y Spacing");  i = set.iLineH;
 		e = SliderInt("L", &i, -2, 12, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
+
 		Text("Item X Spacing");  float f = set.fXMargin;
 		e = SliderFloat("X", &f, 0.1f, 2.f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+		Text("Group row length");  f = set.fXBackGroup;
+		e = SliderFloat("GL", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
+
 		Text("Splitter");
 		PushItemWidth(170);
 		e = InputFloat("S", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();  //-

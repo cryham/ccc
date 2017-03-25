@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include "Settings.h"
 #include "../libs/tinyxml2.h"
+#include "Util.h"
 using namespace std;  using namespace tinyxml2;
 
 
@@ -94,8 +95,10 @@ bool Settings::Load()
 	{	a = e->Attribute("fSplit");  if (a)  fSplit = atof(a);
 		a = e->Attribute("iFontH");  if (a)  iFontH = atoi(a);
 		a = e->Attribute("iLineH");  if (a)  iLineH = atoi(a);
-		a = e->Attribute("fXMargin");  if (a)  fXMargin = atof(a);
 		a = e->Attribute("iFontGui");  if (a)  iFontGui = atoi(a);
+
+		a = e->Attribute("fXMargin");  if (a)  fXMargin = atof(a);
+		a = e->Attribute("fXBackGroup");  if (a)  fXBackGroup = atof(a);
 
 		a = e->Attribute("cmbDC");  if (a)  cmbDC = atoi(a);
 		a = e->Attribute("merge");  if (a)  merge = atoi(a) > 0? true: false;
@@ -126,11 +129,13 @@ bool Settings::Save()
 	e = xml.NewElement("pathTCini");  e->SetAttribute("p", pathTCini);  root->InsertEndChild(e);
 
 	e = xml.NewElement("dim");
-		e->SetAttribute("fSplit", fSplit);
+		e->SetAttribute("fSplit", f2s(fSplit,3).c_str());
 		e->SetAttribute("iFontH", iFontH);
 		e->SetAttribute("iLineH", iLineH);
-		e->SetAttribute("fXMargin", fXMargin);
 		e->SetAttribute("iFontGui", iFontGui);
+
+		e->SetAttribute("fXMargin", f2s(fXMargin,3).c_str());
+		e->SetAttribute("fXBackGroup", f2s(fXBackGroup,3).c_str());
 
 		e->SetAttribute("cmbDC", cmbDC);
 		e->SetAttribute("merge", merge ? 1 : 0);
