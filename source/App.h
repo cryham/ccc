@@ -74,6 +74,7 @@ public:
 	const static int maxPat = 64;
 	char sFind[maxPat]={0};
 	int iFound = 0, iFoundAll = 0;
+	bool findCase = false, findWhole = false, findInverse = false;
 	void DoFind();
 
 

@@ -139,17 +139,16 @@ void App::Gui()
 		//  quick tools
 		//---------------------------------------------
 		Sep(10);  Line(cl0);  Sep(10);
-		Text("Search");
-		//e = TreeNode("Search");  // hidden
+		e = TreeNode("Search");  // hidden
 		if (sFind[0]) {  SameLine(140);  Text("Found: %d  visible: %d", iFoundAll, iFound);  }
-		/*if (e)
+		if (e)
 		{	Sep(3);
-			bool cas;
-			e = Checkbox("Case", &cas);  SameLine();
-			e = Checkbox("Whole", &cas);  SameLine();
-			e = Checkbox("Inverse", &cas);
+			e = false;
+			e |= Checkbox("Case", &findCase);  SameLine();
+			e |= Checkbox("Whole", &findWhole);  SameLine();
+			e |= Checkbox("Inverse", &findInverse);  if (e)  DoFind();
 			TreePop();
-		}/**/
+		}
 		Sep(5);
 
 		PushItemWidth(180);

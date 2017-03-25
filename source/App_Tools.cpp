@@ -193,25 +193,29 @@ void App::DoFind()
 	bool doFind = sFind[0] != 0;
 	string strFind;
 	if (doFind)
-		strFind = strlower(sFind);
+		strFind = findCase ? sFind : strlower(sFind);
 
 	int i = 0, ii = li.pat.size();
 	while (i < ii)
 	{
 		Pat& p = li.pat[i];
-		bool found = false;
+		bool found = findInverse;
 
 		//  find match __
 		if (doFind)
-		//if (p.s.find(sFind) != string::npos)  // case sens
-		if (strlower(p.s).find(strFind) != string::npos)  // case insens
-		{
-			++iFoundAll;
-			found = true;
+		{	string s = findCase ? p.s : strlower(p.s);  // case sensitive
+			if (findWhole ? s == strFind :  // whole string
+				s.find(strFind) != string::npos)
+			{
+				++iFoundAll;
+				found = !findInverse;
+			}
 		}
 		p.match = found;
 		++i;
 	}
+	if (findInverse)
+		iFoundAll = ii - iFoundAll;
 }
 
 
