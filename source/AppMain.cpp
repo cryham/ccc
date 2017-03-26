@@ -17,7 +17,7 @@ bool AppMain::Run()
 	//------------------
 	App* app = new App();
 	app->set.Load();
-	Settings& s = app->set;
+	Settings& set = app->set;
 
 
 	//  Create window
@@ -26,22 +26,27 @@ bool AppMain::Run()
 	//--vm.height;  // fix
 
 	window = new RenderWindow(
-		VideoMode(s.xwSize, s.ywSize),
+		VideoMode(set.xwSize, set.ywSize),
 		"Crystal Color Center", // Title
 		Style::Default, ContextSettings());
 
 	window->setVerticalSyncEnabled(true);
 	//window->setFramerateLimit(60);
-	window->setPosition(Vector2i(s.xwPos, s.ywPos));
+	window->setPosition(Vector2i(set.xwPos, set.ywPos));
+
+	//  icon
+	Image icon;
+	if (icon.loadFromFile("data/icon.png"))
+		window->setIcon(32, 32, icon.getPixelsPtr());
 
 
 	//  ImGui
 	//------------------
 	Init(*window);
-	//  font
 	ImGuiIO& io = ImGui::GetIO();
 	io.IniFilename = 0;  io.LogFilename = 0;  // nope
 	io.Fonts->ClearFonts();
+	//  font
 	ImFont* fnt = io.Fonts->AddFontFromFileTTF("data/DejaVuLGCSans.ttf", app->set.iFontGui);
 	Texture* fntTex = new Texture;
 	createFontTexture(*fntTex);
@@ -92,6 +97,7 @@ bool AppMain::Run()
 			{
 			case Event::MouseMoved:				app->Mouse(e.mouseMove.x, e.mouseMove.y);  break;
 			case Event::MouseWheelScrolled:		app->Wheel(e.mouseWheelScroll.delta);  break;
+
 			case Event::MouseButtonPressed:		app->mb = e.mouseButton.button + 1;  break;
 			case Event::MouseButtonReleased:	app->mb = 0;  break;
 
@@ -99,7 +105,7 @@ bool AppMain::Run()
 			case Event::KeyReleased:	app->KeyUp(e.key);  break;
 
 			case Event::Resized:	app->Resize(e.size.width, e.size.height);  break;
-			case Event::Closed:		s.GetWndDim(window);  window->close();  break;
+			case Event::Closed:		set.GetWndDim(window);  window->close();  break;
 			}
 		}
 		sf::Time time = timer.restart();
@@ -124,7 +130,7 @@ bool AppMain::Run()
 
 	//  dtor
 	//------------------
-	s.Save();
+	set.Save();
 
 	ImGui::Shutdown();
 	delete window;
