@@ -31,10 +31,13 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F11:  IncFont(ctrl ?-4:-1);  ret
 		case Keyboard::F12:  IncFont(ctrl ? 4: 1);  ret
 
+		//  find
+		case Keyboard::F:  if (alt)
+			{	tab = Tab_Edit;  findFocus = true;  ret  }  break;
 
 		//  tab change --
 		case Keyboard::F1:  tab = Tab_Edit;  edFocus = true;  ret
-		case Keyboard::F2:  tab = ctrl||alt ? Tab_Settings : Tab_List;  ret
+		case Keyboard::F2:  tab = Tab_List;  ret
 
 		case Keyboard::F3:  tab = Tab_Settings;  ret
 
@@ -74,7 +77,6 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 
 		//  next/prev find
 		case Keyboard::BackSpace:  NextFind(-dFind);  ret
-		case Keyboard::BackSlash:
 		case Keyboard::Return:  NextFind(shift ? -dFind : dFind);  ret
 	}
 
@@ -85,9 +87,6 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::C:  CopyClr();  ret
 		case Keyboard::S:
 		case Keyboard::V:  PasteClr();  ret
-
-		//  find
-		case Keyboard::F:  tab = Tab_Edit;  findFocus = true;  ret
 
 		//  toggle
 		case Keyboard::D:  InvDir();  ret

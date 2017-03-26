@@ -77,8 +77,8 @@ void App::Help()
 	//  page, line offset
 	Sep(5);
 	H("PageUp, Down or Wheel", "");
-	H3("", "shift  less,  ctrl, alt  more");
 	H("", "scroll list");
+	H3("", "shift  less,  ctrl, alt  more");
 
 	Sep(10);
 	H("Home, End", "first, last in row");
@@ -87,8 +87,7 @@ void App::Help()
 	Sep(20);
 	H("Ins", "Insert new");
 	H3("", "shift  at top,  ctrl  at end");
-	H3("alt-Ins", "insert white, to split");
-	//Sep(5);
+	H("alt-Ins", "insert white, to split");
 	H("alt-Del", "Delete current");
 	Sep(10);
 	H("alt-LMB", "Move current pattern");
@@ -105,7 +104,7 @@ void App::Help()
 	Line(cl2);
 	H("alt-C", "copy color");
 	H("alt-S or V", "paste color");
-	Sep(5);
+	Sep(10);
 	H("alt-D", "toggle Directory");
 	H("alt-H", "toggle Hidden");
 	H("alt-G", "toggle Group");

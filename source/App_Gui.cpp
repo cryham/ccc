@@ -54,6 +54,10 @@ void App::Gui()
 		ProcessEvent(e);
 	}
 
+	#define BtnRed()  PushStyleColor(ImGuiCol_Button, ImVec4(0.55f, 0.4f, 0.7f, 0.30f));
+	#define BtnNorm()  PopStyleColor();
+
+
 	switch (tab)
 	{
 	case Tab_List:
@@ -127,7 +131,7 @@ void App::Gui()
 		SameLine(130);
 		e = Checkbox("Group",  &ed.group);  if (e && p)  p->group = ed.group;
 
-		//  group  todo sort
+		//  group id / set  todo sort
 		/*Sep(20);
 		PushItemWidth(80);
 		e = DragInt("Group", &ed.grp, 0.1f);  ed.grp = std::min(10, std::max(-10, ed.grp));
@@ -166,6 +170,7 @@ void App::Gui()
 		//---------------------------------------------
 		Sep(20);  Line(cl0);  Sep(10);
 		Text("Project");
+
 		Status& st = status;  //  status  ----
 		if (!st.txt.empty() && st.cnt < st.end)
 		{	SameLine(0, 20);
@@ -174,16 +179,20 @@ void App::Gui()
 			++st.cnt;
 		}
 		Sep(5);
-		//PushStyleColor(ImGuiCol idx, const ImVec4& col)
+		BtnRed();
 		e = Button("F4 Save");    if (e)  Save();  SameLine();
+		BtnNorm();
 		e = Button("F5 Reload");  if (e)  Load();
 
 		Sep(10);  int i = set.cmbDC;
 		PushItemWidth(220);
 		e = Combo("cmbDC", &i, "Double Commander\0Total Commander\0\0");  if (e)  set.cmbDC = i;
 		PopItemWidth();
+
 		Sep(5);
+		BtnRed();
 		e = Button("F8 Export");  if (e)  Export();  SameLine();
+		BtnNorm();
 		e = Button("F9 Import");  if (e)  Import();
 		//Sep(5);
 
@@ -198,38 +207,52 @@ void App::Gui()
 		//---------------------------------------------
 		e = Button("Defaults");  if (e)  set.Default();  SameLine();
 		e = Button("Reload");  if (e)  set.Load();  SameLine();
+		BtnRed();
 		e = Button("Save");  if (e)  set.Save();
+		BtnNorm();
 		Sep(10);
 
-		PushItemWidth(xSplit-40);  Text("Paths");  Sep(10);
+
+		PushItemWidth(xSplit-40);
+		Text("Paths");  Sep(10);
 		size_t sp = set.PathLen;  // all same size
 
 		e = Button("Project file ...");  if (e)  Open(set.pathProj);
 		InputText("proj", set.pathProj, sp);
 
+		//  DC
 		Sep(10);  e = Button("Double Commander - doublecmd.xml ...");  if (e)  Open(set.pathDCxml);
 		InputText("DCxml", set.pathDCxml, sp);
+		BtnRed();
 		Sep(5);  e = Button("Double Commander - executable: ");  if (e)  Open(set.pathDCexe);
+		BtnNorm();
 		InputText("DCexe", set.pathDCexe, sp);
 
+		//  TC
 		Sep(10);  e = Button("Total Commander - color.ini ...");  if (e)  Open(set.pathTCini);
 		InputText("TCini", set.pathTCini, sp);
+		BtnRed();
 		Sep(5);  e = Button("Total Commander - executable: ");  if (e)  Open(set.pathTCexe);
+		BtnNorm();
 		InputText("TCexe", set.pathTCexe, sp);
 		PopItemWidth();
 
+
 		Sep(10);  Line(cl0);  Sep(5);
-		PushItemWidth(xSplit-100);  Text("Dimensions");  Sep(10);
+		PushItemWidth(xSplit-100);
+		Text("Dimensions");  Sep(10);
 
 		Text("List Font Height");  int i = set.iFontH;
 		e = SliderInt("LFh", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
 		Text("Gui Font Height (restart)");  i = set.iFontGui;
 		e = SliderInt("GFh", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
+
 		Sep(5);
 		Text("Line Y Spacing");  i = set.iLineH;
 		e = SliderInt("LYs", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
 		Text("Item X Spacing");  float f = set.fXMargin;
 		e = SliderFloat("IXs", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+
 		Sep(5);
 		Text("Group row length");  f = set.fXBackGroup;
 		e = SliderFloat("Grl", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
@@ -249,7 +272,7 @@ void App::Gui()
 	if (bHelp)  Help();
 
 
-	//  debug  wnd
+	//  status, debug  wnd
 	//---------------------------------------------
 	SetNextWindowPos( ImVec2(0, yWindow-yDbg),  ImGuiSetCond_Always);
 	SetNextWindowSize(ImVec2(xSplit, yDbg), ImGuiSetCond_Always);

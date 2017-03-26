@@ -221,17 +221,17 @@ void App::DoFind()
 
 
 //  goto next/prev find occurence
-void App::NextFind(int r)
+void App::NextFind(int d)
 {
 	if (Check())  return;
 	if (iFoundAll==0)  return;
 
-	int n = 0, rr = abs(r);
+	int n = 0, nn = abs(d);
 	int i = 0, ii = li.pat.size();
 	while (i < ii)  // go around list once
 	{
-		if (r > 0)  ++iCur;  // next/prev
-		else  --iCur;
+		if (d > 0)  ++iCur;  // next/prev
+			  else  --iCur;
 		if (iCur >= ii)  iCur = 0;
 		if (iCur < 0)  iCur = ii-1;
 		++i;
@@ -239,7 +239,7 @@ void App::NextFind(int r)
 		if (li.pat[iCur].match)
 		{
 			++n;  // next find match
-			if (n==rr)  break;  // rr times
+			if (n==nn)  break;  // rr times
 		}
 	}
 }

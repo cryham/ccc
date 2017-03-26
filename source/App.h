@@ -25,7 +25,7 @@ public:
 		void Mods(EvKey);
 	#undef EvKey
 	bool alt=0, ctrl=0, shift=0;  // mods
-	int dLine = 1, dFind = 1;  // multipliers from mods
+	int dLine = 8, dFind = 1;  // multipliers from mods
 
 	void Mouse(int x, int y);
 	void Wheel(float d);
@@ -82,7 +82,7 @@ public:
 	bool findCase = false, findWhole = false, findInverse = false;
 	void DoFind();  // search
 	int iFound = 0, iFoundAll = 0;  // results
-	void NextFind(int r);  //  goto next/prev occurence
+	void NextFind(int d);  //  goto next/prev occurence
 
 
 	//  dimensions
