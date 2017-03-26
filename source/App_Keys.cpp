@@ -11,8 +11,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	Mods(key);
 
 	int lMax = li.pat.size()-1;  // lines
-	int d = alt ? 20 : ctrl ? 16 : shift ? 1 : 8;  // diff
-	int r = alt ? 1 : ctrl ? 4 : 1;
+	int dCur  = alt ? 1 : ctrl ? 4 : 1;
 
 
 	//  help ctrl-F1 toggle, esc close
@@ -57,15 +56,15 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	switch (key.code)
 	{
 		//  arrows, cursor move
-		case Keyboard::Left:  SetCur(iCur-r);  ret
-		case Keyboard::Right: SetCur(iCur+r);  ret
+		case Keyboard::Left:  SetCur(iCur-dCur);  ret
+		case Keyboard::Right: SetCur(iCur+dCur);  ret
 
-		case Keyboard::Up:	  IncLine(-r);  ret
-		case Keyboard::Down:  IncLine( r);  ret
+		case Keyboard::Up:	  IncLine(-dCur);  ret
+		case Keyboard::Down:  IncLine( dCur);  ret
 
 		//  page, line offset
-		case Keyboard::PageUp:	 line-=d;  if (line < 0)  line = 0;  ret
-		case Keyboard::PageDown: line+=d;  if (line > lMax)  line = lMax;  ret
+		case Keyboard::PageUp:	 line -= dLine;  if (line < 0)    line = 0;    ret
+		case Keyboard::PageDown: line += dLine;  if (line > lMax) line = lMax; ret
 
 		case Keyboard::Home:  First(ctrl);  ret
 		case Keyboard::End:   Last(ctrl);  ret
@@ -74,8 +73,9 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::Insert:  AddPat(shift, ctrl, alt);  ret
 
 		//  next/prev find
+		case Keyboard::BackSpace:  NextFind(-dFind);  ret
 		case Keyboard::BackSlash:
-		case Keyboard::Return:  NextFind(alt||ctrl||shift ? -r : r);  ret
+		case Keyboard::Return:  NextFind(shift ? -dFind : dFind);  ret
 	}
 
 	if (alt)  // _alt_
@@ -113,7 +113,7 @@ void App::Wheel(float d)
 		return;
 	}
 
-	d *= ctrl ? 16 : shift ? 1 : 8;
+	d *= dLine;
 	int lMax = li.pat.size()-1;  // lines
 	line -= d;
 	if (line < 0)  line = 0;
@@ -141,9 +141,14 @@ void App::IncFont(int d)
 	text.setCharacterSize(set.iFontH);
 }
 
+//  modifiers
 void App::Mods(const sf::Event::KeyEvent& key)
 {
-	alt = key.alt;  ctrl = key.control;  shift = key.shift;  // mods
+	alt = key.alt;  ctrl = key.control;  shift = key.shift;
+
+	//  multipliers
+	dLine = alt ? 20 : ctrl ? 16 : shift ? 1 : 8;
+	dFind = alt ? 8 : ctrl ? 4 : 1;
 }
 
 bool App::KeyUp(const sf::Event::KeyEvent& key)

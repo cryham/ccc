@@ -25,6 +25,7 @@ public:
 		void Mods(EvKey);
 	#undef EvKey
 	bool alt=0, ctrl=0, shift=0;  // mods
+	int dLine = 1, dFind = 1;  // multipliers from mods
 
 	void Mouse(int x, int y);
 	void Wheel(float d);
