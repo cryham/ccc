@@ -43,4 +43,4 @@ E.g. for Ubuntu (and Debian-based):
 On Windows SFML needs the environment variable SFML_ROOT to be defined.  
 After this the program should build.  
 
-In sources there already are: [TinyXML2](https://github.com/leethomason/tinyxml2), ImGui with ImGui-SFML and [nativefiledialog](https://github.com/mlabbe/nativefiledialog).  
+In sources there already are: [TinyXML2](https://github.com/leethomason/tinyxml2), ImGui with ImGui-SFML and [Native File Dialog](https://github.com/mlabbe/nativefiledialog).  

@@ -61,7 +61,8 @@ void App::Help()
 	Sep(10);
 	H("F9", "Import");
 	H("F8", "Export");
-	H("F7", "Start DC");
+	Sep(10);
+	H("F7", "Start program");
 
 //--  column 2
 	EndChild();  SameLine();
@@ -76,18 +77,17 @@ void App::Help()
 	//  page, line offset
 	Sep(5);
 	H("PageUp, Down or Wheel", "");
+	H3("", "shift  less,  ctrl, alt  more");
 	H("", "scroll list");
 
-	//H("alt-Arrows", "Move");
-
-	Sep(20);
+	Sep(10);
 	H("Home, End", "first, last in row");
 	H3("", "ctrl  in list");
 
 	Sep(20);
 	H("Ins", "Insert new");
-	H3("", "alt  white, to split");
-	H3("", "shift at top, ctrl at end");
+	H3("", "shift  at top,  ctrl  at end");
+	H3("alt-Ins", "insert white, to split");
 	//Sep(5);
 	H("alt-Del", "Delete current");
 	Sep(10);
@@ -111,6 +111,8 @@ void App::Help()
 	H("alt-G", "toggle Group");
 	Sep(10);
 	H("alt-F", "focus Search");
+	H("Enter", "go to next match");
+	H("Backspace", "go to previous");
 
 	Sep(10);
 	H("F11, F12 or alt-Wheel", "");

@@ -59,7 +59,7 @@ void App::Gui()
 	case Tab_List:
 	case Tab_Edit:
 	{
-		//  Properties title
+		//  Pattern  Properties
 		//---------------------------------------------
 		Text("Properties");  Sep(10);
 
@@ -136,7 +136,7 @@ void App::Gui()
 		PopItemWidth();/**/
 
 
-		//  quick tools
+		//  Find
 		//---------------------------------------------
 		Sep(10);  Line(cl0);  Sep(10);
 		e = TreeNode("Search");  // hidden
@@ -151,14 +151,19 @@ void App::Gui()
 		}
 		Sep(5);
 
-		PushItemWidth(180);
+		PushItemWidth(140);
 		if (findFocus)  // after alt-F
 		{	findFocus = false;  SetKeyboardFocusHere();
 		}
 		e = InputText("", sFind, sizeof(sFind));  SameLine();  if (e)  DoFind();
 		PopItemWidth();
 		e = Button("X");  if (e) {  sFind[0]=0;  DoFind();  }
+		SameLine(230);  e = Button("<");  if (e)  NextFind(-dFind);
+		SameLine(275);  e = Button(">");  if (e)  NextFind( dFind);
 
+
+		//  Project
+		//---------------------------------------------
 		Sep(20);  Line(cl0);  Sep(10);
 		Text("Project");
 		Status& st = status;  //  status  ----
@@ -169,11 +174,14 @@ void App::Gui()
 			++st.cnt;
 		}
 		Sep(5);
+		//PushStyleColor(ImGuiCol idx, const ImVec4& col)
 		e = Button("F4 Save");    if (e)  Save();  SameLine();
 		e = Button("F5 Reload");  if (e)  Load();
 
 		Sep(10);  int i = set.cmbDC;
+		PushItemWidth(220);
 		e = Combo("cmbDC", &i, "Double Commander\0Total Commander\0\0");  if (e)  set.cmbDC = i;
+		PopItemWidth();
 		Sep(5);
 		e = Button("F8 Export");  if (e)  Export();  SameLine();
 		e = Button("F9 Import");  if (e)  Import();

@@ -159,14 +159,15 @@ void App::AddPat(bool start, bool end, bool alt)
 		return;
 	}
 	Pat p = li.pat[iCur];  p.s = "new";
-	if (alt)  p.c = SClr(255,255,255);  // to split when 1 line
+	if (alt)
+		p.c = SClr(255,255,255);  // to split when 1 line
 
 	if (start)
-		li.pat.insert(li.pat.begin(), p);
+	{	li.pat.insert(li.pat.begin(), p);  ++iCur;  }
 	else if (end)
 		li.pat.insert(li.pat.end(), p);
 	else   // after current
-		li.pat.insert(li.pat.begin()+iCur+1, p);
+	{	li.pat.insert(li.pat.begin()+iCur+1, p);  ++iCur;  }
 }
 
 //  delete current  ---
@@ -225,9 +226,21 @@ void App::NextFind(int r)
 	if (Check())  return;
 	if (iFoundAll==0)  return;
 
-	if (r > 0)
+	int n = 0, rr = abs(r);
+	int i = 0, ii = li.pat.size();
+	while (i < ii)  // go around list once
 	{
+		if (r > 0)  ++iCur;  // next/prev
+		else  --iCur;
+		if (iCur >= ii)  iCur = 0;
+		if (iCur < 0)  iCur = ii-1;
+		++i;
 
+		if (li.pat[iCur].match)
+		{
+			++n;  // next find match
+			if (n==rr)  break;  // rr times
+		}
 	}
 }
 
