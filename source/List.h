@@ -90,6 +90,7 @@ public:
 
 	//  update view,  run after any changes in pat
 	void Update(int xMin, int xMax, int xa, int ya);  // x,y, xw, l, ofs
+	int linesReal = 0;  // info, visible and not group
 
 
 	//  import, export  ----

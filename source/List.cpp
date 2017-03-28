@@ -53,9 +53,11 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 	SClr cOld;
 	int i, ii = pat.size(), l = 0;
 	int x = xMin, xw = 0, y = 0;
+	bool groupHide = false;
+
 	lines.clear();
 	lines.push_back(0);
-	bool groupHide = false;
+	linesReal = 0;
 
 	for (i=0; i < ii; ++i)
 	{
@@ -73,6 +75,8 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 			i > 0 && p.c != cOld)  // new color
 		{
 			x = xMin;  y += ya;
+			if (!p.group && p.Visible())  // info
+				++linesReal;
 			lines.push_back(i);  ++l;  // next line
 		}
 		p.x = x;  p.y = y;  p.l = l;

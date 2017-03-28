@@ -282,7 +282,7 @@ void App::Gui()
 		//"Fps: " + f2s(1/dt,1,3) + "  "+
 		"Patterns: " + i2s(li.pat.size()) +
 		//"  Colors: " + i2s(li.clr.size()) +
-		"   Lines: " + i2s(li.lines.size());
+		"   Lines: " + i2s(li.lines.size()) + "   Real: " + i2s(li.linesReal);
 	Text(s.c_str());
 
 	Sep(10);  Line(cl0);  //Sep(5);
