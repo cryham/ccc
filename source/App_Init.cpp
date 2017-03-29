@@ -47,7 +47,6 @@ bool App::Init()
 	li.SetApp(this);
 
 	Load();  // load last proj
-	SetCur(0);  // set gui
 
 	return true;
 }
@@ -115,6 +114,7 @@ bool App::Load()
 {
 	bool er = !li.Load(set.pathProj);
 	status.Set(er ? "Load error!" : "Loaded.", er ? 0.2f : 0.42f);
+	SetCur(iCur);  // set gui
 	return er;
 }
 bool App::Save()
@@ -129,6 +129,7 @@ bool App::LoadDC()
 {
 	bool er = !li.LoadDC(set.pathDCxml);
 	status.Set(er ? "Import DC error!" : "Imported from DC.", er ? 0.2f : 0.42f);
+	SetCur(iCur);
 	return er;
 }
 bool App::SaveDC()
@@ -143,6 +144,7 @@ bool App::LoadTC()
 {
 	bool er = !li.LoadTC(set.pathTCini);
 	status.Set(er ? "Import TC error!" : "Imported from TC.", er ? 0.2f : 0.42f);
+	SetCur(iCur);
 	return er;
 }
 bool App::SaveTC()
@@ -170,6 +172,7 @@ void App::Import()
 	if (set.cmbDC==0)
 	{	if (alt)  LoadTC();  else  LoadDC();  }else
 	{	if (alt)  LoadDC();  else  LoadTC();  }
+	SetCur(iCur);
 
 	if (set.merge)
 		Merge(l);
