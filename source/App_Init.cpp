@@ -14,6 +14,7 @@ using namespace std;
 App::Ed::Ed()
 	:r(120), g(120), b(120)
 	,dir(false), hide(false), group(false)
+	,onlyDC(false), onlyTC(false)
 {
 	memset(pat,0,sizeof(pat));
 	memset(attr,0,sizeof(attr));
@@ -143,14 +144,14 @@ bool App::SaveDC()
 bool App::LoadTC()
 {
 	bool er = !li.LoadTC(set.pathTCini);
-	status.Set(er ? "Import TC error!" : "Imported from TC.", er ? 0.2f : 0.42f);
+	status.Set(er ? "Import TC error!" : "Imported from TC.", er ? 0.2f : 0.50f);
 	SetCur(iCur);
 	return er;
 }
 bool App::SaveTC()
 {
 	bool er = !li.SaveTC(set.pathTCini);
-	status.Set(er ? "Export TC error!" : "Exported into TC.", er ? 0.f : 0.55f);
+	status.Set(er ? "Export TC error!" : "Exported into TC.", er ? 0.f : 0.60f);
 	return er;
 }
 

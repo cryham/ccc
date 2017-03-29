@@ -76,8 +76,7 @@ void App::InvGroup()
 void App::SetCur(int ic)
 {
 	if (li.pat.empty())  {  iCur = 0;  return;  }
-	iCur = ic;
-	Check();
+	iCur = ic;  Check();
 
 	//  set gui  -----
 	const Pat& p = li.pat[iCur];
@@ -87,9 +86,8 @@ void App::SetCur(int ic)
 	//  color
 	ed.r = p.c.r;  ed.g = p.c.g;  ed.b = p.c.b;
 	//  checks
-	ed.dir = p.dir;
-	ed.hide = p.hide;
-	ed.group = p.group;
+	ed.dir = p.dir;  ed.hide = p.hide;  ed.group = p.group;
+	ed.onlyDC = p.onlyDC;  ed.onlyTC = p.onlyTC;
 }
 
 

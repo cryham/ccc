@@ -124,6 +124,7 @@ public:
 		//float h,s,v;  //todo: HSV..
 		char pat[maxPat], attr[12];
 		bool dir, hide, group;
+		bool onlyDC, onlyTC;
 		Ed();
 	}ed;
 

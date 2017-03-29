@@ -26,7 +26,7 @@ void HSVtoRGB(int h, int s, int v,  int& r, int& g, int& b)
 void App::Gui()
 {
 	const static bool Debug = 0;  //1
-	const int yDbg = Debug ? 200 : 100;  // par
+	const int yDbg = Debug ? 210 : 110;  // par
 	sp = (yWindow - 600.f) / 600.f;  if (sp < 0.f)  sp = 0.f;
 
 
@@ -126,10 +126,15 @@ void App::Gui()
 		PopItemWidth();
 
 		//  hide, group
-		Sep(10);
+		Sep(5);
 		e = Checkbox("Hidden",  &ed.hide);  if (e && p)  p->hide = ed.hide;
 		SameLine(130);
 		e = Checkbox("Group",  &ed.group);  if (e && p)  p->group = ed.group;
+
+		Sep(5);
+		Text("Only for");
+		SameLine();  e = Checkbox("DC", &ed.onlyDC);  if (e && p)  p->onlyDC = ed.onlyDC;
+		SameLine();  e = Checkbox("TC", &ed.onlyTC);  if (e && p)  p->onlyTC = ed.onlyTC;
 
 		//  group id / set  todo sort
 		/*Sep(20);
@@ -281,8 +286,8 @@ void App::Gui()
 	string s =  // info
 		//"Fps: " + f2s(1/dt,1,3) + "  "+
 		"Patterns: " + i2s(li.pat.size()) +
-		//"  Colors: " + i2s(li.clr.size()) +
-		"   Lines: " + i2s(li.lines.size()) + "   Real: " + i2s(li.linesReal);
+		"   Colors: " + i2s(li.clr.size()) + "\n"+
+		"     Lines: " + i2s(li.lines.size()) + "   Real: " + i2s(li.linesReal);
 	Text(s.c_str());
 
 	Sep(10);  Line(cl0);  //Sep(5);

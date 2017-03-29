@@ -182,8 +182,9 @@ bool List::SaveDC(const char* file)
 		string s, n;
 		for (int i=i0; i < i1; ++i)
 		{
-			if (pat[i].Visible() && !pat[i].group)  //*
-				s += pat[i].s + ";";
+			const Pat& p = pat[i];
+			if (p.Visible() && !p.group && !p.onlyTC)  //*
+				s += p.s + ";";
 		}
 		Pat p = pat[i0];  n = s;
 
@@ -273,24 +274,20 @@ bool List::Load(const char* file)
 	while (pt)
 	{
 		Pat p;
-		a = pt->Attribute("gr");  p.group = atoi(a) > 0;
-		if (p.group)
-		{
-			a = pt->Attribute("s");  p.s = a;
-			a = pt->Attribute("h");  p.hide = atoi(a) > 0;
-		}else
-		{
-			a = pt->Attribute("r");  p.c.r = atoi(a);
+		a = pt->Attribute("s");  p.s = a;
+		a = pt->Attribute("h");   if (a)  p.hide = atoi(a) > 0;
+		a = pt->Attribute("gr");  if (a)  p.group = atoi(a) > 0;
+		a = pt->Attribute("dc");  if (a)  p.onlyDC = atoi(a) > 0;
+		a = pt->Attribute("tc");  if (a)  p.onlyTC = atoi(a) > 0;
+		if (!p.group)
+		{	a = pt->Attribute("r");  p.c.r = atoi(a);
 			a = pt->Attribute("g");  p.c.g = atoi(a);
 			a = pt->Attribute("b");  p.c.b = atoi(a);
 
 			a = pt->Attribute("s");  p.s = a;
 			a = pt->Attribute("a");  p.attr = a;
 			p.dir = p.attr == "d*";  // set dir from attr
-
-			a = pt->Attribute("h");  p.hide = a && atoi(a) > 0;
 		}
-
 		clr.insert(p.c.Get());
 		pat.push_back(p);
 		pt = pt->NextSiblingElement();
@@ -309,25 +306,19 @@ bool List::Save(const char* file)
 	for (auto& p : pat)
 	{
 		XMLElement* pt = xml.NewElement("p");
+		pt->SetAttribute("s", p.s.c_str());
 		if (p.group)
-		{
-			pt->SetAttribute("s", p.s.c_str());
-
-			pt->SetAttribute("h", p.hide? 1: 0);
-			pt->SetAttribute("gr", 1);
+		{	pt->SetAttribute("gr", 1);
 		}else
-		{
-			pt->SetAttribute("r", i2s(p.c.r,3).c_str());
+		{	pt->SetAttribute("r", i2s(p.c.r,3).c_str());
 			pt->SetAttribute("g", i2s(p.c.g,3).c_str());
 			pt->SetAttribute("b", i2s(p.c.b,3).c_str());
 
-			pt->SetAttribute("s", p.s.c_str());
 			pt->SetAttribute("a", p.attr.c_str());
-
-			if (p.hide)
-				pt->SetAttribute("h", 1);
-			//pt->SetAttribute("gr", p.gr? 1: 0);
 		}
+		pt->SetAttribute("h", p.hide? 1: 0);
+		if (p.onlyDC)  pt->SetAttribute("dc", 1);
+		if (p.onlyTC)  pt->SetAttribute("tc", 1);
 		root->InsertEndChild(pt);
 	}
 
@@ -438,7 +429,7 @@ bool List::SaveTC(const char* file)
 		for (int i=i0; i < i1; ++i)
 		{
 			const Pat& p = pat[i];
-			if (p.Visible() && !p.group)
+			if (p.Visible() && !p.group && !p.onlyDC)  //*
 				s += p.s + (p.dir ? ".;" : ";");  // end dirs with .
 		}
 		Pat p = pat[i0];
