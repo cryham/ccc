@@ -18,7 +18,6 @@ void List::Default()
 	clr.clear();
 }
 
-
 //  utils
 void SClr::Set(sf::Uint32 u)
 {
@@ -42,7 +41,6 @@ void Pat::SetDir(bool d)
 	if (!d && (attr == "d*" || attr.empty()))
 		attr = "**";
 }
-
 
 
 //  Update  x,y,l,xw, lines
@@ -92,159 +90,6 @@ int List::LineLen(int id)
 	int last = lines.size()-1, next = id+1;
 	int end = next <= last ? lines[next] : pat.size();  // end of cur line
 	return end - lines[id];
-}
-
-
-//  load, import from  DC doublecmd.xml
-//------------------------------------------------------------------------------------------------
-bool List::LoadDC(const char* file)
-{
-	XMLDocument doc;
-	XMLError er = doc.LoadFile(file);
-	if (er != XML_SUCCESS)
-	{	/*Can't load: "+file);*/  return false;  }
-
-	XMLElement* root = doc.RootElement();
-	if (!root)  return false;
-	string rn = root->Name();
-	if (rn != "doublecmd")  return false;
-	XMLElement* clrs = root->FirstChildElement("Colors");
-	if (!clrs)  return false;
-	XMLElement* filt = clrs->FirstChildElement("FileFilters");
-	if (!filt)  return false;
-
-	Default();
-
-	///  load Filters
-	XMLElement* fi = filt->FirstChildElement("Filter"), *e;
-	if (!fi)  return false;
-
-	while (fi)
-	{
-		Pat q;  sf::Uint32 c;
-		e = fi->FirstChildElement("FileMasks");		if (e)  q.s = e->GetText();
-		e = fi->FirstChildElement("Color");			if (e){  c = atoi(e->GetText());  q.c.Set(c);  }
-		e = fi->FirstChildElement("Attributes");	if (e)  q.attr = e->GetText();
-		clr.insert(c);
-
-		//  split each pattern
-		auto vs = split(q.s, ";");
-		for (auto& s : vs)
-		{	Pat p;
-			p.s = s;  p.c = q.c;
-			p.attr = q.attr;
-			pat.push_back(p);
-		}
-		fi = fi->NextSiblingElement();
-	}
-	return true;
-}
-/*
-	<doublecmd ..>
-	  <Configuration ..>
-	  <Colors>
-		<FileFilters>
-		  <Filter>
-			<Name>..</Name>
-			<FileMasks>*=.flac;*.d;</FileMasks>
-			<Color>10049581</Color>
-			<Attributes>**</Attributes>
-		  </Filter>
-*/
-
-//  save, export to  DC doublecmd.xml
-//  will replace the section in existing xml
-//------------------------------------------------------------------------------------------------
-bool List::SaveDC(const char* file)
-{
-	if (pat.empty())  return false;
-
-	XMLDocument xml;
-	XMLElement* filt = xml.NewElement("FileFilters");
-
-	vector<int> id;
-	id.push_back(0);
-	int i = 0;
-	for (auto& p : pat)
-	{
-		if (i > 0)
-		{	const Pat& o = pat[i-1];
-			if (o.c != p.c)
-				id.push_back(i);
-		}	++i;
-	}
-	id.push_back(pat.size());
-
-	for (int ii=0; ii < id.size()-1; ++ii)
-	{
-		int i0 = id[ii], i1 = id[ii+1];
-
-		string s, n;
-		for (int i=i0; i < i1; ++i)
-		{
-			const Pat& p = pat[i];
-			if (p.Visible() && !p.group && !p.onlyTC)  //*
-				s += p.s + ";";
-		}
-		Pat p = pat[i0];  n = s;
-
-		if (n.empty())
-			continue;
-		XMLElement* fi = xml.NewElement("Filter"), *e;
-
-		//  name special cases
-		#define Find(s)  p.attr.find(s) != string::npos
-		if (n == "*;")
-		{
-			if (Find("l"))  n = "Link";  else
-			if (Find("d"))  n = "Dir";  else
-			if (Find("x"))  n = "Exe";
-		}
-		#undef Find
-
-		e = xml.NewElement("Name");			e->SetText(n.c_str());  fi->InsertEndChild(e);
-		e = xml.NewElement("FileMasks");	e->SetText(s.c_str());  fi->InsertEndChild(e);
-		e = xml.NewElement("Color");		e->SetText(p.c.Get());  fi->InsertEndChild(e);
-		e = xml.NewElement("Attributes");	e->SetText(p.attr.c_str());  fi->InsertEndChild(e);
-		filt->InsertEndChild(fi);
-	}
-
-	//  save  --------------
-	//  original dc xml
-	ifstream fi;
-	fi.open(file);  if (!fi.good())  return false;
-	//  temp save
-	ofstream fo;
-	string ss = string(file) + "1";
-	const char* file1 = ss.c_str();
-	fo.open(file1);  if (!fo.good())  return false;
-
-	//  read lines
-	bool ff = false;
-	char l[1024];
-	while (fi.good())
-	{
-		fi.getline(l, sizeof(l)-1);
-		if (strstr(l, "<FileFilters>"))
-		{	ff = true;
-			//  write our section instead
-			XMLPrinter printer;
-			filt->Accept(&printer);
-			const char* fs = printer.CStr();
-			fo << fs << endl;
-		}else
-		if (strstr(l, "</FileFilters>"))
-			ff = false;
-		else
-		if (!ff && l[0]!=0)
-			fo << l << endl;  // write line
-	}
-	fi.close();
-	fo.close();
-	//  replace old with new
-	remove(file);
-	rename(file1, file);
-	return true;
 }
 
 
@@ -316,7 +161,8 @@ bool List::Save(const char* file)
 
 			pt->SetAttribute("a", p.attr.c_str());
 		}
-		pt->SetAttribute("h", p.hide? 1: 0);
+		if (p.hide)
+			pt->SetAttribute("h", p.hide? 1: 0);
 		if (p.onlyDC)  pt->SetAttribute("dc", 1);
 		if (p.onlyTC)  pt->SetAttribute("tc", 1);
 		root->InsertEndChild(pt);
@@ -324,6 +170,162 @@ bool List::Save(const char* file)
 
 	xml.InsertEndChild(root);
 	return xml.SaveFile(file) == XML_SUCCESS;
+}
+
+
+//  load, import from  DC doublecmd.xml
+//------------------------------------------------------------------------------------------------
+bool List::LoadDC(const char* file)
+{
+	XMLDocument doc;
+	XMLError er = doc.LoadFile(file);
+	if (er != XML_SUCCESS)
+	{	/*Can't load: "+file);*/  return false;  }
+
+	XMLElement* root = doc.RootElement();
+	if (!root)  return false;
+	string rn = root->Name();
+	if (rn != "doublecmd")  return false;
+	XMLElement* clrs = root->FirstChildElement("Colors");
+	if (!clrs)  return false;
+	XMLElement* filt = clrs->FirstChildElement("FileFilters");
+	if (!filt)  return false;
+
+	Default();
+
+	///  load Filters
+	XMLElement* fi = filt->FirstChildElement("Filter"), *e;
+	if (!fi)  return false;
+
+	while (fi)
+	{
+		Pat q;  sf::Uint32 c;
+		e = fi->FirstChildElement("FileMasks");		if (e)  q.s = e->GetText();
+		e = fi->FirstChildElement("Color");			if (e){  c = atoi(e->GetText());  q.c.Set(c);  }
+		e = fi->FirstChildElement("Attributes");	if (e)  q.attr = e->GetText();
+		clr.insert(c);
+
+		//  split each pattern
+		auto vs = split(q.s, ";");
+		for (auto& s : vs)
+		{	Pat p;
+			p.s = s;  p.c = q.c;
+			p.attr = q.attr;
+			pat.push_back(p);
+		}
+		fi = fi->NextSiblingElement();
+	}
+	return true;
+}
+/*
+	<doublecmd ..>
+	  <Configuration ..>
+	  <Colors>
+		<FileFilters>
+		  <Filter>
+			<Name>..</Name>
+			<FileMasks>*=.flac;*.d;</FileMasks>
+			<Color>10049581</Color>
+			<Attributes>**</Attributes>
+		  </Filter>
+*/
+
+//  save, export to  DC doublecmd.xml
+//  will replace the section in existing xml
+//------------------------------------------------------------------------------------------------
+bool List::SaveDC(const char* file)
+{
+	if (pat.empty())  return false;
+
+	XMLDocument xml;
+	XMLElement* filt = xml.NewElement("FileFilters");
+
+	vector<int> id;  // starts of rows
+	id.push_back(0);
+	int i = 0, ii;
+	for (auto& p : pat)
+	{
+		if (i > 0)
+		{	const Pat& o = pat[i-1];
+			//  different color or attributes mean new entry
+			if (o.c != p.c ||
+				o.attr != p.attr)
+				id.push_back(i);
+		}	++i;
+	}
+	id.push_back(pat.size());
+
+	//  construct xml, in FileFilters
+	for (ii=0; ii < id.size()-1; ++ii)
+	{
+		int i0 = id[ii], i1 = id[ii+1];
+
+		string s, n;
+		for (int i=i0; i < i1; ++i)
+		{
+			const Pat& p = pat[i];
+			if (p.Visible() && !p.group && !p.onlyTC)  //*
+				s += p.s + ";";
+		}
+		Pat p = pat[i0];  n = s;
+
+		if (n.empty())
+			continue;
+		XMLElement* fi = xml.NewElement("Filter"), *e;
+
+		//  name special cases
+		#define Find(s)  p.attr.find(s) != string::npos
+		if (n == "*;")
+		{
+			if (Find("l"))  n = "Link";  else
+			if (Find("d"))  n = "Dir";  else
+			if (Find("x"))  n = "Exe";
+		}
+		#undef Find
+
+		e = xml.NewElement("Name");			e->SetText(n.c_str());  fi->InsertEndChild(e);
+		e = xml.NewElement("FileMasks");	e->SetText(s.c_str());  fi->InsertEndChild(e);
+		e = xml.NewElement("Color");		e->SetText(p.c.Get());  fi->InsertEndChild(e);
+		e = xml.NewElement("Attributes");	e->SetText(p.attr.c_str());  fi->InsertEndChild(e);
+		filt->InsertEndChild(fi);
+	}
+
+	//  save  --------------
+	//  original dc xml
+	ifstream fi;
+	fi.open(file);  if (!fi.good())  return false;
+	//  temp save
+	ofstream fo;
+	string ss = string(file) + "1";
+	const char* file1 = ss.c_str();
+	fo.open(file1);  if (!fo.good())  return false;
+
+	//  read lines
+	bool ff = false;
+	char l[1024];
+	while (fi.good())
+	{
+		fi.getline(l, sizeof(l)-1);
+		if (strstr(l, "<FileFilters>"))
+		{	ff = true;
+			//  write our section instead
+			XMLPrinter printer;
+			filt->Accept(&printer);
+			const char* fs = printer.CStr();
+			fo << fs << endl;
+		}else
+		if (strstr(l, "</FileFilters>"))
+			ff = false;
+		else
+		if (!ff && l[0]!=0)
+			fo << l << endl;  // write line
+	}
+	fi.close();
+	fo.close();
+	//  replace old with new
+	remove(file);
+	rename(file1, file);
+	return true;
 }
 
 
@@ -431,6 +433,7 @@ bool List::SaveTC(const char* file)
 			const Pat& p = pat[i];
 			if (p.Visible() && !p.group && !p.onlyDC)  //*
 				s += p.s + (p.dir ? ".;" : ";");  // end dirs with .
+				// ignores all attr
 		}
 		Pat p = pat[i0];
 

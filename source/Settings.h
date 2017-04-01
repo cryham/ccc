@@ -8,7 +8,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const static int ver = 60;  // version
+	const static int ver = 70;  // version
 
 	//  main  -----
 	Settings();
@@ -46,4 +46,5 @@ public:
 	int xwPos = 0, ywPos = 0;
 	int xwSize = 1024, ywSize = 768;
 	void GetWndDim(sf::Window* wnd);
+	bool escQuit = false;
 };
