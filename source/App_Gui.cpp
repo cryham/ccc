@@ -215,59 +215,66 @@ void App::Gui()
 		BtnRed();
 		e = Button("Save");  if (e)  set.Save();
 		BtnNorm();
-		Sep(10);
-
+		Sep(20);
 
 		PushItemWidth(xSplit-40);
-		Text("Paths");  Sep(10);
-		size_t sp = set.PathLen;  // all same size
-
-		e = Button("Project file ...");  if (e)  Open(set.pathProj);
-		InputText("proj", set.pathProj, sp);
-
-		//  DC
-		Sep(10);  e = Button("Double Commander - doublecmd.xml ...");  if (e)  Open(set.pathDCxml);
-		InputText("DCxml", set.pathDCxml, sp);
-		BtnRed();
-		Sep(5);  e = Button("Double Commander - executable: ");  if (e)  Open(set.pathDCexe);
-		BtnNorm();
-		InputText("DCexe", set.pathDCexe, sp);
-
-		//  TC
-		Sep(10);  e = Button("Total Commander - color.ini ...");  if (e)  Open(set.pathTCini);
-		InputText("TCini", set.pathTCini, sp);
-		BtnRed();
-		Sep(5);  e = Button("Total Commander - executable: ");  if (e)  Open(set.pathTCexe);
-		BtnNorm();
-		InputText("TCexe", set.pathTCexe, sp);
-		PopItemWidth();
-
-
+		Text("Page");  SameLine(80);
+		TabLabels(STab_ALL, setTabNames, setTab, true);
 		Sep(10);  Line(cl0);  Sep(5);
-		PushItemWidth(xSplit-100);
-		Text("Dimensions");  Sep(10);
+		const size_t sp = set.PathLen;  // all same size
 
-		Text("List Font Height");  int i = set.iFontH;
-		e = SliderInt("LFh", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
-		Text("Gui Font Height (restart)");  i = set.iFontGui;
-		e = SliderInt("GFh", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
+		switch (setTab)
+		{
+		case STab_Paths:
+			e = Button("Project file ...");  if (e)  Open(set.pathProj);
+			InputText("proj", set.pathProj, sp);
 
-		Sep(5);
-		Text("Line Y Spacing");  i = set.iLineH;
-		e = SliderInt("LYs", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
-		Text("Item X Spacing");  float f = set.fXMargin;
-		e = SliderFloat("IXs", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+			//  DC
+			Sep(10);  e = Button("Double Commander - doublecmd.xml ...");  if (e)  Open(set.pathDCxml);
+			InputText("DCxml", set.pathDCxml, sp);
+			BtnRed();
+			Sep(5);  e = Button("Double Commander - executable: ");  if (e)  Open(set.pathDCexe);
+			BtnNorm();
+			InputText("DCexe", set.pathDCexe, sp);
 
-		Sep(5);
-		Text("Group row length");  f = set.fXBackGroup;
-		e = SliderFloat("Grl", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
+			//  TC
+			Sep(10);  e = Button("Total Commander - color.ini ...");  if (e)  Open(set.pathTCini);
+			InputText("TCini", set.pathTCini, sp);
+			BtnRed();
+			Sep(5);  e = Button("Total Commander - executable: ");  if (e)  Open(set.pathTCexe);
+			BtnNorm();
+			InputText("TCexe", set.pathTCexe, sp);
+			PopItemWidth();
+			break;
 
-		Text("Splitter");  PushItemWidth(170);
-		e = InputFloat("Spl", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();
-		PopItemWidth();
-		Sep(10);
-		PopItemWidth();
+		case STab_Dims:
+			PushItemWidth(xSplit-100);
 
+			Text("List Font Height");  int i = set.iFontH;
+			e = SliderInt("LFh", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
+			Text("Gui Font Height (restart)");  i = set.iFontGui;
+			e = SliderInt("GFh", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
+
+			Sep(5);
+			Text("Line Y Spacing");  i = set.iLineH;
+			e = SliderInt("LYs", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
+			Text("Item X Spacing");  float f = set.fXMargin;
+			e = SliderFloat("IXs", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
+
+			Sep(5);
+			Text("Group row length");  f = set.fXBackGroup;
+			e = SliderFloat("Grl", &f, 0.0f, 1.f, "");  SameLine();  Text(f2s(set.fXBackGroup).c_str());  if (e)  set.fXBackGroup = f;
+
+			Text("Splitter");  PushItemWidth(170);
+			e = InputFloat("Spl", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();
+			PopItemWidth();
+
+			Sep(5);  Line(cl0);  Sep(5);
+			e = Checkbox("Esc quits",  &set.escQuit);
+			Sep(10);
+			PopItemWidth();
+			break;
+		}
 	}	break;
 
 	}

@@ -71,11 +71,10 @@ void App::OpenDialog()
 	if (res == NFD_OKAY)
 	{
 		strcpy(pathToSet, outPath);
-		puts(outPath);
 		free(outPath);
 	}
 //	else if (res == NFD_CANCEL)
-//		puts("User pressed cancel.");
+//		printf("cancel");
 //	else
 //		printf("Error: %s\n", NFD_GetError());
 

@@ -25,7 +25,8 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	switch (key.code)
 	{
 		//  esc close-
-		case Keyboard::Escape:  set.GetWndDim(pWindow);  pWindow->close();  ret
+		case Keyboard::Escape:  if (set.escQuit)
+			{	set.GetWndDim(pWindow);  pWindow->close();  ret  }  break;
 
 		//  font size
 		case Keyboard::F11:  IncFont(ctrl ?-4:-1);  ret
@@ -39,7 +40,12 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F1:  tab = Tab_Edit;  edFocus = true;  ret
 		case Keyboard::F2:  tab = Tab_List;  ret
 
-		case Keyboard::F3:  tab = Tab_Settings;  ret
+		case Keyboard::F3:
+			if (tab != Tab_Settings)
+				tab = Tab_Settings;
+			else	//  cycle settings pages
+				setTab = (setTab + 1) % STab_ALL;
+			ret
 
 		//  load, save
 		case Keyboard::F4:  Save();  ret

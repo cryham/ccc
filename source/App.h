@@ -60,6 +60,12 @@ public:
 		"F1 Edit", "F2 List", "F3 Settings" };
 	int tab = 1;
 	bool edFocus = false, findFocus = false;
+	//  settings tabs
+	enum ESetTabs {
+		STab_Paths, STab_Dims, STab_ALL };
+	const char* setTabNames[STab_ALL] = {
+		"1 Paths", "2 Dimensions" };
+	int setTab = 0;
 
 
 	//  project  -----
