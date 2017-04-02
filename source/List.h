@@ -38,7 +38,7 @@ struct Pat
 	std::string s;  // pattern eg. *.cpp
 	SClr c;  // color
 
-	std::string attr;  // DC syntax **
+	std::string attr;  // DC syntax  -* files  d* dirs
 	bool dir;  //, lnk, exe;
 	bool onlyDC, onlyTC;  // special
 

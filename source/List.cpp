@@ -35,11 +35,11 @@ void Pat::SetDir(bool d)
 {
 	dir = d;
 	//  dir and attr has no d
-	if (d && (attr == "**" || attr.empty()))
+	if (d && (attr == "-*" || attr.empty()))
 		attr = "d*";
 	else
 	if (!d && (attr == "d*" || attr.empty()))
-		attr = "**";
+		attr = "-*";
 }
 
 
@@ -226,7 +226,7 @@ bool List::LoadDC(const char* file)
 			<Name>..</Name>
 			<FileMasks>*=.flac;*.d;</FileMasks>
 			<Color>10049581</Color>
-			<Attributes>**</Attributes>
+			<Attributes>-*</Attributes>
 		  </Filter>
 */
 
