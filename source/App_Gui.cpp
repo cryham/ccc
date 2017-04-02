@@ -31,14 +31,15 @@ void App::Gui()
 
 
 	//  controls  wnd  =====
-	SetNextWindowPos( ImVec2(0, 10),  ImGuiSetCond_Always);
-	SetNextWindowSize(ImVec2(xSplit, yWindow-yDbg-10), ImGuiSetCond_Always);
+	SetNextWindowPos( ImVec2(0, 0),  ImGuiSetCond_Always);
+	SetNextWindowSize(ImVec2(xSplit, yWindow-yDbg), ImGuiSetCond_Always);
 
 	bool e, open = true;
 	const int wfl = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
 	Begin("Controls", &open, wfl);
 
 	//  tabs
+	Sep(10);
 	TabLabels(Tab_ALL, tabNames, tab, true);
 	Sep(15);  Line(cl0);  Sep(10);
 
@@ -92,10 +93,10 @@ void App::Gui()
 		//  r,g,b sliders  ==
 		PushItemWidth(-60);  //PushAllowKeyboardFocus(false);
 		e = false;
-		e |= SliderInt("R", &ed.r, 0, 255, "");  SameLine();  Text(("R  "+i2s(ed.r)).c_str());  // set
+		e |= SliderInt("R", &ed.r, 0, 255, "");  SameLine();  Text(("R  "+i2s(ed.r)).c_str());
 		e |= SliderInt("G", &ed.g, 0, 255, "");  SameLine();  Text(("G  "+i2s(ed.g)).c_str());
 		e |= SliderInt("B", &ed.b, 0, 255, "");  SameLine();  Text(("B  "+i2s(ed.b)).c_str());
-		if (e && p)  SetClr();
+		if (e && p)  SetClr();  // set
 
 		//  h,s,v sliders  todo floats..
 		#if 0
@@ -221,7 +222,9 @@ void App::Gui()
 		Text("Page");  SameLine(80);
 		TabLabels(STab_ALL, setTabNames, setTab, true);
 		Sep(10);  Line(cl0);  Sep(5);
+
 		const size_t sp = set.PathLen;  // all same size
+		int i;  float f;
 
 		switch (setTab)
 		{
@@ -250,7 +253,7 @@ void App::Gui()
 		case STab_Dims:
 			PushItemWidth(xSplit-100);
 
-			Text("List Font Height");  int i = set.iFontH;
+			Text("List Font Height");  i = set.iFontH;
 			e = SliderInt("LFh", &i, 1, 32, "");  SameLine();  Text(i2s(set.iFontH).c_str());  if (e) {  set.iFontH = i;  IncFont(0);  }
 			Text("Gui Font Height (restart)");  i = set.iFontGui;
 			e = SliderInt("GFh", &i, 8, 22, "");  SameLine();  Text(i2s(set.iFontGui).c_str());  if (e)  set.iFontGui = i;
@@ -258,7 +261,7 @@ void App::Gui()
 			Sep(5);
 			Text("Line Y Spacing");  i = set.iLineH;
 			e = SliderInt("LYs", &i, -3, 8, "");  SameLine();  Text(i2s(set.iLineH).c_str());  if (e)  set.iLineH = i;
-			Text("Item X Spacing");  float f = set.fXMargin;
+			Text("Item X Spacing");  f = set.fXMargin;
 			e = SliderFloat("IXs", &f, 0.3f, 2.5f, "");  SameLine();  Text(f2s(set.fXMargin).c_str());  if (e)  set.fXMargin = f;
 
 			Sep(5);
@@ -269,10 +272,20 @@ void App::Gui()
 			e = InputFloat("Spl", &set.fSplit, 0.01f, 0.1f, 2);  if (e)  UpdSplit();
 			PopItemWidth();
 
-			Sep(5);  Line(cl0);  Sep(5);
-			e = Checkbox("Esc quits",  &set.escQuit);
-			Sep(10);
 			PopItemWidth();
+			break;
+
+		case STab_Other:
+			e = Checkbox("Esc quits",  &set.escQuit);
+			Sep(5);
+			Text("Background color");
+			Sep(5);
+			PushItemWidth(xSplit-100);
+			i = set.cr;  e = SliderInt("cR", &i, 0, 255, "");  SameLine();  Text(("R  "+i2s(i)).c_str());  if (e)  set.cr = i;
+			i = set.cg;  e = SliderInt("cG", &i, 0, 255, "");  SameLine();  Text(("G  "+i2s(i)).c_str());  if (e)  set.cg = i;
+			i = set.cb;  e = SliderInt("cB", &i, 0, 255, "");  SameLine();  Text(("B  "+i2s(i)).c_str());  if (e)  set.cb = i;
+			PopItemWidth();
+			Sep(10);
 			break;
 		}
 	}	break;

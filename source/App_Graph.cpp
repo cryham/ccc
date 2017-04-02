@@ -7,6 +7,9 @@ using namespace std;
 ///-----------------------------------------------------------------------------
 void App::Graph()
 {
+	//  clear
+	pWindow->clear(sf::Color(set.cb, set.cg, set.cr));
+
 
 	///  dim params  ----------
 	const int

@@ -45,6 +45,7 @@ void Settings::Default()
 	cmbDC = 0;
 	merge = false;
 	escQuit = false;
+	cr = 0;  cg = 0;  cb = 0;
 
 	strcpy(pathSet, "ccc.set.xml");
 	strcpy(pathProj, "ccc.xml");
@@ -115,6 +116,9 @@ bool Settings::Load()
 		a = e->Attribute("sx");  if (a)  xwSize = atoi(a);
 		a = e->Attribute("sy");  if (a)  ywSize = atoi(a);
 		a = e->Attribute("escQuit");  if (a)  escQuit = atoi(a) >0? true: false;
+		a = e->Attribute("r");  cr = atoi(a);
+		a = e->Attribute("g");  cg = atoi(a);
+		a = e->Attribute("b");  cb = atoi(a);
 	}
 	return true;
 }
@@ -154,6 +158,9 @@ bool Settings::Save()
 		e->SetAttribute("sx", xwSize);
 		e->SetAttribute("sy", ywSize);
 		e->SetAttribute("escQuit", escQuit ? 1 : 0);
+		e->SetAttribute("r", cr);
+		e->SetAttribute("g", cg);
+		e->SetAttribute("b", cb);
 	root->InsertEndChild(e);
 
 	xml.InsertEndChild(root);

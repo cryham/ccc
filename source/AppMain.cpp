@@ -8,7 +8,6 @@ using namespace std;  using namespace sf;  using namespace ImGui::SFML;
 
 
 AppMain::AppMain()
-	:window(0)
 {	}
 
 bool AppMain::Run()
@@ -25,7 +24,7 @@ bool AppMain::Run()
 	//VideoMode vm = VideoMode::getDesktopMode();
 	//--vm.height;  // fix
 
-	window = new RenderWindow(
+	sf::RenderWindow* window = new RenderWindow(
 		VideoMode(set.xwSize, set.ywSize),
 		"Crystal Color Center", // Title
 		Style::Default, ContextSettings());
@@ -117,7 +116,6 @@ bool AppMain::Run()
 		app->Gui();
 
 		window->resetGLStates();
-		window->clear();
 
 		app->Graph();
 

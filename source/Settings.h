@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Config.hpp>
 
 namespace sf {  class Window;  }
 
@@ -46,5 +47,7 @@ public:
 	int xwPos = 0, ywPos = 0;
 	int xwSize = 1024, ywSize = 768;
 	void GetWndDim(sf::Window* wnd);
+	sf::Uint8 cr = 0, cg = 0, cb = 0;  // background color
+
 	bool escQuit = false;
 };
