@@ -320,11 +320,15 @@ void App::Gui()
 	SetNextWindowSize(ImVec2(xSplit, yDbg), ImGuiSetCond_Always);
 	Begin("Status", &open, wfl);
 
+	int pats = li.pat.size();
 	string s =  // info
 		//"Fps: " + f2s(1/dt,1,3) + "  "+
-		"Patterns: " + i2s(li.pat.size()) +
-		"   Colors: " + i2s(li.clr.size()) + "\n"+
-		"     Lines: " + i2s(li.lines.size()) + "   Real: " + i2s(li.linesReal);
+		"All: " + i2s(pats) +
+		"   Patterns: " + i2s(pats - li.st.groups) +
+		"   Groups: " + i2s(li.st.groups) + "\n"+
+		"Colors: " + i2s(li.st.clrs.size()) +
+		"   Lines: " + i2s(li.lines.size()) +
+		"   Real: " + i2s(li.st.linesReal);
 	Text(s.c_str());
 
 	Sep(10);  Line(cl0);  //Sep(5);

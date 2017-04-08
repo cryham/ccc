@@ -10,15 +10,14 @@ using namespace std;  using namespace tinyxml2;
 
 //  ctor
 List::List()
-{	}
+{
+	Clear();
+}
 
-void List::Default()
+void List::Clear()
 {
 	pat.clear();
-	clr.clear();
-
-	for (int i; i < maxSets; ++i)
-		visSet[i] = true;
+	st.clrs.clear();
 }
 
 //  utils
@@ -58,9 +57,10 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 	bool groupHide = false, setHide = false;
 
 	lines.clear();
-	lines.push_back(0);
+	lines.push_back(0);  // 1st line
 
-	linesReal = 0;
+	st.linesReal = 0;
+	st.groups = 0;
 	curSets = 0;
 
 	for (i=0; i < ii; ++i)
@@ -71,16 +71,17 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 			curSets = p.grpSet;
 
 		//  update group hide for all
+		//  and group sets visibility
 		if (p.group)
+		{	++st.groups;
 			groupHide = p.hide;
-		p.hideByGrp = groupHide;
-
-		//  set visibility
-		if (p.group)
 			setHide = !visSet[p.grpSet];
+		}
+		p.hideByGrp = groupHide;
 		p.hideBySet = setHide;
 
-		app->str = p.s;  // get text width
+		//  get text width
+		app->str = p.s;
 		xw = app->Txt(x, y, false) + xa;
 		p.xw = xw;
 
@@ -92,7 +93,7 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 			{
 				x = xMin;  y += ya;
 				if (!p.group && p.Visible())  // info
-					++linesReal;
+					++st.linesReal;
 				lines.push_back(i);  ++l;  // next line
 			}
 			p.x = x;  p.y = y;  p.l = l;
@@ -116,7 +117,7 @@ int List::LineLen(int id)
 //------------------------------------------------------------------------------------------------
 bool List::Load(const char* file)
 {
-	Default();
+	Clear();
 
 	XMLDocument doc;
 	XMLError er = doc.LoadFile(file);
@@ -128,16 +129,13 @@ bool List::Load(const char* file)
 	string rn = root->Name();
 	if (rn != "ccc")  return false;
 
-	Default();
-
-	const char* a;
-
 	//  vis grp sets
+	const char* a;
 	XMLElement* vis = root->FirstChildElement("vis");
 	if (vis)
-	for (int i; i < maxSets; ++i)
+	for (int i=0; i < maxSets; ++i)
 	{	string si = "s" + i2s(i);
-		a = root->Attribute(si.c_str());  if (a)  visSet[i] = atoi(a) > 0;
+		a = vis->Attribute(si.c_str());  if (a)  visSet[i] = atoi(a) > 0;
 	}
 
 	//  patterns
@@ -161,7 +159,7 @@ bool List::Load(const char* file)
 			a = pt->Attribute("a");  p.attr = a;
 			p.dir = p.attr == "d*";  // set dir from attr
 		}
-		clr.insert(p.c.Get());
+		st.clrs.insert(p.c.Get());
 		pat.push_back(p);
 		pt = pt->NextSiblingElement();
 	}
@@ -182,6 +180,7 @@ bool List::Save(const char* file)
 	{	string si = "s" + i2s(i);
 		vis->SetAttribute(si.c_str(), visSet[i]? 1: 0);
 	}
+	root->InsertEndChild(vis);
 
 	//  patterns
 	for (auto& p : pat)
@@ -227,7 +226,7 @@ bool List::LoadDC(const char* file)
 	XMLElement* filt = clrs->FirstChildElement("FileFilters");
 	if (!filt)  return false;
 
-	Default();
+	Clear();
 
 	///  load Filters
 	XMLElement* fi = filt->FirstChildElement("Filter"), *e;
@@ -239,7 +238,7 @@ bool List::LoadDC(const char* file)
 		e = fi->FirstChildElement("FileMasks");		if (e)  q.s = e->GetText();
 		e = fi->FirstChildElement("Color");			if (e){  c = atoi(e->GetText());  q.c.Set(c);  }
 		e = fi->FirstChildElement("Attributes");	if (e)  q.attr = e->GetText();
-		clr.insert(c);
+		st.clrs.insert(c);
 
 		//  split each pattern
 		auto vs = split(q.s, ";");
@@ -372,7 +371,7 @@ bool List::LoadTC(const char* file)
 	ifstream fi;
 	fi.open(file);  if (!fi.good())  return false;
 
-	Default();
+	Clear();
 
 	//  read lines
 	char l[1024], sPat[512]={0}, sClr[32]={0};

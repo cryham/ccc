@@ -87,18 +87,22 @@ public:
 	std::vector<int> lines;  // line offsets for patterns
 
 	//  stats, set in Update
-	//int groups.
-	std::set<sf::Uint32> clr;  // unique colors, for count
+	struct Stats
+	{
+		std::set<sf::Uint32> clrs;  // unique colors, for count
+		int groups = 0;
+		int linesReal = 0;  // visible and not group
+	} st;
 
 	//  visibility sets
 	const static int maxSets = 10;
-	int curSets = 0;  // auto max used group set, for checkboxes
+	int curSets = 0;  // auto, max used group set, for checkboxes count
 	bool visSet[maxSets];
 
 
 	//  ctor
 	List();
-	void Default();
+	void Clear();
 
 	//  app  for text get width
 	App* app = nullptr;
@@ -110,7 +114,6 @@ public:
 
 	//  update view,  run after any changes in pat
 	void Update(int xMin, int xMax, int xa, int ya);  // x,y, xw, l, ofs
-	int linesReal = 0;  // info, visible and not group
 
 
 	//  import, export  ----

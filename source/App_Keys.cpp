@@ -54,7 +54,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 		case Keyboard::F8:  Export();  ret
 		case Keyboard::F9:  Import();  ret
 
-		case Keyboard::F10: li.Default();  ret  // clear
+		case Keyboard::F10: li.Clear();  ret
 		case Keyboard::F7:  StartExe();  ret
 	}
 
