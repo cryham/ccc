@@ -84,3 +84,10 @@ void App::Line(const ImVec4& cl)
 	Separator();  Sep(5*sp);
 	PopStyleColor();
 }
+
+SClr App::HSVtoRGB(float h, float s, float v)
+{
+	float r,g,b;
+	ImGui::ColorConvertHSVtoRGB(h,s,v, r,g,b);
+	return SClr(r*255.f, g*255.f, b*255.f);
+}

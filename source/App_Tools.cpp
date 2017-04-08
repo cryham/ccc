@@ -88,6 +88,7 @@ void App::SetCur(int ic)
 	//  checks
 	ed.dir = p.dir;  ed.hide = p.hide;  ed.group = p.group;
 	ed.onlyDC = p.onlyDC;  ed.onlyTC = p.onlyTC;
+	ed.grpSet = p.grpSet;
 }
 
 
@@ -101,7 +102,7 @@ void App::IncLine(int d, int end)
 	int o = iCur - li.lines[lc];  // ofs in cur line
 	int lsi = li.lines.size()-1;
 
-	int ln = std::max(0, std::min(lsi, lc + d));  // new line
+	int ln = max(0, min(lsi, lc + d));  // new line
 	int l  = li.lines[ln];  // new line start
 	int le = li.LineLen(ln);  // new line length
 

@@ -39,9 +39,9 @@ void App::Gui()
 	Begin("Controls", &open, wfl);
 
 	//  tabs
-	Sep(10);
+	Sep(5);
 	TabLabels(Tab_ALL, tabNames, tab, true);
-	Sep(15);  Line(cl0);  Sep(10);
+	Sep(5);  Line(cl0);  Sep(5);
 
 
 	//  unfocus gui,  keys for list
@@ -66,7 +66,7 @@ void App::Gui()
 	{
 		//  Pattern  Properties
 		//---------------------------------------------
-		Text("Properties");  Sep(10);
+		Text("Properties");  Sep(5);
 
 		Pat* p = nullptr;  // current, for edit, set
 		if (iCur >= 0 && iCur < li.pat.size())
@@ -76,8 +76,14 @@ void App::Gui()
 		if (edFocus)  // after F2
 		{	edFocus = false;  SetKeyboardFocusHere();
 		}
-		PushItemWidth(140);
-		e = InputText("Pattern", ed.pat, sizeof(ed.pat));
+		if (p && p->group)
+		{
+			PushItemWidth(200);
+			e = InputText("Group name", ed.pat, sizeof(ed.pat));
+		}else{
+			PushItemWidth(140);
+			e = InputText("Pattern", ed.pat, sizeof(ed.pat));
+		}
 		if (e && p)  p->s = ed.pat;  // set
 		PopItemWidth();
 		Sep(10);
@@ -89,6 +95,7 @@ void App::Gui()
 		ImColor c(ed.r, ed.g, ed.b);
 		dl->AddRectFilledMultiColor(ImVec2(x, y), ImVec2(x+z, y+z), c,c,c,c);
 		Dummy(ImVec2(sz, sz));  SameLine(sz+10, 20);  Text("\nColor  %02X%02X%02X",ed.r,ed.g,ed.b);  // hex clr
+		//int h;  SameLine();  RadioButton("RGB",&h);  SameLine();  RadioButton("HSV",&h);
 
 		//  r,g,b sliders  ==
 		PushItemWidth(-60);  //PushAllowKeyboardFocus(false);
@@ -116,34 +123,32 @@ void App::Gui()
 		//  checks  ...
 		Sep(10);
 		e = Checkbox("Dir",  &ed.dir);  if (e && p)  UpdDir(*p);
-		//e = Checkbox("Link", &ed.lnk);  if (e && p)  p->lnk = ed.lnk;  SameLine();
-		//e = Checkbox("Exe",  &ed.exe);  if (e && p)  p->exe = ed.exe;  //SameLine();
 
 		//  attrib  own, or from checks
 		SameLine(130);  //Sep(5);
 		PushItemWidth(80);
-		e = InputText("Attributes", ed.attr, sizeof(ed.attr));
-		if (e && p)  p->attr = ed.attr;  // set
+		e = InputText("Attributes", ed.attr, sizeof(ed.attr));  if (e && p)  p->attr = ed.attr;
 		PopItemWidth();
 
-		//  hide, group
-		Sep(5);
+		//  hide
+		Sep(5);  Text("Advanced");  Sep(5);
 		e = Checkbox("Hidden",  &ed.hide);  if (e && p)  p->hide = ed.hide;
-		SameLine(130);
-		e = Checkbox("Group",  &ed.group);  if (e && p)  p->group = ed.group;
 
-		Sep(5);
+		SameLine(130);
 		Text("Only for");
 		SameLine();  e = Checkbox("DC", &ed.onlyDC);  if (e && p)  p->onlyDC = ed.onlyDC;
 		SameLine();  e = Checkbox("TC", &ed.onlyTC);  if (e && p)  p->onlyTC = ed.onlyTC;
 
-		//  group id / set  todo sort
-		/*Sep(20);
+		//  group set id
+		Sep(5);
+		e = Checkbox("Group",  &ed.group);  if (e && p)  p->group = ed.group;
+
 		PushItemWidth(80);
-		e = DragInt("Group", &ed.grp, 0.1f);  ed.grp = std::min(10, std::max(-10, ed.grp));
-		if (e && p)  p->grp = ed.grp;  // set
-		//e = SliderInt("Group", &ed.grp, -120, 120, "");  SameLine();  Text(i2s(ed.grp).c_str());  if (e && p)  p->grp = ed.grp;  // set
-		PopItemWidth();/**/
+		SameLine(130);
+		e = DragInt("Set", &ed.grpSet, 0.04f);
+		ed.grpSet = min(li.maxSets-1, max(0, ed.grpSet));
+		if (e && p)  p->grpSet = ed.grpSet;
+		PopItemWidth();
 
 
 		//  Find
@@ -174,7 +179,19 @@ void App::Gui()
 
 		//  Project
 		//---------------------------------------------
-		Sep(20);  Line(cl0);  Sep(10);
+		Sep(5);  Line(cl0);  Sep(5);
+		Text("Visible sets");
+
+		Sep(10);
+		for (int i=0; i <= li.curSets; ++i)
+		{	int ii = i%5;
+			if (ii>0)  SameLine(ii*50+20);
+
+			bool b = li.visSet[i];
+			e = Checkbox(i2s(i).c_str(), &b);  if (e)  li.visSet[i] = b;
+		}
+
+		Sep(10);  Line(cl0);  Sep(10);
 		Text("Project");
 
 		Status& st = status;  //  status  ----

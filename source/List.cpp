@@ -16,6 +16,9 @@ void List::Default()
 {
 	pat.clear();
 	clr.clear();
+
+	for (int i; i < maxSets; ++i)
+		visSet[i] = true;
 }
 
 //  utils
@@ -51,34 +54,50 @@ void List::Update(int xMin, int xMax, int xa, int ya)
 	SClr cOld;
 	int i, ii = pat.size(), l = 0;
 	int x = xMin, xw = 0, y = 0;
-	bool groupHide = false;
+
+	bool groupHide = false, setHide = false;
 
 	lines.clear();
 	lines.push_back(0);
+
 	linesReal = 0;
+	curSets = 0;
 
 	for (i=0; i < ii; ++i)
 	{
 		Pat& p = pat[i];
+		//  vis max
+		if (p.grpSet > curSets)
+			curSets = p.grpSet;
+
 		//  update group hide for all
 		if (p.group)
 			groupHide = p.hide;
 		p.hideByGrp = groupHide;
 
+		//  set visibility
+		if (p.group)
+			setHide = !visSet[p.grpSet];
+		p.hideBySet = setHide;
+
 		app->str = p.s;  // get text width
 		xw = app->Txt(x, y, false) + xa;
 		p.xw = xw;
 
-		if (x+xw >= xMax ||
-			i > 0 && p.c != cOld)  // new color
+		p.show = p.group || !p.hideBySet && !p.hideByGrp;
+		if (p.show)  // visible
 		{
-			x = xMin;  y += ya;
-			if (!p.group && p.Visible())  // info
-				++linesReal;
-			lines.push_back(i);  ++l;  // next line
+			if (x+xw >= xMax ||
+				i > 0 && p.c != cOld)  // new color
+			{
+				x = xMin;  y += ya;
+				if (!p.group && p.Visible())  // info
+					++linesReal;
+				lines.push_back(i);  ++l;  // next line
+			}
+			p.x = x;  p.y = y;  p.l = l;
+			x += xw;
 		}
-		p.x = x;  p.y = y;  p.l = l;
-		x += xw;
 		cOld = p.c;
 	}
 }
@@ -111,11 +130,19 @@ bool List::Load(const char* file)
 
 	Default();
 
-	///  load Filters
-	XMLElement* pt = root->FirstChildElement("p");
-	if (!pt)  return false;
 	const char* a;
 
+	//  vis grp sets
+	XMLElement* vis = root->FirstChildElement("vis");
+	if (vis)
+	for (int i; i < maxSets; ++i)
+	{	string si = "s" + i2s(i);
+		a = root->Attribute(si.c_str());  if (a)  visSet[i] = atoi(a) > 0;
+	}
+
+	//  patterns
+	XMLElement* pt = root->FirstChildElement("p");
+	if (!pt)  return false;
 	while (pt)
 	{
 		Pat p;
@@ -124,6 +151,7 @@ bool List::Load(const char* file)
 		a = pt->Attribute("gr");  if (a)  p.group = atoi(a) > 0;
 		a = pt->Attribute("dc");  if (a)  p.onlyDC = atoi(a) > 0;
 		a = pt->Attribute("tc");  if (a)  p.onlyTC = atoi(a) > 0;
+		a = pt->Attribute("gS");  if (a)  p.grpSet = atoi(a);
 		if (!p.group)
 		{	a = pt->Attribute("r");  p.c.r = atoi(a);
 			a = pt->Attribute("g");  p.c.g = atoi(a);
@@ -148,6 +176,14 @@ bool List::Save(const char* file)
 	XMLElement* root = xml.NewElement("ccc");
 	root->SetAttribute("ver", Settings::ver);
 
+	//  vis grp sets
+	XMLElement* vis = xml.NewElement("vis");
+	for (int i; i < maxSets; ++i)
+	{	string si = "s" + i2s(i);
+		vis->SetAttribute(si.c_str(), visSet[i]? 1: 0);
+	}
+
+	//  patterns
 	for (auto& p : pat)
 	{
 		XMLElement* pt = xml.NewElement("p");
@@ -158,13 +194,13 @@ bool List::Save(const char* file)
 		{	pt->SetAttribute("r", i2s(p.c.r,3).c_str());
 			pt->SetAttribute("g", i2s(p.c.g,3).c_str());
 			pt->SetAttribute("b", i2s(p.c.b,3).c_str());
-
 			pt->SetAttribute("a", p.attr.c_str());
 		}
 		if (p.hide)
 			pt->SetAttribute("h", p.hide? 1: 0);
 		if (p.onlyDC)  pt->SetAttribute("dc", 1);
 		if (p.onlyTC)  pt->SetAttribute("tc", 1);
+		if (p.grpSet)  pt->SetAttribute("gS", p.grpSet);
 		root->InsertEndChild(pt);
 	}
 
@@ -255,7 +291,7 @@ bool List::SaveDC(const char* file)
 	}
 	id.push_back(pat.size());
 
-	//  construct xml, in FileFilters
+	//  construct xml list <FileFilters>
 	for (ii=0; ii < id.size()-1; ++ii)
 	{
 		int i0 = id[ii], i1 = id[ii+1];

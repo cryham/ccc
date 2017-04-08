@@ -39,6 +39,7 @@ public:
 
 	float sp;  // spacing for Sep
 	const static ImVec4 cl2, cl0;
+	SClr HSVtoRGB(float h, float s, float v);
 
 
 	//  status info  -----
@@ -132,6 +133,7 @@ public:
 		char pat[maxPat], attr[12];
 		bool dir, hide, group;
 		bool onlyDC, onlyTC;
+		int grpSet;  // group set id
 		Ed();
 	}ed;
 

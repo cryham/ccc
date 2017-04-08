@@ -43,7 +43,7 @@ void App::Graph()
 		dragSplit = true;
 	if (dragSplit)
 	{
-		xSplit = std::max(150, std::min(xWindow - 200, xm));
+		xSplit = max(150, min(xWindow - 200, xm));
 		set.fSplit = float(xSplit) / xWindow;
 		UpdSplit();
 		if (mb == 0)
@@ -77,74 +77,84 @@ void App::Graph()
 	while (i < ii)
 	{
 		const Pat& p = li.pat[i];
-		Clr(p.c);
-
-		//  name
-		str = p.s;  // pattern
-
-		//  pos
-		x = p.x;  y = p.y - y1;  xw = x + p.xw;
-		if (y + ya > yMax)
-			break;  // outside
-
-		yc = y+2;  yy = yc+ya+2;  // cur
-		yh = yc + yf2;
-
-
-		//  group  row backgr  ==
-		if (p.group)
-			Rect(x, yc+2, xBack, yy-1, clrGroup);
-
-		//  find __
-		if (p.match && !bHelp)
-			Rect(x, yc+2, xw, yy-1, findBack);
-
-		//  current []
-		if (i == iCur)
-			Rect(x, yc+2, xw, yy-1, curBack);
-
-
-		///  Text write
-		Txt(x, y);
-
-		//  hidden strikeout--
-		if (!p.Visible())
-			Rect(x, yh, xw-xa, yh+1, p.c);
-
-
-		//  selected line  ==
-		if (p.l == iLineSel && iLineSel >= 0)
-			Frame(x, yc, xw, yy, 1, 0,0, p.c);
-
-		//  current []
-		if (i == iCur)
-			Frame(x, yc, xw, yy, 1, p.c);
-
-		//  mouse over [ ]
-		if (tab == Tab_List &&
-			!bHelp && !dragSplit && !dragSlider)  //+
-		if (xm >= x && xm < xw &&
-			ym >= y && ym < y+ya)
+		if (p.show)  // visible
 		{
-			if (i != iCur)
-				Frame(x, yc, xw, yy, 2, p.c);
+			Clr(p.c);
 
-			iPick = i;  // pick, move marker
+			//  name
+			str = p.s;  // pattern
 
-			if (!alt)
-			if (mb == 1)  // LMB
-			{	SetCur(i);  // mouse pick 1
-				iLineSel = -1;  // unselect line
-			}else
-			if (mb == 2)  // RMB
-			{	SetCur(i);  // for color edit
-				iLineSel = i < 0 ? -1 : p.l;  // select line
-		}	}
+			//  pos
+			x = p.x;  y = p.y - y1;  xw = x + p.xw;
+			if (y + ya > yMax)
+				break;  // outside
 
-		//  find match  underline __
-		if (p.match && !bHelp)
-		{	++iFound;  // visible only
-			Rect(x, yy-1, xw, yy, findRect);
+			yc = y+2;  yy = yc+ya+2;  // cur
+			yh = yc + yf2;
+
+			//  group set id
+			if (p.group && p.grpSet > 0)
+			{
+				str += "  [" + i2s(p.grpSet) + "]";
+				xw += 30;
+			}
+
+			//  group  row backgr  ==
+			if (p.group)
+				Rect(x, yc+2, xBack, yy-1,
+					 HSVtoRGB(p.grpSet*0.2f+0.7f, 0.4f, 0.2f));
+
+			//  find __
+			if (p.match && !bHelp)
+				Rect(x, yc+2, xw, yy-1, findBack);
+
+			//  current []
+			if (i == iCur)
+				Rect(x, yc+2, xw, yy-1, curBack);
+
+
+			///  Text write
+			Txt(x, y);
+
+			//  hidden strikeout--
+			if (p.hide)
+				Rect(x, yh, xw-xa, yh+1, p.c);
+
+
+			//  selected line  ==
+			if (p.l == iLineSel && iLineSel >= 0)
+				Frame(x, yc, xw, yy, 1, 0,0, p.c);
+
+			//  current []
+			if (i == iCur)
+				Frame(x, yc, xw, yy, 1, p.c);
+
+			//  mouse over [ ]
+			if (tab == Tab_List &&
+				!bHelp && !dragSplit && !dragSlider)  //+
+			if (xm >= x && xm < xw &&
+				ym >= y && ym < y+ya)
+			{
+				if (i != iCur)
+					Frame(x, yc, xw, yy, 2, p.c);
+
+				iPick = i;  // pick, move marker
+
+				if (!alt)
+				if (mb == 1)  // LMB
+				{	SetCur(i);  // mouse pick 1
+					iLineSel = -1;  // unselect line
+				}else
+				if (mb == 2)  // RMB
+				{	SetCur(i);  // for color edit
+					iLineSel = i < 0 ? -1 : p.l;  // select line
+			}	}
+
+			//  find match  underline __
+			if (p.match && !bHelp)
+			{	++iFound;  // visible only
+				Rect(x, yy-1, xw, yy, findRect);
+			}
 		}
 		++i;  llast = p.l;
 	}

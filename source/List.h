@@ -39,15 +39,21 @@ struct Pat
 	SClr c;  // color
 
 	std::string attr;  // DC syntax  -* files  d* dirs
-	bool dir;  //, lnk, exe;
+	bool dir;
 	bool onlyDC, onlyTC;  // special
 
-	bool hide;   // hidden, if true won't be exported
-	bool hideByGrp;  // hidden by group, set in Update
-	bool group;  // group start, s is group name, if hid then whole group hidden
 
-	bool Visible() const
-	{	return !(hide || hideByGrp);  }
+	bool hide;   // hidden, if true won't be exported
+
+	bool group;  // group start, s is group name, if hide then whole group hidden
+	bool hideByGrp;  // hidden by group, set in Update
+
+	int grpSet;  // group set id
+	bool hideBySet;  // hidden by set, set in Update
+
+	bool show;  // for gui list, set in Update
+	bool Visible() const  // for export
+	{	return !(hide || hideByGrp || hideBySet);  }
 
 
 	//  visual only,  not saved, computed by Update()
@@ -59,9 +65,11 @@ struct Pat
 	Pat()
 		:x(0),y(0), xw(0), l(0)
 		,match(false), sel(false)
-		,dir(false)  //, lnk(false), exe(false)
+		,dir(false)
 		,onlyDC(false), onlyTC(false)
-		,hide(false), hideByGrp(false), group(false)
+		,hide(false), hideByGrp(false)
+		,group(false), grpSet(0), hideBySet(false)
+		,show(true)
 	{   }
 
 	void SetDir(bool d);
@@ -78,7 +86,15 @@ public:
 	std::deque<Pat> pat;  // patterns
 	std::vector<int> lines;  // line offsets for patterns
 
-	std::set<sf::Uint32> clr;  // colors, for count
+	//  stats, set in Update
+	//int groups.
+	std::set<sf::Uint32> clr;  // unique colors, for count
+
+	//  visibility sets
+	const static int maxSets = 10;
+	int curSets = 0;  // auto max used group set, for checkboxes
+	bool visSet[maxSets];
+
 
 	//  ctor
 	List();

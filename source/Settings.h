@@ -9,7 +9,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const static int ver = 70;  // version
+	const static int ver = 80;  // version
 
 	//  main  -----
 	Settings();

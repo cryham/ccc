@@ -13,8 +13,9 @@ using namespace std;
 //----------------------------------
 App::Ed::Ed()
 	:r(120), g(120), b(120)
-	,dir(false), hide(false), group(false)
+	,dir(false), hide(false)
 	,onlyDC(false), onlyTC(false)
+	,group(false), grpSet(0)
 {
 	memset(pat,0,sizeof(pat));
 	memset(attr,0,sizeof(attr));
@@ -96,15 +97,17 @@ void App::Open(char* path)
 //----------------------------------
 bool App::StartExe()
 {
-	string p = set.cmbDC ?  (alt ? set.pathDCexe : set.pathTCexe) :
-							(alt ? set.pathTCexe : set.pathDCexe);
+	bool dc =  set.cmbDC ?  (alt ? true : false) :
+							(alt ? false : true);
+	string p = dc ? set.pathDCexe : set.pathTCexe;
+	string sDC = dc ? "DC" : "TC";
 	string s = string("\"") + p + "\"";
 #ifdef _WIN32
 	bool er = int(ShellExecute(NULL, "open", s.c_str(), NULL, NULL, SW_SHOWDEFAULT)) <= 32;
 #else
 	system(s.c_str());  // todo
 #endif
-	status.Set(er ? "Start error!" : "Started.", er ? 0.1f : 0.62f);
+	status.Set(er ? "Start "+sDC+" error!" : "Started "+sDC+".", er ? 0.1f : 0.62f);
 	return er;
 }
 
