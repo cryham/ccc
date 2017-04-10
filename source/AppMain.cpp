@@ -46,7 +46,8 @@ bool AppMain::Run()
 	io.IniFilename = 0;  io.LogFilename = 0;  // nope
 	io.Fonts->ClearFonts();
 	//  font
-	ImFont* fnt = io.Fonts->AddFontFromFileTTF("data/DejaVuLGCSans.ttf", app->set.iFontGui);
+	ImFont* fnt = io.Fonts->AddFontFromFileTTF(
+					  "data/DejaVuLGCSans.ttf", app->set.iFontGui);
 	Texture* fntTex = new Texture;
 	createFontTexture(*fntTex);
 	setFontTexture(*fntTex);
