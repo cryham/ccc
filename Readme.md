@@ -17,16 +17,15 @@ Currently you can:
   * edit, add, remove patterns
   * adjust row color with R,G,B sliders
   * rearrange, move patterns and rows
-  * find pattern names, with occurences mark
   * toggle directory, hidden or group
+  * group sets, toggle visibility
+- Utility
+  * find pattern names, with occurences mark
   * change font size, spacing and other settings
   
 TODO (less important):
-- Manage
-  * HSV sliders
   * multi select, move, edit
-  * group id, sorting
-  * rating groups
+  * HSV sliders
 
 ## General
 This utility program is written in C++, using [SFML](https://github.com/SFML/SFML) for graphics,
@@ -44,3 +43,7 @@ On Windows SFML needs the environment variable SFML_ROOT to be defined.
 After this the program should build.  
 
 In sources there already are: [TinyXML2](https://github.com/leethomason/tinyxml2), ImGui with ImGui-SFML and [Native File Dialog](https://github.com/mlabbe/nativefiledialog).  
+
+## Screenshot
+
+![](https://raw.githubusercontent.com/cryham/ccc/master/screenshot.png)
