@@ -237,7 +237,7 @@ bool List::LoadDC(const char* file)
 		Pat q;  sf::Uint32 c;
 		e = fi->FirstChildElement("FileMasks");		if (e)  q.s = e->GetText();
 		e = fi->FirstChildElement("Color");			if (e){  c = atoi(e->GetText());  q.c.Set(c);  }
-		e = fi->FirstChildElement("Attributes");	if (e)  q.attr = e->GetText();
+		e = fi->FirstChildElement("Attributes");	if (e && e->GetText())  q.attr = e->GetText();
 		st.clrs.insert(c);
 
 		//  split each pattern
