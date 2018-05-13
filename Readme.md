@@ -5,6 +5,7 @@ for [Double Commander](http://doublecmd.sourceforge.net/) (in Options - Colors -
 and also for Total Commander (in Configuration - Display - Color - Define colors by file type).  
 Since editing many patterns there is way too slow.  
 
+To download go to [Releases](https://github.com/cryham/ccc/releases).
 Press Ctrl-F1 in program to see Help screen.  
 
 Currently you can:
