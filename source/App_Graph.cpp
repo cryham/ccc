@@ -1,3 +1,4 @@
+#include <math.h>
 #include "App.h"
 #include "Util.h"
 using namespace std;
