@@ -63,8 +63,11 @@ void Settings::Default()
 	strcpy(pathTCexe, "c:\\Program Files\\Total Commander\\totalcmd.exe");
 #else
 	//todo
-	strcpy(pathDC, "");
+	strcpy(pathDCxml, "~/.config/doublecmd/doublecmd.xml");
 	strcpy(pathDCexe, "doublecmd");
+
+	strcpy(pathTCini, "");
+	strcpy(pathTCexe, "");
 #endif
 }
 
