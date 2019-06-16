@@ -105,7 +105,7 @@ bool App::StartExe()
 #ifdef _WIN32
 	bool er = int(ShellExecute(NULL, "open", s.c_str(), NULL, NULL, SW_SHOWDEFAULT)) <= 32;
 #else
-	system(s.c_str());  // todo
+	bool er = system(s.c_str()) != 0;  // todo
 #endif
 	status.Set(er ? "Start "+sDC+" error!" : "Started "+sDC+".", er ? 0.1f : 0.62f);
 	return er;
