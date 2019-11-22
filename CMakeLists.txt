@@ -36,6 +36,17 @@ else()
 endif()
 
 
+# GTK for nfd (nativefiledialog)
+if(UNIX)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(GTK REQUIRED gtk+-3.0)
+	
+	include_directories(${GTK_INCLUDE_DIRS})
+	link_directories(${GTK_LIBRARY_DIRS})
+	add_definitions(${GTK_CFLAGS_OTHER})
+endif()
+
+
 if(WIN32)
 	add_executable(${PROJECT} WIN32 ${SOURCES})
 else()
@@ -45,4 +56,12 @@ endif()
 target_link_libraries(${PROJECT} ${SFML_LIBRARIES})
 if(WIN32)
 	target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
+else()
+	target_link_libraries(${PROJECT} "-lGL")
+endif()
+
+
+# GTK cd
+if(UNIX)
+	target_link_libraries(${PROJECT} ${GTK_LIBRARIES})
 endif()
