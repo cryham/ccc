@@ -53,6 +53,17 @@ else()
 	add_executable(${PROJECT} ${SOURCES})
 endif()
 
+
+#  C++17
+set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_EXTENSIONS OFF)
+#set_target_properties(${PROJECT} PROPERTIES CXX_STANDARD 17 CXX_EXTENSIONS OFF)
+target_compile_features(${PROJECT} PRIVATE cxx_std_17)
+
+target_link_libraries(${PROJECT_NAME} stdc++fs)
+
+
 target_link_libraries(${PROJECT} ${SFML_LIBRARIES})
 if(WIN32)
 	target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
