@@ -1,10 +1,10 @@
 #pragma once
+#include "App.h"
 
 
-class AppMain //: public App
+class AppMain : public App
 {
 public:
 
-	AppMain();
 	bool Run();
 };
