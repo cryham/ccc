@@ -12,7 +12,7 @@ public:
 	//  main
 	//--------------------------
 	App();
-	bool Init();
+	bool InitApp();
 	void Graph(), Gui(), Help();
 
 	float dt = 0.f, time = 0.f;  // animation
@@ -29,7 +29,7 @@ public:
 
 	void Mouse(int x, int y);
 	void Wheel(float d);
-	void Resize(int x, int y), UpdSplit();
+	void Resize(uint x, uint y), UpdSplit();
 
 
 	//  gui util  -----
@@ -95,7 +95,8 @@ public:
 
 	//  dimensions
 	//--------------------------
-	int xWindow =600, yWindow =400, xSplit =200;   // window size
+	uint xWindow = 600, yWindow = 400;  // window size
+	int xSplit = 200;  // spl
 	bool bHelp = false;  // show help
 	void IncFont(int d);  // change font size
 
@@ -132,8 +133,8 @@ public:
 		//float h,s,v;  //todo: HSV..
 		char pat[maxPat], attr[12];
 		bool dir, hide, group;
-		bool onlyDC, onlyTC;
 		int grpSet;  // group set id
+		bool onlyDC, onlyTC;
 		Ed();
 	}ed;
 

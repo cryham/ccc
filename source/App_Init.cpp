@@ -4,8 +4,10 @@
 	#include <Lmcons.h>
 #endif
 #include "App.h"
+#include "FileSystem.h"
 #include "../libs/nfd.h"
 #include <cstring>
+#include <iostream>
 using namespace std;
 
 
@@ -14,8 +16,8 @@ using namespace std;
 App::Ed::Ed()
 	:r(120), g(120), b(120)
 	,dir(false), hide(false)
-	,onlyDC(false), onlyTC(false)
 	,group(false), grpSet(0)
+	,onlyDC(false), onlyTC(false)
 {
 	memset(pat,0,sizeof(pat));
 	memset(attr,0,sizeof(attr));
@@ -24,9 +26,9 @@ App::Ed::Ed()
 //  set size
 void App::UpdSplit()
 {
-	xSplit = set.fSplit * xWindow;
+	xSplit = static_cast<int>(set.fSplit * xWindow);
 }
-void App::Resize(int x, int y)
+void App::Resize(uint x, uint y)
 {
 	xWindow = x;  yWindow = y;
 	set.xwSize = x;  set.ywSize = y;
@@ -43,7 +45,7 @@ App::App()
 
 //  Init
 //----------------------------------
-bool App::Init()
+bool App::InitApp()
 {
 	SetupGuiClr();
 	li.SetApp(this);
@@ -115,8 +117,19 @@ bool App::StartExe()
 //----------------------------------
 bool App::Load()
 {
-	bool er = !li.Load(set.pathProj);
-	status.Set(er ? "Load error!" : "Loaded.", er ? 0.2f : 0.42f);
+	bool er;
+	if (FileSystem::Exists(set.pathProj))
+	{
+		er = !li.Load(set.pathProj);
+		status.Set(er ? "Load error!" : "Loaded.", er ? 0.2f : 0.42f);
+	}else
+	{
+		cout << "Project file not found: " << set.pathProj << endl
+			 << "Loading program's default project." << endl;
+		string def = FileSystem::Data() + "/ccc.xml";
+		er = !li.Load(def.c_str());
+		status.Set(er ? "Load Defaults error!" : "Loaded Defaults.", er ? 0.f : 0.2f);
+	}
 	SetCur(iCur);  // set gui
 	return er;
 }

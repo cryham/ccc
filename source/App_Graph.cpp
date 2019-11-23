@@ -44,7 +44,7 @@ void App::Graph()
 		dragSplit = true;
 	if (dragSplit)
 	{
-		xSplit = max(150, min(xWindow - 200, xm));
+		xSplit = max(150, min(int(xWindow) - 200, xm));
 		set.fSplit = float(xSplit) / xWindow;
 		UpdSplit();
 		if (mb == 0)
