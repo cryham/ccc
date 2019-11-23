@@ -1,12 +1,14 @@
 
 ## Crystal Color Center
-The program allows managing file and directory patterns (e.g. extension or name matches) for:  
+The program allows managing file and directory patterns (e.g. extensions or name matches) for:  
 - [Double Commander](http://doublecmd.sourceforge.net/) (in Options - Colors - File types)
-- Total Commander (in Configuration - Display - Color - Define colors by file type).
-Since editing many patterns in those is way too slow.  
+- Total Commander (in Configuration - Display - Color - Define colors by file type).  
+Since editing many patterns in those is way too slow and tedious.  
 
-To download go to [Releases](https://github.com/cryham/ccc/releases).
+To download go to [Releases](https://github.com/cryham/ccc/releases).  
 Press Ctrl-F1 in program to see Help screen.  
+
+### Features
 
 Currently you can:
 - Save and load program's own project xml file(s)
@@ -43,7 +45,7 @@ Tested on Debian 10 and Windows 7 with SFML 2.5.1.
 
 ### GNU/Linux
 
-On **GNU/Linux** you'll need to get SFML installed.  
+On GNU/Linux you need to get SFML installed.  
 
 Command for Ubuntu and Debian-based:  
 `sudo apt-get install libsfml-dev`  
@@ -64,7 +66,7 @@ If needed you can update your git clone to latest version with `git pull` after.
 
 ### Windows
 
-On **Windows** you need to download and unpack SFML [from here](https://www.sfml-dev.org/download.php).  
+On Windows you need to download and unpack SFML [from here](https://www.sfml-dev.org/download.php).  
 Latest version and matching your VS (likely 2017 64-bit).  
 Then SFML needs the environment variable SFML_ROOT set to path where it is.  
 If problems occur when building CCC the alternative but harder way is to get and build SFML from sources.  
