@@ -10,7 +10,7 @@ bool App::Check()
 {
 	if (li.pat.empty())  return true;
 	//  range, just to be sure
-	int lMax = li.pat.size()-1;
+	int lMax = static_cast<int>(li.pat.size()) - 1;
 	if (iCur < 0)    {  iCur = 0;     return true;  }
 	if (iCur > lMax) {  iCur = lMax;  return true;  }
 	return false;

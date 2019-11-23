@@ -1,8 +1,11 @@
+#include "App.h"
+#include "AppMain.h"
+#include "FileSystem.h"
+
 #include <SFML/Graphics.hpp>
 #include "../libs/imgui.h"
 #include "../libs/imgui-SFML.h"
-#include "AppMain.h"
-#include "App.h"
+#include <iostream>
 using namespace std;  using namespace sf;  using namespace ImGui::SFML;
 
 
@@ -12,6 +15,10 @@ AppMain::AppMain()
 
 bool AppMain::Run()
 {
+	FileSystem::Init();
+	cout << FileSystem::GetInfo();
+	
+	
 	//  laod Settings first
 	//------------------
 	App* app = new App();
@@ -34,8 +41,9 @@ bool AppMain::Run()
 	window->setPosition(Vector2i(set.xwPos, set.ywPos));
 
 	//  icon
+	string data = FileSystem::Data()+"/";
 	Image icon;
-	if (icon.loadFromFile("data/icon.png"))
+	if (icon.loadFromFile(data+"icon.png"))
 		window->setIcon(32, 32, icon.getPixelsPtr());
 
 
@@ -43,11 +51,12 @@ bool AppMain::Run()
 	//------------------
 	Init(*window);
 	ImGuiIO& io = ImGui::GetIO();
-	io.IniFilename = 0;  io.LogFilename = 0;  // nope
+	io.IniFilename = nullptr;  io.LogFilename = nullptr;  // nope
 	io.Fonts->ClearFonts();
 	//  font
+	string sfont = data+"DejaVuLGCSans.ttf";
 	ImFont* fnt = io.Fonts->AddFontFromFileTTF(
-					  "data/DejaVuLGCSans.ttf", app->set.iFontGui);
+					  sfont.c_str(), app->set.iFontGui);
 	Texture* fntTex = new Texture;
 	createFontTexture(*fntTex);
 	setFontTexture(*fntTex);
@@ -63,11 +72,11 @@ bool AppMain::Run()
 	//  Load data
 	//------------------------------------------------
 	Font font;
-	if (!font.loadFromFile("data/DejaVuLGCSans.ttf"))
+	if (!font.loadFromFile(data+"DejaVuLGCSans.ttf"))
 		{}  //Warning("Can't load .ttf","App Run");
 
 	Texture tex;
-	if (!tex.loadFromFile("data/white.png"))
+	if (!tex.loadFromFile(data+"white.png"))
 		{}  //Warning("Can't load white.png","App Run");
 
 	Sprite back(tex);

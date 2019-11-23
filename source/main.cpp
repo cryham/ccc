@@ -1,6 +1,8 @@
 #include "AppMain.h"
 #include <locale.h>
 #include <cstdlib>
+#include <memory>
+using namespace std; 
 
 
 //  . . . . . . . . . . . . . . . . . . . . . .  MAIN  . . . . . . . . . . . . . . . . . . . . . .
@@ -11,12 +13,10 @@ int main()
 	//  Start
 	//-----------------------------------
 
-	AppMain* pApp = new AppMain();
+	unique_ptr<AppMain> pApp = make_unique<AppMain>();
 
 	pApp->Run();
 
-
-	delete pApp;
 
 	return EXIT_SUCCESS;
 }
