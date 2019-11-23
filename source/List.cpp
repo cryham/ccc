@@ -1,5 +1,6 @@
 #include <regex>
 #include <fstream>
+#include <iostream>
 #include "List.h"
 #include "../libs/tinyxml2.h"
 #include "Util.h"
@@ -119,15 +120,18 @@ bool List::Load(const char* file)
 {
 	Clear();
 
+	const string sErr = string("Load Project Error: ") + file + "\n";
 	XMLDocument doc;
 	XMLError er = doc.LoadFile(file);
 	if (er != XML_SUCCESS)
-	{	/*Can't load: "+file);*/  return false;  }
+	{	cout << sErr << "Can't load file: " << endl;  return false;  }
 
 	XMLElement* root = doc.RootElement();
-	if (!root)  return false;
+	if (!root)
+	{	cout << sErr << "no root" << endl;  return false;  }
 	string rn = root->Name();
-	if (rn != "ccc")  return false;
+	if (rn != "ccc")
+	{	cout << sErr << "root not <ccc>" << endl;  return false;  }
 
 	//  vis grp sets
 	const char* a;
@@ -212,19 +216,20 @@ bool List::Save(const char* file)
 //------------------------------------------------------------------------------------------------
 bool List::LoadDC(const char* file)
 {
+	const string sErr = string("Load DC Error: ") + file + "\n";
 	XMLDocument doc;
 	XMLError er = doc.LoadFile(file);
 	if (er != XML_SUCCESS)
-	{	/*Can't load: "+file);*/  return false;  }
+	{	cout << sErr << "Can't load file." << endl;  return false;  }
 
 	XMLElement* root = doc.RootElement();
-	if (!root)  return false;
+	if (!root) {  cout << sErr << "No root" << endl;  return false;  }
 	string rn = root->Name();
-	if (rn != "doublecmd")  return false;
+	if (rn != "doublecmd") {  cout << sErr << "Root is not <doublecmd>" << endl;  return false;  }
 	XMLElement* clrs = root->FirstChildElement("Colors");
-	if (!clrs)  return false;
+	if (!clrs)  {  cout << sErr << "<Colors> not found" << endl;  return false;  }
 	XMLElement* filt = clrs->FirstChildElement("FileFilters");
-	if (!filt)  return false;
+	if (!filt)  {  cout << sErr << "<FileFilters> not found" << endl;  return false;  }
 
 	Clear();
 
@@ -250,6 +255,7 @@ bool List::LoadDC(const char* file)
 		}
 		fi = fi->NextSiblingElement();
 	}
+	cout << "Load DC - OK." << endl;
 	return true;
 }
 /*
@@ -270,7 +276,9 @@ bool List::LoadDC(const char* file)
 //------------------------------------------------------------------------------------------------
 bool List::SaveDC(const char* file)
 {
-	if (pat.empty())  return false;
+	const string sErr = string("Export DC Error: ") + file + "\n";
+	if (pat.empty())
+	{	cout << sErr << "Empty patterns." << endl;  return false;  }
 
 	XMLDocument xml;
 	XMLElement* filt = xml.NewElement("FileFilters");
@@ -328,12 +336,17 @@ bool List::SaveDC(const char* file)
 	//  save  --------------
 	//  original dc xml
 	ifstream fi;
-	fi.open(file);  if (!fi.good())  return false;
+	fi.open(file);
+	if (!fi.good())
+	{	cout << sErr << "Can't open existing file." << endl;  return false;  }
+	
 	//  temp save
 	ofstream fo;
 	string ss = string(file) + "1";
 	const char* file1 = ss.c_str();
-	fo.open(file1);  if (!fo.good())  return false;
+	fo.open(file1);
+	if (!fo.good())
+	{	cout << sErr << "Can't create temp file: " << file1 << endl;  return false;  }
 
 	//  read lines
 	bool ff = false;
@@ -357,9 +370,15 @@ bool List::SaveDC(const char* file)
 	}
 	fi.close();
 	fo.close();
+
 	//  replace old with new
-	remove(file);
-	rename(file1, file);
+	if (!remove(file))
+	{	cout << sErr << "Can't delete file." << endl;  return false;  }
+		
+	if (!rename(file1, file))
+	{	cout << sErr << "Rename of temp file failed." << endl;  return false;  }
+
+	cout << "Export DC - OK." << endl;
 	return true;
 }
 

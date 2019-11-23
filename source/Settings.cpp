@@ -3,7 +3,9 @@
 	#include <windows.h>
 	#include <Lmcons.h>
 #endif
+#include <iostream>
 #include <SFML/Window.hpp>
+#include "FileSystem.h"
 #include "Settings.h"
 #include "../libs/tinyxml2.h"
 #include "Util.h"
@@ -47,8 +49,13 @@ void Settings::Default()
 	escQuit = false;
 	cr = 0;  cg = 0;  cb = 0;
 
-	strcpy(pathSet, "ccc.set.xml");
-	strcpy(pathProj, "ccc.xml");
+	string config = FileSystem::Config()+"/", file;
+	
+	file = config + "ccc.xml";
+	strcpy(pathProj, file.c_str());
+
+	file = config + "ccc.set.xml";
+	strcpy(pathSet, file.c_str());
 
 #ifdef _WIN32
 	char username[UNLEN+1];
@@ -62,8 +69,8 @@ void Settings::Default()
 	strcpy(pathTCini, "color.ini");
 	strcpy(pathTCexe, "c:\\Program Files\\Total Commander\\totalcmd.exe");
 #else
-	//todo
-	strcpy(pathDCxml, "~/.config/doublecmd/doublecmd.xml");
+	strcpy(pathDCxml, FileSystem::Home().c_str());
+	strcat(pathDCxml, "/.config/doublecmd/doublecmd.xml");
 	strcpy(pathDCexe, "doublecmd");
 
 	strcpy(pathTCini, "");
@@ -77,7 +84,7 @@ void Settings::Default()
 bool Settings::Load()
 {
 	Default();
-
+	
 	XMLDocument doc;
 	XMLError er = doc.LoadFile(pathSet);
 	if (er != XML_SUCCESS)
