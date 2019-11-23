@@ -44,7 +44,8 @@ Tested on Debian 10 and Windows 7 with SFML 2.5.1.
 ### GNU/Linux
 
 On **GNU/Linux** you'll need to get SFML installed.  
-Command for Ubuntu (and Debian-based):  
+
+Command for Ubuntu and Debian-based:  
 `sudo apt-get install libsfml-dev`  
 and also tools (if not present yet):  
 `sudo apt-get install build-essential cmake git`  
@@ -58,14 +59,15 @@ cmake ..
 make -j8
 ./ccc
 ```
-Argument `-j8` means to use 8 threads. If needed you can update your git clone to latest version with `git pull` after.
+Argument `-j8` means to use 8 threads.  
+If needed you can update your git clone to latest version with `git pull` after.
 
 ### Windows
 
-On **Windows** you need to download unpack install SFML [from here](https://www.sfml-dev.org/download.php).
+On **Windows** you need to download and unpack SFML [from here](https://www.sfml-dev.org/download.php).  
 Latest version and matching your VS (likely 2017 64-bit).  
-Then SFML needs the environment variable SFML_ROOT set to path where SFML is.  
-Alternatively (if problems occur building CCC) the harder ways is to get and build SFML from sources.  
+Then SFML needs the environment variable SFML_ROOT set to path where it is.  
+If problems occur when building CCC the alternative but harder way is to get and build SFML from sources.  
 
 ## Screenshot
 

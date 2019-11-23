@@ -107,7 +107,7 @@ bool App::StartExe()
 #ifdef _WIN32
 	bool er = int(ShellExecute(NULL, "open", s.c_str(), NULL, NULL, SW_SHOWDEFAULT)) <= 32;
 #else
-	bool er = system(s.c_str()) != 0;  // todo
+	bool er = system(s.c_str()) != 0;
 #endif
 	status.Set(er ? "Start "+sDC+" error!" : "Started "+sDC+".", er ? 0.1f : 0.62f);
 	return er;
@@ -141,31 +141,31 @@ bool App::Save()
 }
 
 //  DC  ------------
-bool App::LoadDC()
+bool App::ImportDC()
 {
-	bool er = !li.LoadDC(set.pathDCxml);
+	bool er = !li.ImportDC(set.pathDCxml);
 	status.Set(er ? "Import DC error!" : "Imported from DC.", er ? 0.2f : 0.42f);
 	SetCur(iCur);
 	return er;
 }
-bool App::SaveDC()
+bool App::ExportDC()
 {
-	bool er = !li.SaveDC(set.pathDCxml);
+	bool er = !li.ExportDC(set.pathDCxml);
 	status.Set(er ? "Export DC error!" : "Exported into DC.", er ? 0.f : 0.55f);
 	return er;
 }
 
 //  TC  ------------
-bool App::LoadTC()
+bool App::ImportTC()
 {
-	bool er = !li.LoadTC(set.pathTCini);
+	bool er = !li.ImportTC(set.pathTCini);
 	status.Set(er ? "Import TC error!" : "Imported from TC.", er ? 0.2f : 0.50f);
 	SetCur(iCur);
 	return er;
 }
-bool App::SaveTC()
+bool App::ExportTC()
 {
-	bool er = !li.SaveTC(set.pathTCini);
+	bool er = !li.ExportTC(set.pathTCini);
 	status.Set(er ? "Export TC error!" : "Exported into TC.", er ? 0.f : 0.60f);
 	return er;
 }
@@ -175,8 +175,8 @@ bool App::SaveTC()
 void App::Export()
 {
 	if (set.cmbDC==0)
-	{	if (alt)  SaveTC();  else  SaveDC();  }else
-	{	if (alt)  SaveDC();  else  SaveTC();  }
+	{	if (alt)  ExportTC();  else  ExportDC();  }else
+	{	if (alt)  ExportDC();  else  ExportTC();  }
 }
 
 void App::Import()
@@ -186,8 +186,8 @@ void App::Import()
 		l = li;
 
 	if (set.cmbDC==0)
-	{	if (alt)  LoadTC();  else  LoadDC();  }else
-	{	if (alt)  LoadDC();  else  LoadTC();  }
+	{	if (alt)  ImportTC();  else  ImportDC();  }else
+	{	if (alt)  ImportDC();  else  ImportTC();  }
 	SetCur(iCur);
 
 	if (set.merge)

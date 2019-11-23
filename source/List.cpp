@@ -212,9 +212,9 @@ bool List::Save(const char* file)
 }
 
 
-//  load, import from  DC doublecmd.xml
+//  Import, load from  DC doublecmd.xml
 //------------------------------------------------------------------------------------------------
-bool List::LoadDC(const char* file)
+bool List::ImportDC(const char* file)
 {
 	const string sErr = string("Load DC Error: ") + file + "\n";
 	XMLDocument doc;
@@ -255,7 +255,7 @@ bool List::LoadDC(const char* file)
 		}
 		fi = fi->NextSiblingElement();
 	}
-	cout << "Load DC - OK." << endl;
+	cout << "Import DC - OK." << endl;
 	return true;
 }
 /*
@@ -271,10 +271,10 @@ bool List::LoadDC(const char* file)
 		  </Filter>
 */
 
-//  save, export to  DC doublecmd.xml
+//  Export, save to  DC doublecmd.xml
 //  will replace the section in existing xml
 //------------------------------------------------------------------------------------------------
-bool List::SaveDC(const char* file)
+bool List::ExportDC(const char* file)
 {
 	const string sErr = string("Export DC Error: ") + file + "\n";
 	if (pat.empty())
@@ -338,7 +338,7 @@ bool List::SaveDC(const char* file)
 	ifstream fi;
 	fi.open(file);
 	if (!fi.good())
-	{	cout << sErr << "Can't open existing file." << endl;  return false;  }
+	{	cout << sErr << "Can't open file." << endl;  return false;  }
 	
 	//  temp save
 	ofstream fo;
@@ -372,23 +372,26 @@ bool List::SaveDC(const char* file)
 	fo.close();
 
 	//  replace old with new
-	if (!remove(file))
+	if (remove(file))
 	{	cout << sErr << "Can't delete file." << endl;  return false;  }
 		
-	if (!rename(file1, file))
-	{	cout << sErr << "Rename of temp file failed." << endl;  return false;  }
+	if (rename(file1, file))
+	{	cout << sErr << "Can't rename temp file." << endl;  return false;  }
 
 	cout << "Export DC - OK." << endl;
 	return true;
 }
 
 
-//  load, import from  TC color.ini
+//  Import, load from  TC color.ini
 //------------------------------------------------------------------------------------------------
-bool List::LoadTC(const char* file)
+bool List::ImportTC(const char* file)
 {
+	const string sErr = string("Import TC Error: ") + file + "\n";
 	ifstream fi;
-	fi.open(file);  if (!fi.good())  return false;
+	fi.open(file);
+	if (!fi.good())
+	{	cout << sErr << "Can't open file." << endl;  return false;  }
 
 	Clear();
 
@@ -427,6 +430,7 @@ bool List::LoadTC(const char* file)
 			strcpy(sPat, s.c_str());
 		}
 	}
+	cout << "Import TC - OK." << endl;
 	return true;
 }
 
@@ -435,20 +439,26 @@ bool List::LoadTC(const char* file)
 	ColorFilter1Color=16753488
 */
 
-//  save, export to  TC color.ini
+//  Export, save to  TC color.ini
 //------------------------------------------------------------------------------------------------
-bool List::SaveTC(const char* file)
+bool List::ExportTC(const char* file)
 {
+	const string sErr = string("Export TC Error: ") + file + "\n";
 	if (pat.empty())  return false;
 
 	//  original tc ini
 	ifstream fi;
-	fi.open(file);  if (!fi.good())  return false;
+	fi.open(file);
+	if (!fi.good())
+	{	cout << sErr << "Can't open file." << endl;  return false;  }
+	
 	//  temp save
 	ofstream fo;
 	string ss = string(file) + "1";
 	const char* file1 = ss.c_str();
-	fo.open(file1);  if (!fo.good())  return false;
+	fo.open(file1);
+	if (!fo.good())
+	{	cout << sErr << "Can't create temp file: " << file1 << endl;  return false;  }
 
 	//  read lines
 	bool ff = true;
@@ -502,7 +512,13 @@ bool List::SaveTC(const char* file)
 
 	//  replace old with new
 	bool ok = true;
-	if (remove(file)!=0)  ok = false;
-	if (rename(file1, file)!=0)  ok = false;
+	if (remove(file))
+	{	cout << sErr << "Can't delete file." << endl;  ok = false;  }
+	
+	if (rename(file1, file))
+	{	cout << sErr << "Can't rename temp file." << endl;  ok = false;  }
+
+	if (ok)
+		cout << "Export TC - OK." << endl;
 	return ok;
 }

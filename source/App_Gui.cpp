@@ -217,11 +217,13 @@ void App::Gui()
 		e = Button("F8 Export");  if (e)  Export();  SameLine();
 		BtnNorm();
 		e = Button("F9 Import");  if (e)  Import();
-		//Sep(5);
 
 		bool mrg = set.merge;  SameLine();
 		e = Checkbox("Merging", &mrg);  if (e && p)  set.merge = mrg;
 
+		Sep(5);
+		e = Button("F7 Start Commander");  if (e)  StartExe();
+		
 	}	break;
 
 

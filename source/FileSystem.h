@@ -35,11 +35,7 @@ public:
 
     static std::string Config() {       return user_config;  }
     
-    //static std::string Cache() {      return cache_dir; }
-
-    //static std::string Settings() {     return user_config + "/ccc.xml"; }
-
     static std::string Data() {         return app_data; }
 
-    //static std::string Screenshots() {  return user_data + "/screenshots";  }
+	//static std::string Cache() {      return cache_dir; }
 };

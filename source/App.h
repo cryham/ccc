@@ -75,9 +75,9 @@ public:
 	//  merge l into cur list, adds only new patterns
 	void Merge(const List& l);
 
-	void Export(), Import();
-	bool LoadDC(), SaveDC();
-	bool LoadTC(), SaveTC();
+	void Import(), Export();
+	bool ImportDC(), ExportDC();
+	bool ImportTC(), ExportTC();
 	bool StartExe();
 
 	Settings set;  //*  Settings

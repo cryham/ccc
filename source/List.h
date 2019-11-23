@@ -117,11 +117,11 @@ public:
 
 
 	//  import, export  ----
-	bool LoadDC(const char* file);  // DC doublecmd.xml
-	bool SaveDC(const char* file);
+	bool ImportDC(const char* file);  // DC doublecmd.xml
+	bool ExportDC(const char* file);
 
-	bool LoadTC(const char* file);  // TC color.ini
-	bool SaveTC(const char* file);
+	bool ImportTC(const char* file);  // TC color.ini
+	bool ExportTC(const char* file);
 
 	//  project file, own xml
 	bool Load(const char* file);
