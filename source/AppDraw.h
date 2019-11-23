@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "List.h"
+#include <memory>
 
 
 class AppDraw
@@ -9,10 +10,10 @@ class AppDraw
 public:
 	//  sfml draw
 	//--------------------------
-	sf::RenderWindow* pWindow = nullptr;
-	sf::Sprite* pBackgr = nullptr;
+	std::unique_ptr<sf::RenderWindow> pWindow = nullptr;
+	std::unique_ptr<sf::Sprite> pBackgr = nullptr;
 
-	sf::Font* pFont = nullptr;
+	std::unique_ptr<sf::Font> pFont = nullptr;
 	sf::Text text;
 
 	sf::String str;

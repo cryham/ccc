@@ -1,7 +1,7 @@
 #pragma once
 
 
-class AppMain
+class AppMain //: public App
 {
 public:
 

@@ -26,7 +26,7 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 	{
 		//  esc close-
 		case Keyboard::Escape:  if (set.escQuit)
-			{	set.GetWndDim(pWindow);  pWindow->close();  ret  }  break;
+			{	set.GetWndDim(pWindow.get());  pWindow->close();  ret  }  break;
 
 		//  font size
 		case Keyboard::F11:  IncFont(ctrl ?-4:-1);  ret
