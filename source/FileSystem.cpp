@@ -20,13 +20,9 @@ using namespace std;
 #include <shlobj.h>
 #endif
 
-// Should come from CMake
-//#ifndef DATA_DIR
+//  const
 #define DATA_DIR "data"
-//#endif
 #define APP_NAME "ccc"
-
-using namespace std;
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -34,9 +30,8 @@ namespace fs = std::filesystem;
 
 //  static vars
 string FileSystem::home_dir
-    ,FileSystem::user_config, FileSystem::app_config
-    ,FileSystem::app_data
-    /*,FileSystem::user_data, FileSystem::cache_dir*/;
+    ,FileSystem::user_config
+    ,FileSystem::app_data;
 
 
 //  List dir
@@ -203,12 +198,8 @@ void FileSystem::Init()
             //if (fs::exists(p))
                 app_data = p.string();
 
-            //  Config dir
-            if (fs::exists(p / "config"))
-                app_config = (p / "config").string();
-
-            //  Check if both are found
-            if (!app_data.empty() && !app_config.empty())
+            //  Check if found
+            if (!app_data.empty())
                 break;
         }
     }

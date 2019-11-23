@@ -9,7 +9,7 @@ class FileSystem
 {
 private:
     static std::string
-        home_dir, user_config, app_config,
+        home_dir, user_config,
         app_data/*, user_data, cache_dir*/;
 
 public:
@@ -34,11 +34,10 @@ public:
     static std::string Home() {         return home_dir; }
 
     static std::string Config() {       return user_config;  }
-    static std::string AppConfig() {    return app_config;  }
-
+    
     //static std::string Cache() {      return cache_dir; }
 
-    static std::string Settings() {     return user_config + "/ccc.xml"; }
+    //static std::string Settings() {     return user_config + "/ccc.xml"; }
 
     static std::string Data() {         return app_data; }
 
