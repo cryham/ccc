@@ -156,7 +156,7 @@ void App::Mods(const sf::Event::KeyEvent& key)
 	dFind = alt ? 8 : ctrl ? 4 : 1;
 }
 
-bool App::KeyUp(const sf::Event::KeyEvent& key)
+void App::KeyUp(const sf::Event::KeyEvent& key)
 {
 	Mods(key);
 }

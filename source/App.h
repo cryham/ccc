@@ -20,11 +20,11 @@ public:
 
 	//  input events
 	//--------------------------
-	#define EvKey  const sf::Event::KeyEvent& key
-		bool KeyDown(EvKey), KeyUp(EvKey);
-		void Mods(EvKey);
-	#undef EvKey
-	bool alt=0, ctrl=0, shift=0;  // mods
+	bool KeyDown(const sf::Event::KeyEvent& key);
+	void KeyUp(const sf::Event::KeyEvent& key);
+	void Mods(const sf::Event::KeyEvent& key);
+
+	bool alt = false, ctrl = false, shift = false;  // mods
 	int dLine = 8, dFind = 1;  // multipliers from mods
 
 	void Mouse(int x, int y);

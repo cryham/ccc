@@ -103,8 +103,8 @@ bool AppMain::Run()
 			case Event::MouseButtonPressed:		mb = e.mouseButton.button + 1;  break;
 			case Event::MouseButtonReleased:	mb = 0;  break;
 
-//			case Event::KeyPressed:		KeyDown(e.key);  break;
-//			case Event::KeyReleased:	KeyUp(e.key);  break;
+			case Event::KeyPressed:		KeyDown(e.key);  break;
+			case Event::KeyReleased:	KeyUp(e.key);  break;
 
 			case Event::Resized:	Resize(e.size.width, e.size.height);  break;
 			case Event::Closed:		set.GetWndDim(pWindow.get());  pWindow->close();  break;
