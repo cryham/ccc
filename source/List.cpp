@@ -19,6 +19,9 @@ void List::Clear()
 {
 	pat.clear();
 	st.clrs.clear();
+	
+	for (int i=0; i < maxSets; ++i)
+		visSet[i] = true;
 }
 
 //  utils
